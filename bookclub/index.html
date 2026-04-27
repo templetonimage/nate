@@ -959,6 +959,8 @@ function friendlyError(code) {
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
+    window.location.href = 'platform.html';
+    return;
     currentUser = { uid: user.uid, name: user.displayName || 'Member', email: user.email };
     const isAdmin = user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
     // Update nav
@@ -1441,6 +1443,14 @@ window.submitInviteRequest = async () => {
   try {
     await addDoc(collection(db, 'bookclub_invite_requests'), {
       name, email, requestedAt: serverTimestamp(), status: 'pending'
+    });
+    await addDoc(collection(db, 'bookclub_mail'), {
+      to: 'nate@templetonimage.com',
+      message: {
+        subject: 'New Book Club Invite Request',
+        text: `${name} (${email}) has requested an invite to the Templeton Book Club.`,
+        html: `<p><strong>${name}</strong> (<a href="mailto:${email}">${email}</a>) has requested an invite to the Templeton Book Club.</p>`
+      }
     });
     document.getElementById('invite-form').style.display    = 'none';
     document.getElementById('invite-success').style.display = 'block';
