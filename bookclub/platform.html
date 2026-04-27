@@ -1,0 +1,2208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content" />
+  <title>Templeton Book Club — Members</title>
+  <meta name="theme-color" content="#FAFAF8" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --bg:         #FAFAF8;
+      --bg2:        #F4F2EE;
+      --surface:    #FFFFFF;
+      --surface2:   #F7F5F1;
+      --border:     #E8E4DC;
+      --border2:    #D4CFC6;
+      --text:       #1A1A18;
+      --text2:      #4A4840;
+      --text3:      #7A7670;
+      --muted:      #9A9690;
+      --gold:       #C9A84C;
+      --gold-dim:   #A07C28;
+      --gold-light: #E2C878;
+      --gold-bg:    rgba(201,168,76,0.09);
+      --gold-bg2:   rgba(201,168,76,0.05);
+      --red:        #C0392B;
+      --green:      #27AE60;
+      --blue:       #2980B9;
+      --radius:     12px;
+      --radius-sm:  8px;
+      --radius-lg:  20px;
+      --shadow-sm:  0 1px 4px rgba(0,0,0,0.06);
+      --shadow:     0 2px 16px rgba(0,0,0,0.08);
+      --shadow-lg:  0 8px 40px rgba(0,0,0,0.12);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-ui:      'Outfit', system-ui, sans-serif;
+      --font-mono:    'DM Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { height: 100%; height: 100dvh; }
+    body {
+      font-family: var(--font-ui); font-weight: 300;
+      background: var(--bg); color: var(--text);
+      height: 100%; height: 100dvh;
+      -webkit-font-smoothing: antialiased;
+      overflow: hidden;
+    }
+    h1,h2,h3,h4 { font-family: var(--font-display); }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: var(--font-ui); cursor: pointer; }
+
+    /* ── AUTH GATE ── */
+    #auth-gate {
+      display: none !important;
+    }
+    #auth-gate.show { display: none !important; }
+    .auth-gate-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 48px 40px;
+      width: 100%; max-width: 400px; box-shadow: var(--shadow-lg);
+      position: relative; overflow: hidden; text-align: center;
+    }
+    .auth-gate-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .gate-logo {
+      font-family: var(--font-display); font-size: 28px; font-weight: 300;
+      margin-bottom: 4px; color: var(--text);
+    }
+    .gate-logo .gold { color: var(--gold); }
+    .gate-sub {
+      font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+    }
+    .gate-desc {
+      font-size: 14px; font-weight: 300; color: var(--text3); line-height: 1.6;
+      margin-bottom: 28px;
+    }
+    .gate-tabs { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 24px; }
+    .gate-tab {
+      flex: 1; padding: 9px; background: transparent; border: none;
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); transition: all .15s;
+    }
+    .gate-tab.active { background: var(--bg2); color: var(--text); }
+    .gate-label {
+      display: block; font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 6px; text-align: left;
+    }
+    .gate-input {
+      width: 100%; padding: 12px 14px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); font-family: var(--font-ui); font-size: 15px;
+      background: var(--bg); color: var(--text); outline: none;
+      transition: border-color .2s; margin-bottom: 12px;
+    }
+    .gate-input:focus { border-color: var(--gold-dim); }
+    .btn-gate {
+      width: 100%; padding: 13px; background: var(--text); color: var(--bg);
+      border: none; border-radius: var(--radius-sm); font-family: var(--font-mono);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      transition: background .15s; margin-top: 4px;
+    }
+    .btn-gate:hover { background: var(--text2); }
+    .gate-error { color: var(--red); font-family: var(--font-mono); font-size: 11px; margin-top: 8px; display: none; text-align: left; }
+    .gate-back { background: none; border: none; font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.08em; margin-top: 14px; display: block; width: 100%; text-align: center; cursor: pointer; transition: color .15s; }
+    .gate-back:hover { color: var(--text); }
+    .invite-notice {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px; text-align: center; margin-top: 8px;
+    }
+    .invite-notice-icon { font-size: 28px; margin-bottom: 8px; }
+    .invite-notice-title { font-family: var(--font-display); font-size: 22px; font-weight: 300; margin-bottom: 6px; }
+    .invite-notice-body { font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.6; }
+
+    /* ── APP SHELL ── */
+    #app { display: block; height: 100%; height: 100dvh; position: relative; }
+    #app.show { display: block; }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      background: #121212;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 20px; height: 54px;
+    }
+    .topnav-logo {
+      font-family: var(--font-display); font-weight: 300; font-size: 20px;
+      letter-spacing: 0.02em; color: #F0EDE8;
+    }
+    .topnav-logo .gold { color: var(--gold); }
+    .topnav-right { display: flex; align-items: center; gap: 10px; }
+    .topnav-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--gold-bg); border: 1.5px solid var(--gold-dim);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 11px; color: var(--gold);
+      cursor: pointer; overflow: hidden; transition: border-color .15s;
+    }
+    .topnav-avatar:hover { border-color: var(--gold); }
+    .topnav-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .topnav-points {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      color: var(--gold); letter-spacing: 0.06em;
+    }
+
+    /* ── BOTTOM NAV ── */
+    .bottomnav {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 200;
+      background: rgba(250,250,248,0.95);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      display: flex; align-items: stretch;
+      min-height: 62px; height: calc(62px + env(safe-area-inset-bottom));
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .nav-item {
+      flex: 1; display: flex; flex-direction: column; align-items: center;
+      justify-content: center; gap: 4px; cursor: pointer; border: none;
+      background: transparent; color: var(--muted);
+      font-family: var(--font-mono); font-size: 8px; font-weight: 400;
+      letter-spacing: 0.08em; text-transform: uppercase; transition: color .2s;
+      padding: 8px 2px; position: relative;
+    }
+    .nav-item::before {
+      content: ''; position: absolute; top: 0; left: 20%; right: 20%; height: 2px;
+      background: var(--gold); opacity: 0; transition: opacity .2s; border-radius: 0 0 2px 2px;
+    }
+    .nav-item svg { width: 19px; height: 19px; transition: transform .15s; }
+    .nav-item:hover { color: var(--text2); }
+    .nav-item.active { color: var(--text); }
+    .nav-item.active::before { opacity: 1; }
+
+    /* ── SCROLL WRAPPER ── */
+    #app-scroll {
+      position: fixed;
+      top: 54px;
+      bottom: calc(62px + env(safe-area-inset-bottom));
+      left: 0; right: 0;
+      overflow-y: auto; overflow-x: hidden;
+      -webkit-overflow-scrolling: touch;
+    }
+    #app-scroll::-webkit-scrollbar { width: 3px; }
+    #app-scroll::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 2px; }
+
+    /* ── PAGES ── */
+    .page { display: none; padding: 20px; max-width: 680px; margin: 0 auto; }
+    .page.active { display: block; }
+    .page-header { margin-bottom: 24px; }
+    .page-title { font-family: var(--font-display); font-size: 38px; font-weight: 300; line-height: 1.1; }
+    .page-title em { font-style: italic; color: var(--gold); }
+    .page-subtitle { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-top: 6px; letter-spacing: 0.16em; text-transform: uppercase; }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 20px; margin-bottom: 14px;
+      box-shadow: var(--shadow-sm);
+    }
+    .card-label {
+      font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+      font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+      margin-bottom: 12px; display: flex; align-items: center; justify-content: space-between;
+    }
+
+    /* ── HOME TAB ── */
+    .home-greeting { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .home-name { font-family: var(--font-display); font-size: 44px; font-weight: 300; line-height: 1; margin-bottom: 18px; }
+    .home-name .first { font-weight: 700; color: var(--gold); }
+
+    .current-book-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px; margin-bottom: 14px; position: relative; overflow: hidden;
+    }
+    .current-book-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .book-card-inner { display: flex; gap: 16px; align-items: flex-start; }
+    .book-cover-sm {
+      width: 64px; flex-shrink: 0; aspect-ratio: 2/3; background: var(--bg2);
+      border-radius: 4px; overflow: hidden; box-shadow: var(--shadow);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 9px; color: var(--muted); text-align: center; padding: 4px;
+    }
+    .book-cover-sm img { width: 100%; height: 100%; object-fit: cover; }
+    .book-info-title { font-family: var(--font-display); font-size: 22px; font-weight: 600; line-height: 1.2; margin-bottom: 2px; }
+    .book-info-author { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 10px; }
+
+    .meeting-strip {
+      background: var(--bg2); border-radius: var(--radius-sm); padding: 12px 16px;
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-top: 12px;
+    }
+    .meeting-strip-item { display: flex; flex-direction: column; gap: 2px; }
+    .meeting-strip-label { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); }
+    .meeting-strip-val { font-size: 13px; font-weight: 500; }
+    .meeting-strip-divider { width: 1px; height: 28px; background: var(--border); }
+
+    .countdown-inline { display: flex; gap: 8px; align-items: baseline; }
+    .cd-num { font-family: var(--font-display); font-size: 28px; font-weight: 600; line-height: 1; }
+    .cd-lbl { font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; letter-spacing: 0.1em; color: var(--muted); }
+    .cd-sep { color: var(--border2); font-size: 20px; margin: 0 2px; }
+
+    .btn-rsvp {
+      width: 100%; padding: 11px; background: var(--gold); color: white; border: none;
+      border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 10px;
+      font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; transition: background .15s;
+      margin-top: 12px;
+    }
+    .btn-rsvp:hover { background: var(--gold-dim); }
+    .btn-rsvp.rsvpd { background: var(--green); }
+
+    .stats-row { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 14px; }
+    .stat-box {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px; text-align: center;
+    }
+    .stat-val { font-family: var(--font-display); font-size: 32px; font-weight: 600; color: var(--gold); line-height: 1; }
+    .stat-lbl { font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-top: 4px; }
+
+    /* ── FEED TAB ── */
+    .compose-box {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 16px; margin-bottom: 18px;
+    }
+    .post-type-row { display: flex; gap: 6px; margin-bottom: 12px; }
+    .type-chip {
+      padding: 5px 12px; border-radius: 20px; border: 1px solid var(--border);
+      background: transparent; color: var(--muted); font-family: var(--font-mono);
+      font-size: 9px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
+      cursor: pointer; transition: all .15s;
+    }
+    .type-chip.active { border-color: var(--gold-dim); background: var(--gold-bg); color: var(--gold-dim); }
+    .compose-textarea {
+      width: 100%; border: none; outline: none; font-family: var(--font-ui);
+      font-size: 15px; font-weight: 300; color: var(--text); background: transparent;
+      resize: none; min-height: 56px; line-height: 1.6;
+    }
+    .compose-textarea::placeholder { color: var(--muted); }
+    .passage-ref-input {
+      width: 100%; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      font-family: var(--font-mono); font-size: 11px; background: var(--bg2); color: var(--text);
+      outline: none; transition: border-color .15s; margin-top: 8px;
+    }
+    .passage-ref-input:focus { border-color: var(--gold-dim); }
+    .compose-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border);
+    }
+    .compose-hint { font-family: var(--font-mono); font-size: 9px; color: var(--muted); }
+    .btn-post {
+      padding: 7px 18px; background: var(--gold); color: white; border: none;
+      border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 9px;
+      font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; transition: background .15s;
+    }
+    .btn-post:hover { background: var(--gold-dim); }
+
+    .post-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 20px; margin-bottom: 10px;
+    }
+    .post-card.passage { border-left: 3px solid var(--gold); }
+    .post-card.question { border-left: 3px solid var(--blue); }
+    .post-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+    .post-avatar {
+      width: 32px; height: 32px; border-radius: 50%; background: var(--bg2);
+      border: 1px solid var(--border); display: flex; align-items: center;
+      justify-content: center; font-family: var(--font-mono); font-size: 11px;
+      color: var(--text3); flex-shrink: 0; overflow: hidden;
+    }
+    .post-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .post-author { font-weight: 500; font-size: 13px; }
+    .post-meta { font-family: var(--font-mono); font-size: 9px; color: var(--muted); margin-top: 1px; display: flex; gap: 8px; align-items: center; }
+    .post-type-badge {
+      font-family: var(--font-mono); font-size: 8px; font-weight: 500; letter-spacing: 0.1em;
+      text-transform: uppercase; padding: 2px 7px; border-radius: 3px;
+    }
+    .badge-thought { background: var(--bg2); color: var(--muted); }
+    .badge-passage { background: var(--gold-bg); color: var(--gold-dim); border: 1px solid rgba(201,168,76,0.2); }
+    .badge-question { background: rgba(41,128,185,0.07); color: var(--blue); border: 1px solid rgba(41,128,185,0.15); }
+    .post-body { font-size: 14px; font-weight: 300; line-height: 1.7; color: var(--text2); }
+    .passage-quote {
+      margin: 8px 0; padding: 12px 16px; background: var(--bg2); border-left: 3px solid var(--gold);
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-style: italic; font-size: 14px; line-height: 1.7; color: var(--text2);
+    }
+    .passage-page { font-family: var(--font-mono); font-size: 9px; color: var(--muted); margin-top: 4px; }
+    .post-actions {
+      display: flex; gap: 6px; margin-top: 10px; padding-top: 10px;
+      border-top: 1px solid var(--border); flex-wrap: wrap;
+    }
+    .action-btn {
+      display: flex; align-items: center; gap: 4px; padding: 4px 10px;
+      border-radius: var(--radius-sm); border: 1px solid var(--border);
+      background: transparent; cursor: pointer; font-family: var(--font-mono);
+      font-size: 10px; color: var(--muted); transition: all .15s;
+    }
+    .action-btn:hover { border-color: var(--border2); color: var(--text2); }
+    .action-btn.liked { border-color: var(--gold-dim); color: var(--gold); background: var(--gold-bg2); }
+    .action-btn.danger:hover { border-color: var(--red); color: var(--red); }
+    .points-pill {
+      font-family: var(--font-mono); font-size: 8px; color: var(--gold-dim);
+      background: var(--gold-bg); border: 1px solid rgba(201,168,76,0.15);
+      padding: 2px 7px; border-radius: 10px; margin-left: auto; align-self: center;
+    }
+
+    /* Replies */
+    .replies-wrap { margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border); }
+    .reply-card {
+      display: flex; gap: 10px; padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .reply-card:last-child { border-bottom: none; }
+    .reply-avatar {
+      width: 24px; height: 24px; border-radius: 50%; background: var(--bg2);
+      border: 1px solid var(--border); display: flex; align-items: center;
+      justify-content: center; font-family: var(--font-mono); font-size: 9px;
+      color: var(--text3); flex-shrink: 0; overflow: hidden;
+    }
+    .reply-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .reply-author { font-weight: 500; font-size: 12px; }
+    .reply-time { font-family: var(--font-mono); font-size: 9px; color: var(--muted); }
+    .reply-body { font-size: 13px; font-weight: 300; color: var(--text2); line-height: 1.6; margin-top: 3px; }
+    .reply-compose {
+      display: flex; gap: 8px; align-items: flex-start; margin-top: 10px;
+    }
+    .reply-input {
+      flex: 1; padding: 8px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      font-family: var(--font-ui); font-size: 13px; font-weight: 300;
+      background: var(--bg); color: var(--text); outline: none; transition: border-color .15s;
+    }
+    .reply-input:focus { border-color: var(--gold-dim); }
+    .btn-reply {
+      padding: 8px 14px; background: var(--text); color: var(--bg); border: none;
+      border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 9px;
+      font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; transition: background .15s; flex-shrink: 0;
+    }
+    .btn-reply:hover { background: var(--text2); }
+
+    /* Edit inline */
+    .edit-textarea {
+      width: 100%; padding: 8px 12px; border: 1px solid var(--gold-dim);
+      border-radius: var(--radius-sm); font-family: var(--font-ui); font-size: 14px;
+      font-weight: 300; background: var(--bg); color: var(--text); outline: none;
+      resize: vertical; min-height: 64px; line-height: 1.55; margin-top: 8px;
+    }
+    .edit-actions { display: flex; gap: 8px; margin-top: 8px; }
+    .btn-save { padding: 6px 14px; background: var(--gold); color: white; border: none; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; }
+    .btn-cancel { padding: 6px 12px; border: 1px solid var(--border2); border-radius: var(--radius-sm); background: transparent; color: var(--muted); font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all .15s; }
+    .btn-cancel:hover { border-color: var(--border2); color: var(--text); }
+
+    /* ── VOTE TAB ── */
+    .vote-section { margin-bottom: 28px; }
+    .vote-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 12px; margin-bottom: 16px; }
+    .vote-card {
+      background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius);
+      padding: 18px; cursor: pointer; transition: all .2s; position: relative; overflow: hidden;
+    }
+    .vote-card:hover:not(.voted) { border-color: var(--border2); box-shadow: var(--shadow); }
+    .vote-card.selected { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-bg); }
+    .vote-card.voted { cursor: default; }
+    .vote-cover {
+      width: 60px; aspect-ratio: 2/3; background: var(--bg2); border-radius: 3px;
+      margin-bottom: 10px; overflow: hidden; display: flex; align-items: center;
+      justify-content: center; font-size: 9px; color: var(--muted); text-align: center; padding: 6px;
+    }
+    .vote-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .vote-title { font-family: var(--font-display); font-size: 18px; font-weight: 600; line-height: 1.2; margin-bottom: 3px; }
+    .vote-author { font-family: var(--font-mono); font-size: 9px; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 10px; }
+    .vote-check { position: absolute; top: 10px; right: 10px; width: 20px; height: 20px; border-radius: 50%; background: var(--gold); display: none; align-items: center; justify-content: center; font-size: 10px; color: white; }
+    .vote-card.selected .vote-check { display: flex; }
+    .vote-bar-wrap { display: none; }
+    .vote-card.voted .vote-bar-wrap { display: block; }
+    .vote-bar-track { height: 3px; background: var(--bg2); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+    .vote-bar-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width .6s ease; }
+    .vote-bar-label { font-family: var(--font-mono); font-size: 9px; color: var(--muted); display: flex; justify-content: space-between; }
+    .vote-action-row { display: flex; align-items: center; gap: 14px; }
+    .btn-vote {
+      padding: 10px 24px; background: var(--text); color: var(--bg); border: none;
+      border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 10px;
+      font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; transition: background .15s;
+    }
+    .btn-vote:hover { background: var(--text2); }
+    .btn-vote:disabled { opacity: .4; cursor: not-allowed; }
+    .vote-note { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
+
+    /* Date vote chips */
+    .date-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+    .date-chip {
+      padding: 10px 16px; border-radius: var(--radius-sm); border: 1.5px solid var(--border);
+      background: var(--surface); cursor: pointer; transition: all .15s;
+      font-family: var(--font-mono); font-size: 11px; color: var(--text2);
+    }
+    .date-chip:hover { border-color: var(--border2); }
+    .date-chip.selected { border-color: var(--gold); background: var(--gold-bg); color: var(--gold-dim); }
+    .date-chip.voted { cursor: default; }
+
+    /* ── MEMBERS TAB ── */
+    .members-controls { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+    .sort-btn {
+      padding: 6px 14px; border-radius: 20px; border: 1px solid var(--border);
+      background: transparent; color: var(--muted); font-family: var(--font-mono);
+      font-size: 9px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: all .15s;
+    }
+    .sort-btn.active { border-color: var(--gold-dim); background: var(--gold-bg); color: var(--gold-dim); }
+    .search-input {
+      flex: 1; min-width: 140px; padding: 7px 12px; border: 1px solid var(--border);
+      border-radius: 20px; font-family: var(--font-mono); font-size: 11px;
+      background: var(--surface); color: var(--text); outline: none; transition: border-color .15s;
+    }
+    .search-input:focus { border-color: var(--gold-dim); }
+    .members-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(200px,1fr)); gap: 12px; }
+    .member-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px; text-align: center; transition: box-shadow .15s;
+    }
+    .member-card:hover { box-shadow: var(--shadow); }
+    .member-avatar {
+      width: 56px; height: 56px; border-radius: 50%; background: var(--bg2);
+      border: 2px solid var(--border); margin: 0 auto 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 16px; font-weight: 400;
+      color: var(--text3); overflow: hidden;
+    }
+    .member-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .member-name { font-weight: 500; font-size: 14px; margin-bottom: 3px; }
+    .member-joined { font-family: var(--font-mono); font-size: 9px; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 10px; }
+    .member-points { font-family: var(--font-display); font-size: 26px; font-weight: 600; color: var(--gold); line-height: 1; }
+    .member-points-lbl { font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-top: 2px; }
+    .badge-row { display: flex; gap: 4px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+    .badge { font-size: 16px; title: ''; cursor: default; }
+
+    /* ── PROFILE TAB ── */
+    .profile-hero { text-align: center; margin-bottom: 24px; }
+    .profile-avatar-wrap {
+      width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 14px;
+      background: var(--bg2); border: 2px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-mono); font-size: 24px; color: var(--text3);
+      position: relative; overflow: hidden; cursor: pointer;
+    }
+    .profile-avatar-wrap img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .avatar-edit-overlay {
+      position: absolute; inset: 0; background: rgba(0,0,0,0.45); display: none;
+      align-items: center; justify-content: center; font-size: 18px; border-radius: 50%;
+      color: white;
+    }
+    .profile-avatar-wrap:hover .avatar-edit-overlay { display: flex; }
+    .profile-name { font-family: var(--font-display); font-size: 32px; font-weight: 300; }
+    .profile-email { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 4px; }
+    .profile-points-display { display: flex; align-items: baseline; gap: 6px; justify-content: center; margin-top: 12px; }
+    .profile-points-val { font-family: var(--font-display); font-size: 48px; font-weight: 600; color: var(--gold); line-height: 1; }
+    .profile-points-lbl { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+    .profile-badges { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); }
+    .profile-badge {
+      display: flex; align-items: center; gap: 6px; padding: 6px 12px;
+      background: var(--bg2); border: 1px solid var(--border); border-radius: 20px;
+      font-family: var(--font-mono); font-size: 9px; color: var(--text2); letter-spacing: 0.06em;
+    }
+    .profile-section-title { font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+    .profile-section { margin-bottom: 22px; }
+    .field-label { display: block; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .field-input {
+      width: 100%; padding: 11px 13px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); font-family: var(--font-ui); font-size: 14px;
+      font-weight: 300; background: var(--bg); color: var(--text); outline: none;
+      transition: border-color .2s; margin-bottom: 12px;
+    }
+    .field-input:focus { border-color: var(--gold-dim); }
+    .btn-primary {
+      width: 100%; padding: 12px; background: var(--text); color: var(--bg); border: none;
+      border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px;
+      font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; transition: background .15s;
+    }
+    .btn-primary:hover { background: var(--text2); }
+    .btn-signout {
+      width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: transparent; color: var(--muted); font-family: var(--font-mono);
+      font-size: 10px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase;
+      cursor: pointer; transition: all .15s; margin-top: 8px;
+    }
+    .btn-signout:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── ADMIN ── */
+    .admin-bar {
+      background: #0a0a0a; border-radius: var(--radius); padding: 18px 20px; margin-bottom: 14px;
+    }
+    .admin-bar-title { font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+    .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .admin-input {
+      width: 100%; padding: 9px 12px; border: 1px solid #2a2a2a; border-radius: var(--radius-sm);
+      font-family: var(--font-ui); font-size: 13px; font-weight: 300;
+      background: #161616; color: #F0EDE8; outline: none; transition: border-color .2s; margin-bottom: 10px;
+    }
+    .admin-input:focus { border-color: var(--gold-dim); }
+    .admin-label { display: block; font-family: var(--font-mono); font-size: 8px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: #6a6560; margin-bottom: 5px; }
+    .btn-admin {
+      padding: 9px 16px; background: #1e1e1e; color: #c8c4be; border: 1px solid #2a2a2a;
+      border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 9px;
+      font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: all .15s;
+    }
+    .btn-admin:hover { border-color: #3a3a3a; color: #f0ede8; }
+    .btn-admin-gold {
+      padding: 9px 16px; background: var(--gold); color: #0a0a0a; border: none;
+      border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 9px;
+      font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: background .15s;
+    }
+    .btn-admin-gold:hover { background: var(--gold-light); }
+    .invite-link-box {
+      background: #161616; border: 1px solid #2a2a2a; border-radius: var(--radius-sm);
+      padding: 10px 12px; font-family: var(--font-mono); font-size: 11px; color: var(--gold);
+      letter-spacing: 0.04em; word-break: break-all; margin-top: 8px; display: none;
+    }
+
+    /* ── TOAST ── */
+    #toast-container { position: fixed; bottom: calc(72px + env(safe-area-inset-bottom)); right: 16px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+    .toast {
+      background: var(--text); color: var(--bg); border-radius: var(--radius-sm);
+      padding: 11px 15px; font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.04em; box-shadow: var(--shadow-lg);
+      animation: toastIn .25s ease; max-width: 260px;
+    }
+    .toast.success { background: var(--green); }
+    .toast.error { background: var(--red); }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── EMPTY STATE ── */
+    .empty-state { text-align: center; padding: 40px 20px; }
+    .empty-icon { font-size: 28px; margin-bottom: 10px; opacity: 0.4; }
+    .empty-title { font-family: var(--font-display); font-size: 22px; font-weight: 300; color: var(--text2); margin-bottom: 6px; }
+    .empty-desc { font-family: var(--font-mono); font-size: 11px; color: var(--muted); line-height: 1.65; }
+
+    /* ── LOADING ── */
+    .loading-inline { display: flex; align-items: center; gap: 10px; padding: 24px 0; color: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+    .spinner { width: 16px; height: 16px; border: 1.5px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin .7s linear infinite; flex-shrink: 0; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 480px) {
+      .admin-grid { grid-template-columns: 1fr; }
+      .stats-row { grid-template-columns: repeat(3,1fr); }
+      .members-grid { grid-template-columns: repeat(2,1fr); }
+    }
+
+    /* ── FADE UP ── */
+    @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:translateY(0); } }
+    .fade-up { animation: fadeUp .4s ease forwards; }
+
+    /* ── READING PROGRESS ── */
+    .progress-wrap { margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
+    .progress-label-row { display:flex; align-items:center; justify-content:space-between; margin-bottom:8px; }
+    .progress-label { font-family:var(--font-mono); font-size:9px; letter-spacing:0.12em; text-transform:uppercase; color:var(--muted); }
+    .progress-val { font-family:var(--font-mono); font-size:10px; color:var(--text2); }
+    .progress-track { height:4px; background:var(--bg2); border-radius:2px; overflow:hidden; margin-bottom:10px; }
+    .progress-fill { height:100%; background:linear-gradient(90deg,var(--gold-dim),var(--gold)); border-radius:2px; transition:width .4s ease; }
+    .progress-input-row { display:flex; gap:8px; align-items:center; }
+    .progress-input { flex:1; padding:7px 10px; border:1px solid var(--border); border-radius:var(--radius-sm); font-family:var(--font-mono); font-size:12px; background:var(--bg); color:var(--text); outline:none; transition:border-color .15s; }
+    .progress-input:focus { border-color:var(--gold-dim); }
+    .btn-progress { padding:7px 14px; background:var(--text); color:var(--bg); border:none; border-radius:var(--radius-sm); font-family:var(--font-mono); font-size:9px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; transition:background .15s; flex-shrink:0; cursor:pointer; }
+    .btn-progress:hover { background:var(--text2); }
+
+    /* ── DISCUSSION GUIDE ── */
+    .discussion-guide { margin-top:14px; padding-top:14px; border-top:1px solid var(--border); }
+    .discussion-guide-title { font-family:var(--font-mono); font-size:9px; font-weight:500; letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-dim); margin-bottom:10px; }
+    .discussion-question { display:flex; gap:10px; padding:8px 0; border-bottom:1px solid var(--border); font-size:13px; font-weight:300; color:var(--text2); line-height:1.55; }
+    .discussion-question:last-child { border-bottom:none; }
+    .discussion-q-num { font-family:var(--font-mono); font-size:10px; color:var(--muted); flex-shrink:0; margin-top:1px; }
+
+    /* ── RECAP CARD ── */
+    .recap-card { background:var(--surface); border:1.5px solid var(--gold-dim); border-radius:var(--radius); padding:20px; margin-bottom:14px; position:relative; overflow:hidden; }
+    .recap-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+    .recap-badge { display:inline-flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:8px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; border:1px solid var(--gold-dim); color:var(--gold-dim); padding:2px 8px; border-radius:3px; margin-bottom:10px; }
+    .recap-title { font-family:var(--font-display); font-size:22px; font-weight:600; margin-bottom:8px; }
+    .recap-body { font-size:14px; font-weight:300; color:var(--text2); line-height:1.7; white-space:pre-wrap; }
+
+    /* ── FEED FILTERS ── */
+    .feed-filter-row { display:flex; gap:6px; margin-bottom:16px; }
+    .feed-filter { padding:5px 14px; border-radius:20px; border:1px solid var(--border); background:transparent; color:var(--muted); font-family:var(--font-mono); font-size:9px; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; cursor:pointer; transition:all .15s; }
+    .feed-filter.active { border-color:var(--text); color:var(--text); background:var(--surface); }
+
+    /* ── PREMIUM GATE ── */
+    .premium-gate { background:linear-gradient(135deg,#fff8ec,#fffdf5); border:1.5px solid var(--gold-dim); border-radius:var(--radius); padding:28px 24px; text-align:center; margin-bottom:14px; }
+    .premium-gate-title { font-family:var(--font-display); font-size:26px; font-weight:600; margin:10px 0 8px; }
+    .premium-gate-desc { font-size:13px; font-weight:300; color:var(--text2); line-height:1.6; margin-bottom:20px; }
+    .btn-upgrade { display:inline-block; padding:11px 24px; background:var(--gold); color:white; border:none; border-radius:var(--radius-sm); font-family:var(--font-mono); font-size:10px; font-weight:500; letter-spacing:0.12em; text-transform:uppercase; cursor:pointer; transition:background .15s; }
+    .btn-upgrade:hover { background:var(--gold-dim); }
+
+    /* ── PREMIUM PANELS ── */
+    .premium-subnav { display:flex; gap:6px; margin-bottom:20px; overflow-x:auto; scrollbar-width:none; }
+    .premium-subnav::-webkit-scrollbar { display:none; }
+    .premium-tab { padding:7px 16px; border-radius:20px; border:1px solid var(--border); background:transparent; color:var(--muted); font-family:var(--font-mono); font-size:9px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; white-space:nowrap; transition:all .15s; }
+    .premium-tab.active { border-color:var(--gold-dim); background:var(--gold-bg); color:var(--gold-dim); }
+    .premium-panel { display:none; }
+    .premium-panel.active { display:block; }
+
+    /* ── NATE'S NOTES ── */
+    .notes-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:24px; margin-bottom:14px; position:relative; overflow:hidden; }
+    .notes-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
+    .notes-eyebrow { font-family:var(--font-mono); font-size:9px; font-weight:500; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold-dim); margin-bottom:8px; }
+    .notes-book-title { font-family:var(--font-display); font-size:26px; font-weight:600; margin-bottom:16px; }
+    .notes-body { font-size:14px; font-weight:300; line-height:1.8; color:var(--text2); white-space:pre-wrap; }
+    .btn-dl { display:inline-flex; align-items:center; gap:6px; margin-top:16px; padding:9px 18px; border:1px solid var(--border2); border-radius:var(--radius-sm); background:transparent; color:var(--text2); font-family:var(--font-mono); font-size:9px; letter-spacing:0.1em; text-transform:uppercase; cursor:pointer; transition:all .15s; text-decoration:none; }
+    .btn-dl:hover { border-color:var(--text); color:var(--text); }
+
+    /* ── RESOURCE LIBRARY ── */
+    .resource-card { background:var(--surface); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; margin-bottom:10px; display:flex; align-items:flex-start; gap:14px; transition:box-shadow .15s; text-decoration:none; color:inherit; }
+    .resource-card:hover { box-shadow:var(--shadow); }
+    .resource-icon { font-size:22px; flex-shrink:0; margin-top:2px; }
+    .resource-title { font-weight:500; font-size:14px; margin-bottom:3px; }
+    .resource-desc { font-size:12px; font-weight:300; color:var(--text3); line-height:1.5; }
+    .resource-tag { display:inline-block; padding:2px 8px; border-radius:3px; font-family:var(--font-mono); font-size:8px; font-weight:500; letter-spacing:0.1em; text-transform:uppercase; background:var(--bg2); color:var(--muted); margin-top:4px; }
+
+    /* ── ADMIN EXTRAS ── */
+
+    .admin-col-title { font-family:var(--font-mono); font-size:8px; font-weight:500; letter-spacing:0.14em; text-transform:uppercase; color:#6a6560; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid #1e1e1e; }
+    .admin-textarea { width:100%; padding:9px 12px; border:1px solid #2a2a2a; border-radius:var(--radius-sm); font-family:var(--font-ui); font-size:13px; font-weight:300; background:#161616; color:#F0EDE8; outline:none; transition:border-color .2s; margin-bottom:8px; resize:vertical; min-height:72px; line-height:1.55; }
+    .admin-textarea:focus { border-color:var(--gold-dim); }
+    .admin-section { padding-top:14px; border-top:1px solid #1e1e1e; margin-top:6px; }
+  </style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div id="toast-container"></div>
+
+<!-- AUTH GATE -->
+<div id="auth-gate">
+  <div class="auth-gate-card">
+    <div class="gate-logo">Templeton <span class="gold">Book Club</span></div>
+    <div class="gate-sub">Members Only</div>
+
+    <!-- Login view -->
+    <div id="gate-login-view">
+      <div class="gate-desc">Sign in to access the member platform.</div>
+      <div class="gate-tabs">
+        <button class="gate-tab active" id="gtab-login" onclick="switchGateTab('login')">Sign In</button>
+        <button class="gate-tab" id="gtab-signup" onclick="switchGateTab('signup')">Create Account</button>
+      </div>
+      <div id="gate-login">
+        <label class="gate-label">Email</label>
+        <input class="gate-input" type="email" id="gate-email" placeholder="you@email.com" autocomplete="email" />
+        <label class="gate-label">Password</label>
+        <input class="gate-input" type="password" id="gate-password" placeholder="••••••••" autocomplete="current-password" />
+        <button class="btn-gate" onclick="handleGateLogin()">Sign In</button>
+        <div class="gate-error" id="gate-login-error"></div>
+        <button class="gate-back" onclick="handleForgotPassword()">Forgot password?</button>
+      </div>
+      <div id="gate-signup" style="display:none;">
+        <label class="gate-label">Your Name</label>
+        <input class="gate-input" type="text" id="gate-signup-name" placeholder="First and last name" autocomplete="name" />
+        <label class="gate-label">Email</label>
+        <input class="gate-input" type="email" id="gate-signup-email" placeholder="you@email.com" autocomplete="email" />
+        <label class="gate-label">Password</label>
+        <input class="gate-input" type="password" id="gate-signup-password" placeholder="Min 8 characters" autocomplete="new-password" />
+        <button class="btn-gate" onclick="handleGateSignup()">Create Account</button>
+        <div class="gate-error" id="gate-signup-error"></div>
+      </div>
+    </div>
+
+    <!-- Not invited view -->
+    <div id="gate-not-invited" style="display:none;">
+      <div class="invite-notice">
+        <div class="invite-notice-icon">🔒</div>
+        <div class="invite-notice-title">Invite Only</div>
+        <div class="invite-notice-body">This account hasn't been invited to the Book Club yet. <a href="bookclub.html#join" style="color:var(--gold);">Request an invite →</a></div>
+      </div>
+      <button class="gate-back" onclick="handleGateSignOut()">Sign out</button>
+    </div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <nav class="topnav">
+    <div class="topnav-logo">Templeton <span class="gold">Book Club</span></div>
+    <div class="topnav-right">
+      <span class="topnav-points" id="topnav-points"></span>
+      <div class="topnav-avatar" id="topnav-avatar" onclick="navTo('profile')">—</div>
+    </div>
+  </nav>
+
+  <div id="app-scroll">
+
+    <!-- HOME -->
+    <div class="page active" id="page-home">
+      <div class="home-greeting">Welcome back</div>
+      <div class="home-name fade-up"><span class="first" id="home-first">—</span></div>
+
+      <div class="stats-row fade-up">
+        <div class="stat-box"><div class="stat-val" id="my-points">0</div><div class="stat-lbl">Points</div></div>
+        <div class="stat-box"><div class="stat-val" id="my-rank">—</div><div class="stat-lbl">Rank</div></div>
+        <div class="stat-box"><div class="stat-val" id="my-posts">0</div><div class="stat-lbl">Posts</div></div>
+      </div>
+
+      <div class="section-label">Now Reading</div>
+      <div id="home-book-card">
+        <div class="loading-inline"><div class="spinner"></div> Loading…</div>
+      </div>
+
+      <div class="section-label" style="margin-top:18px;">Your Badges</div>
+      <div class="card" id="home-badges">
+        <div class="empty-desc" style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Complete actions to earn badges.</div>
+      </div>
+    </div>
+
+    <!-- FEED -->
+    <div class="page" id="page-feed">
+      <div class="page-header">
+        <h1 class="page-title">The <em>Feed</em></h1>
+        <p class="page-subtitle">Thoughts · Passages · Questions</p>
+      </div>
+
+      <!-- Compose -->
+      <div class="compose-box">
+        <div class="post-type-row">
+          <button class="type-chip active" id="type-thought" onclick="setPostType('thought')">💭 Thought</button>
+          <button class="type-chip" id="type-passage" onclick="setPostType('passage')">📖 Passage</button>
+          <button class="type-chip" id="type-question" onclick="setPostType('question')">❓ Question</button>
+        </div>
+        <textarea class="compose-textarea" id="compose-text" placeholder="Share a thought about this month's book…" rows="2"></textarea>
+        <input class="passage-ref-input" id="passage-ref" type="text" placeholder="Page or chapter reference (e.g. p. 47)" style="display:none;" />
+        <div class="compose-footer">
+          <span class="compose-hint" id="compose-hint">+2 pts for posting</span>
+          <button class="btn-post" onclick="submitPost()">Post</button>
+        </div>
+      </div>
+
+      <div class="feed-filter-row">
+        <button class="feed-filter active" id="filter-all" onclick="setFeedFilter('all')">All Posts</button>
+        <button class="feed-filter" id="filter-passages" onclick="setFeedFilter('passages')">Top Passages</button>
+        <button class="feed-filter" id="filter-questions" onclick="setFeedFilter('questions')">Questions</button>
+      </div>
+      <div id="feed-list">
+        <div class="loading-inline"><div class="spinner"></div> Loading feed…</div>
+      </div>
+    </div>
+
+    <!-- VOTE -->
+    <div class="page" id="page-vote">
+      <div class="page-header">
+        <h1 class="page-title">Your <em>Vote</em></h1>
+        <p class="page-subtitle">Shape what we read & when we meet</p>
+      </div>
+
+      <!-- Book Vote -->
+      <div class="vote-section">
+        <div class="section-label">Next Book</div>
+        <div id="book-vote-content">
+          <div class="loading-inline"><div class="spinner"></div> Loading…</div>
+        </div>
+      </div>
+
+      <!-- Meeting Date Vote -->
+      <div class="vote-section">
+        <div class="section-label">Meeting Date</div>
+        <div id="date-vote-content">
+          <div class="loading-inline"><div class="spinner"></div> Loading…</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MEMBERS -->
+    <div class="page" id="page-members">
+      <div class="page-header">
+        <h1 class="page-title">The <em>Members</em></h1>
+        <p class="page-subtitle">Your fellow readers</p>
+      </div>
+      <div class="members-controls">
+        <button class="sort-btn active" id="sort-points" onclick="sortMembers('points')">Top Readers</button>
+        <button class="sort-btn" id="sort-alpha" onclick="sortMembers('alpha')">A–Z</button>
+        <input class="search-input" id="member-search" type="text" placeholder="Search members…" oninput="filterMembers()" />
+      </div>
+      <div class="members-grid" id="members-grid">
+        <div class="loading-inline"><div class="spinner"></div> Loading…</div>
+      </div>
+    </div>
+
+    <!-- PREMIUM -->
+    <div class="page" id="page-premium">
+      <div class="page-header">
+        <h1 class="page-title">Nate's <em>Notes</em></h1>
+        <p class="page-subtitle">Premium member access</p>
+      </div>
+      <div id="premium-content"></div>
+    </div>
+
+    <!-- PROFILE -->
+    <div class="page" id="page-profile">
+      <div class="page-header">
+        <h1 class="page-title">Profile</h1>
+      </div>
+
+      <!-- Admin panel -->
+      <div id="admin-panel" style="display:none;">
+        <div class="admin-bar">
+          <div class="admin-bar-title">⬡ Admin Controls</div>
+          <div class="admin-grid">
+
+            <!-- Col 1: Book + Recap + Attend -->
+            <div>
+              <div class="admin-col-title">Current Book</div>
+              <label class="admin-label">Title</label>
+              <input class="admin-input" id="a-book-title" placeholder="Book title" />
+              <label class="admin-label">Author</label>
+              <input class="admin-input" id="a-book-author" placeholder="Author" />
+              <label class="admin-label">Synopsis</label>
+              <textarea class="admin-textarea" id="a-book-synopsis" placeholder="Short synopsis…" style="min-height:56px;"></textarea>
+              <label class="admin-label">Cover URL</label>
+              <input class="admin-input" id="a-book-cover" placeholder="https://…" />
+              <label class="admin-label">Total Pages</label>
+              <input class="admin-input" type="number" id="a-book-pages" placeholder="e.g. 320" />
+              <label class="admin-label">Meeting Date &amp; Time</label>
+              <input class="admin-input" type="datetime-local" id="a-meeting-date" />
+              <label class="admin-label">Zoom Link</label>
+              <input class="admin-input" id="a-zoom-link" placeholder="https://zoom.us/j/…" />
+              <label class="admin-label">Recording URL (after meeting)</label>
+              <input class="admin-input" id="a-recording-url" placeholder="https://…" />
+              <label class="admin-label">Discussion Questions (one per line)</label>
+              <textarea class="admin-textarea" id="a-discussion-questions" placeholder="What surprised you most?&#10;How does this apply to your work?"></textarea>
+              <button class="btn-admin-gold" onclick="adminSetBook()" style="width:100%;margin-bottom:6px;">Set Current Book</button>
+
+              <div class="admin-section">
+                <div class="admin-col-title">Monthly Recap</div>
+                <label class="admin-label">Recap Title</label>
+                <input class="admin-input" id="a-recap-title" placeholder="e.g. October Recap" />
+                <label class="admin-label">Recap Body</label>
+                <textarea class="admin-textarea" id="a-recap-body" placeholder="Key takeaways, highlights…"></textarea>
+                <button class="btn-admin-gold" onclick="adminPostRecap()" style="width:100%;">Post Recap</button>
+              </div>
+
+              <div class="admin-section">
+                <div class="admin-col-title">Mark Attended (+10 pts)</div>
+                <div id="admin-member-list" style="max-height:200px;overflow-y:auto;"></div>
+              </div>
+            </div>
+
+            <!-- Col 2: Invites + Vote + Premium Content -->
+            <div>
+              <div class="admin-col-title">Invite Links</div>
+              <button class="btn-admin-gold" onclick="adminGenerateInvite()" style="width:100%;margin-bottom:6px;">Generate Invite Link</button>
+              <div class="invite-link-box" id="invite-link-box"></div>
+
+              <div class="admin-section">
+                <div class="admin-col-title">Book Vote Candidates</div>
+                <input class="admin-input" id="a-cand-title" placeholder="Book title" />
+                <input class="admin-input" id="a-cand-author" placeholder="Author" />
+                <input class="admin-input" id="a-cand-cover" placeholder="Cover URL (optional)" />
+                <button class="btn-admin" onclick="adminAddCandidate()" style="width:100%;margin-bottom:6px;">+ Add Candidate</button>
+                <div id="a-candidates-preview" style="margin-bottom:8px;"></div>
+                <button class="btn-admin-gold" onclick="adminSaveCandidates()" style="width:100%;margin-bottom:6px;">Save Candidates</button>
+                <button class="btn-admin" onclick="adminResetVotes()" style="width:100%;">Reset Book Votes</button>
+              </div>
+
+              <div class="admin-section">
+                <div class="admin-col-title">Meeting Date Options</div>
+                <input class="admin-input" type="datetime-local" id="a-date-opt-1" />
+                <input class="admin-input" type="datetime-local" id="a-date-opt-2" />
+                <input class="admin-input" type="datetime-local" id="a-date-opt-3" />
+                <button class="btn-admin-gold" onclick="adminSaveDateOptions()" style="width:100%;margin-bottom:6px;">Save Date Options</button>
+                <button class="btn-admin" onclick="adminResetDateVotes()" style="width:100%;">Reset Date Votes</button>
+              </div>
+
+              <div class="admin-section">
+                <div class="admin-col-title">Nate's Notes (Premium)</div>
+                <textarea class="admin-textarea" id="a-notes-body" style="min-height:100px;" placeholder="Your annotated thoughts on this month's book…"></textarea>
+                <label class="admin-label">PDF Download URL (optional)</label>
+                <input class="admin-input" id="a-notes-pdf" placeholder="https://… (Drive, Dropbox, etc.)" />
+                <button class="btn-admin-gold" onclick="adminSaveNotes()" style="width:100%;">Save Notes</button>
+              </div>
+
+              <div class="admin-section">
+                <div class="admin-col-title">Resource Library (Premium)</div>
+                <input class="admin-input" id="a-res-title" placeholder="Resource title" />
+                <input class="admin-input" id="a-res-url" placeholder="https://…" />
+                <textarea class="admin-textarea" id="a-res-desc" style="min-height:48px;" placeholder="Short description…"></textarea>
+                <label class="admin-label">Type</label>
+                <select class="admin-input" id="a-res-type" style="background:#161616;color:#F0EDE8;">
+                  <option value="video">📹 Video</option>
+                  <option value="article">📄 Article</option>
+                  <option value="tool">🛠️ Tool</option>
+                  <option value="book">📚 Book</option>
+                  <option value="podcast">🎙️ Podcast</option>
+                </select>
+                <button class="btn-admin-gold" onclick="adminAddResource()" style="width:100%;">Add Resource</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile hero -->
+      <div class="profile-hero">
+        <div class="profile-avatar-wrap" id="profile-avatar-wrap" onclick="triggerAvatarUpload()">
+          <span id="profile-initials">—</span>
+          <div class="avatar-edit-overlay">✎</div>
+        </div>
+        <input type="file" id="avatar-input" accept="image/*" style="display:none;" onchange="handleAvatarUpload(event)" />
+        <div class="profile-name" id="profile-name">—</div>
+        <div class="profile-email" id="profile-email">—</div>
+        <div class="profile-points-display">
+          <div class="profile-points-val" id="profile-points">0</div>
+          <div class="profile-points-lbl">pts</div>
+        </div>
+        <div class="profile-badges" id="profile-badges"></div>
+      </div>
+
+      <!-- Settings -->
+      <div class="profile-section">
+        <div class="profile-section-title">Display Name</div>
+        <div class="card">
+          <label class="field-label">Name</label>
+          <input class="field-input" type="text" id="settings-name" placeholder="Your name" />
+          <button class="btn-primary" onclick="saveDisplayName()">Save Name</button>
+        </div>
+      </div>
+
+      <!-- Points breakdown -->
+      <div class="profile-section">
+        <div class="profile-section-title">Points Breakdown</div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--text2);">Posts & thoughts</span><span style="font-family:var(--font-mono);font-size:11px;">+2 each</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--text2);">Passage shared</span><span style="font-family:var(--font-mono);font-size:11px;">+5 each</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--text2);">Passage liked by someone</span><span style="font-family:var(--font-mono);font-size:11px;">+1 per like</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--text2);">RSVP to meeting</span><span style="font-family:var(--font-mono);font-size:11px;">+3</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;">
+            <span style="color:var(--text2);">Attended meeting</span><span style="font-family:var(--font-mono);font-size:11px;">+10</span>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn-signout" onclick="handleSignOut()">Sign Out</button>
+      <div style="height:8px;"></div>
+    </div>
+
+  </div><!-- /app-scroll -->
+
+  <!-- Bottom Nav -->
+  <nav class="bottomnav">
+    <button class="nav-item active" id="nav-home" onclick="navTo('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Home
+    </button>
+    <button class="nav-item" id="nav-feed" onclick="navTo('feed')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      Feed
+    </button>
+    <button class="nav-item" id="nav-vote" onclick="navTo('vote')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 20V10"/><path d="M12 20V4"/><path d="M6 20v-6"/></svg>
+      Vote
+    </button>
+    <button class="nav-item" id="nav-members" onclick="navTo('members')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      Members
+    </button>
+    <button class="nav-item" id="nav-premium" onclick="navTo('premium')" style="display:none;"">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      Premium
+    </button>
+    <button class="nav-item" id="nav-profile" onclick="navTo('profile')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profile
+    </button>
+  </nav>
+</div>
+
+<script type="module">
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword,
+         sendPasswordResetEmail, onAuthStateChanged, signOut, updateProfile }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, deleteDoc,
+         collection, query, orderBy, onSnapshot, serverTimestamp,
+         increment, limit, getDocs, getCountFromServer, where }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+// ── CONFIG — Replace with your Firebase project config ──
+const firebaseConfig = {
+  apiKey: "AIzaSyCRU_qm3EdRNynCzHc4kdByU9Pp6A6ehMk",
+  authDomain: "templeton-bookclub.firebaseapp.com",
+  projectId: "templeton-bookclub",
+  storageBucket: "templeton-bookclub.firebasestorage.app",
+  messagingSenderId: "487783989047",
+  appId: "1:487783989047:web:164bb0305081feda0f24b2"
+};
+
+const ADMIN_EMAIL = "nate@templetonimage.com";
+const STRIPE_PREMIUM_MONTHLY = 'https://buy.stripe.com/PLACEHOLDER_MONTHLY';
+const STRIPE_PREMIUM_YEARLY  = 'https://buy.stripe.com/PLACEHOLDER_YEARLY';
+
+const BADGES = {
+  founding:   { emoji: '⭐', label: 'Founding Member' },
+  firstPost:  { emoji: '📖', label: 'First Chapter' },
+  annotator:  { emoji: '✍️', label: 'Annotator' },
+  onARoll:    { emoji: '🔥', label: 'On a Roll' },
+  topReader:  { emoji: '🏆', label: 'Top Reader' },
+};
+
+const POINTS = { thought: 2, passage: 5, question: 2, rsvp: 3, attended: 10, passageLike: 1 };
+
+const app     = initializeApp(firebaseConfig);
+const auth    = getAuth(app);
+const db      = getFirestore(app);
+const storage = getStorage(app);
+
+// ── STATE ──
+let currentUser    = null;
+let currentBookId  = null;
+let _feedUnsub     = null;
+let _allMembers    = [];
+let _sortMode      = 'points';
+let _postType      = 'thought';
+let _adminCands    = [];
+let _meetingDate   = null;
+let _feedPosts     = [];
+let _feedFilter    = 'all';
+let currentBook    = null;
+
+// ══════════════════════════════════════════
+// AUTH GATE
+// ══════════════════════════════════════════
+window.switchGateTab = (tab) => {
+  document.getElementById('gate-login').style.display  = tab === 'login'  ? 'block' : 'none';
+  document.getElementById('gate-signup').style.display = tab === 'signup' ? 'block' : 'none';
+  document.getElementById('gtab-login').classList.toggle('active',  tab === 'login');
+  document.getElementById('gtab-signup').classList.toggle('active', tab === 'signup');
+};
+
+window.handleGateLogin = async () => {
+  const email = document.getElementById('gate-email').value.trim();
+  const pass  = document.getElementById('gate-password').value;
+  const errEl = document.getElementById('gate-login-error');
+  errEl.style.display = 'none';
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch(e) {
+    errEl.textContent = friendlyError(e.code);
+    errEl.style.display = 'block';
+  }
+};
+
+window.handleGateSignup = async () => {
+  const name  = document.getElementById('gate-signup-name').value.trim();
+  const email = document.getElementById('gate-signup-email').value.trim();
+  const pass  = document.getElementById('gate-signup-password').value;
+  const errEl = document.getElementById('gate-signup-error');
+  errEl.style.display = 'none';
+  if (!name) { errEl.textContent = 'Please enter your name.'; errEl.style.display = 'block'; return; }
+  if (pass.length < 8) { errEl.textContent = 'Password must be at least 8 characters.'; errEl.style.display = 'block'; return; }
+
+  // Check invite token from URL
+  const token = new URLSearchParams(window.location.search).get('invite');
+  if (!token) {
+    errEl.textContent = 'An invite link is required to create an account.';
+    errEl.style.display = 'block';
+    return;
+  }
+  const inviteSnap = await getDoc(doc(db, 'bookclub_invites', token));
+  if (!inviteSnap.exists() || inviteSnap.data().used) {
+    errEl.textContent = 'This invite link is invalid or has already been used.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await updateProfile(cred.user, { displayName: name });
+    // Mark invite used
+    await updateDoc(doc(db, 'bookclub_invites', token), { used: true, usedBy: email, usedAt: serverTimestamp() });
+    // Create member doc
+    const isFounder = true; // First 30 days - simplify to always grant for now
+    await setDoc(doc(db, 'bookclub_members', cred.user.uid), {
+      name, email, joinedAt: serverTimestamp(), points: 0,
+      postCount: 0, photoURL: null,
+      badges: ['founding', 'firstPost'].filter(() => isFounder),
+      monthsActive: []
+    });
+  } catch(e) {
+    errEl.textContent = friendlyError(e.code);
+    errEl.style.display = 'block';
+  }
+};
+
+window.handleForgotPassword = async () => {
+  const email = document.getElementById('gate-email').value.trim();
+  if (!email) { toast('Enter your email first.', 'error'); return; }
+  try {
+    await sendPasswordResetEmail(auth, email);
+    toast('Password reset email sent.', 'success');
+  } catch(e) { toast(friendlyError(e.code), 'error'); }
+};
+
+window.handleGateSignOut = async () => { await signOut(auth); };
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { showGate(); return; }
+  const memberSnap = await getDoc(doc(db, 'bookclub_members', user.uid));
+  const isAdmin = user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+  if (!memberSnap.exists() && !isAdmin) { showNotInvited(); return; }
+  const data = memberSnap.exists() ? memberSnap.data() : {};
+  currentUser = {
+    uid: user.uid,
+    name: user.displayName || data.name || 'Member',
+    email: user.email,
+    points: data.points || 0,
+    badges: data.badges || [],
+    postCount: data.postCount || 0,
+    photoURL: data.photoURL || null,
+    tier: data.tier || 'free',
+    isAdmin
+  };
+  hideGate(); bootApp();
+});
+
+function showGate() {
+  document.getElementById('auth-gate').classList.add('show');
+  document.getElementById('app').classList.remove('show');
+  document.getElementById('gate-login-view').style.display   = 'block';
+  document.getElementById('gate-not-invited').style.display  = 'none';
+  // Pre-fill signup tab if invite token present
+  if (new URLSearchParams(window.location.search).get('invite')) {
+    switchGateTab('signup');
+  }
+}
+function showNotInvited() {
+  document.getElementById('auth-gate').classList.add('show');
+  document.getElementById('app').classList.remove('show');
+  document.getElementById('gate-login-view').style.display   = 'none';
+  document.getElementById('gate-not-invited').style.display  = 'block';
+}
+function hideGate() {
+  document.getElementById('auth-gate').classList.remove('show');
+  document.getElementById('app').classList.add('show');
+}
+
+// ══════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════
+function bootApp() {
+  renderTopNav();
+  renderHome();
+  loadCurrentBook();
+  loadFeed();
+  loadBookVote();
+  loadDateVote();
+  loadMembers();
+  renderProfile();
+  // renderPremiumTab(); // Premium hidden
+  if (currentUser.isAdmin) {
+    document.getElementById('admin-panel').style.display = 'block';
+    loadAdminMemberList();
+    prefillPlaceholderBook();
+  }
+}
+
+// ══════════════════════════════════════════
+// NAV
+// ══════════════════════════════════════════
+const PAGES = ['home','feed','vote','members','profile'];
+window.navTo = (p) => {
+  PAGES.forEach(id => {
+    document.getElementById('page-' + id)?.classList.toggle('active', id === p);
+    document.getElementById('nav-' + id)?.classList.toggle('active', id === p);
+  });
+  document.getElementById('app-scroll').scrollTop = 0;
+};
+
+// ══════════════════════════════════════════
+// TOP NAV + HOME
+// ══════════════════════════════════════════
+function renderTopNav() {
+  const pts = document.getElementById('topnav-points');
+  pts.textContent = currentUser.points + ' pts';
+  const av = document.getElementById('topnav-avatar');
+  if (currentUser.photoURL) {
+    av.innerHTML = `<img src="${esc(currentUser.photoURL)}" alt="" onerror="this.parentElement.textContent='${initials(currentUser.name)}'">`;
+  } else {
+    av.textContent = initials(currentUser.name);
+  }
+}
+
+function renderHome() {
+  document.getElementById('home-first').textContent = currentUser.name.split(' ')[0] || 'Member';
+  document.getElementById('my-points').textContent  = currentUser.points;
+  document.getElementById('my-posts').textContent   = currentUser.postCount;
+  renderHomeBadges();
+  computeRank();
+}
+
+function renderHomeBadges() {
+  const el = document.getElementById('home-badges');
+  if (!currentUser.badges.length) {
+    el.innerHTML = `<div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Post in the feed to earn your first badge.</div>`;
+    return;
+  }
+  el.innerHTML = `<div class="badge-row" style="justify-content:flex-start;gap:8px;">
+    ${currentUser.badges.map(b => {
+      const bd = BADGES[b];
+      if (!bd) return '';
+      return `<div class="profile-badge">${bd.emoji} ${bd.label}</div>`;
+    }).join('')}
+  </div>`;
+}
+
+async function computeRank() {
+  try {
+    const snap = await getDocs(query(collection(db, 'bookclub_members'), orderBy('points', 'desc')));
+    let rank = 1;
+    snap.docs.forEach((d, i) => {
+      if (d.id === currentUser.uid) rank = i + 1;
+    });
+    document.getElementById('my-rank').textContent = '#' + rank;
+  } catch {}
+}
+
+// ══════════════════════════════════════════
+// CURRENT BOOK (Home card)
+// ══════════════════════════════════════════
+async function loadCurrentBook() {
+  const el = document.getElementById('home-book-card');
+  try {
+    const snap = await getDocs(query(collection(db, 'bookclub_books'), where('status', '==', 'current'), limit(1)));
+    if (snap.empty) {
+      el.innerHTML = `<div class="empty-state"><div class="empty-icon">📚</div><div class="empty-title">No book set yet</div><div class="empty-desc">Nate will announce the first pick soon.</div></div>`;
+      return;
+    }
+    const bookDoc = snap.docs[0];
+    currentBookId = bookDoc.id;
+    const b = bookDoc.data();
+    currentBook = b;
+    const hasRsvpd  = b.rsvps?.[currentUser.uid];
+    const rsvpCount = b.rsvpCount || 0;
+    const totalPages = parseInt(b.totalPages) || 0;
+    const myProgress = b.progress?.[currentUser.uid] || 0;
+    const pct = totalPages > 0 ? Math.min(100, Math.round((myProgress / totalPages) * 100)) : 0;
+    if (b.meetingDate) {
+      _meetingDate = b.meetingDate.toDate ? b.meetingDate.toDate() : new Date(b.meetingDate);
+      startCountdown(_meetingDate);
+    }
+    const coverHtml = b.coverUrl
+      ? `<img src="${esc(b.coverUrl)}" alt="" onerror="this.parentElement.innerHTML='<span>${esc(b.title)}</span>'">`
+      : `<span>${esc(b.title || '')}</span>`;
+
+    const questions = b.discussionQuestions
+      ? b.discussionQuestions.split('\n').filter(q => q.trim())
+      : [];
+
+    el.innerHTML = `
+      <div class="current-book-card">
+        <div class="card-label">📖 Now Reading</div>
+        <div class="book-card-inner">
+          <div class="book-cover-sm">${coverHtml}</div>
+          <div>
+            <div class="book-info-title">${esc(b.title || '—')}</div>
+            <div class="book-info-author">by ${esc(b.author || '—')}</div>
+            <div style="font-size:13px;font-weight:300;color:var(--text2);line-height:1.6;">${esc(b.synopsis || '')}</div>
+          </div>
+        </div>
+
+        ${totalPages > 0 ? `
+        <div class="progress-wrap">
+          <div class="progress-label-row">
+            <span class="progress-label">Reading Progress</span>
+            <span class="progress-val">${myProgress > 0 ? `p. ${myProgress} of ${totalPages} · ${pct}%` : 'Not started'}</span>
+          </div>
+          <div class="progress-track"><div class="progress-fill" style="width:${pct}%"></div></div>
+          <div class="progress-input-row">
+            <input class="progress-input" type="number" id="progress-input" placeholder="Current page…" min="1" max="${totalPages}" value="${myProgress || ''}" />
+            <button class="btn-progress" onclick="updateProgress('${bookDoc.id}',${totalPages})">Update</button>
+          </div>
+        </div>` : ''}
+
+        <div class="meeting-strip">
+          <div class="meeting-strip-item">
+            <span class="meeting-strip-label">Meeting</span>
+            <span class="meeting-strip-val">${b.meetingDate ? formatDate(b.meetingDate) : 'TBA'}</span>
+          </div>
+          ${b.meetingDate ? `
+          <div class="meeting-strip-divider"></div>
+          <div class="meeting-strip-item">
+            <span class="meeting-strip-label">Countdown</span>
+            <div class="countdown-inline">
+              <div><div class="cd-num" id="cd-d">—</div><div class="cd-lbl">d</div></div>
+              <div class="cd-sep">:</div>
+              <div><div class="cd-num" id="cd-h">—</div><div class="cd-lbl">h</div></div>
+              <div class="cd-sep">:</div>
+              <div><div class="cd-num" id="cd-m">—</div><div class="cd-lbl">m</div></div>
+            </div>
+          </div>` : ''}
+          <div class="meeting-strip-divider"></div>
+          <div class="meeting-strip-item">
+            <span class="meeting-strip-label">Attending</span>
+            <span class="meeting-strip-val">${rsvpCount}</span>
+          </div>
+          ${b.recordingUrl ? `
+          <div class="meeting-strip-divider"></div>
+          <div class="meeting-strip-item">
+            <span class="meeting-strip-label">Recording</span>
+            <a href="${esc(b.recordingUrl)}" target="_blank" style="font-size:13px;font-weight:500;color:var(--gold);">Watch →</a>
+          </div>` : ''}
+        </div>
+
+        ${hasRsvpd && b.zoomLink
+          ? `<a href="${esc(b.zoomLink)}" target="_blank" class="btn-rsvp rsvpd" style="display:block;text-align:center;">✓ Join Zoom →</a>`
+          : `<button class="btn-rsvp ${hasRsvpd ? 'rsvpd' : ''}" onclick="handleRsvp('${bookDoc.id}')">${hasRsvpd ? "✓ You're in" : "RSVP — +3 pts"}</button>`
+        }
+
+        ${questions.length ? `
+        <div class="discussion-guide">
+          <div class="discussion-guide-title">Discussion Questions</div>
+          ${questions.map((q,i) => `<div class="discussion-question"><span class="discussion-q-num">${i+1}.</span><span>${esc(q)}</span></div>`).join('')}
+        </div>` : ''}
+      </div>`;
+
+    loadLatestRecap();
+  } catch(e) {
+    document.getElementById('home-book-card').innerHTML = '';
+  }
+}
+
+window.updateProgress = async (bookId, totalPages) => {
+  const val = parseInt(document.getElementById('progress-input').value);
+  if (!val || val < 1 || val > totalPages) { toast('Enter a valid page number.', 'error'); return; }
+  await updateDoc(doc(db, 'bookclub_books', bookId), { [`progress.${currentUser.uid}`]: val });
+  toast('Progress saved!', 'success');
+  loadCurrentBook();
+};
+
+async function loadLatestRecap() {
+  try {
+    const snap = await getDocs(query(collection(db, 'bookclub_feed'), where('type','==','recap'), orderBy('ts','desc'), limit(1)));
+    if (snap.empty) return;
+    const r = snap.docs[0].data();
+    const el = document.getElementById('home-book-card');
+    const div = document.createElement('div');
+    div.innerHTML = `
+      <div style="margin-top:6px;">
+        <div class="section-label" style="margin-top:18px;">Latest Recap</div>
+        <div class="recap-card">
+          <div class="recap-badge">📝 Monthly Recap</div>
+          <div class="recap-title">${esc(r.title || '')}</div>
+          <div class="recap-body">${esc(r.body || '')}</div>
+          <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:10px;">${timeAgo(r.ts)}</div>
+        </div>
+      </div>`;
+    el.appendChild(div);
+  } catch {}
+}
+
+function startCountdown(target) {
+  function tick() {
+    const diff = target - Date.now();
+    if (diff <= 0) return;
+    const d = Math.floor(diff / 86400000);
+    const h = Math.floor((diff % 86400000) / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const dEl = document.getElementById('cd-d');
+    if (dEl) { dEl.textContent = d; document.getElementById('cd-h').textContent = h; document.getElementById('cd-m').textContent = String(m).padStart(2,'0'); }
+  }
+  tick(); setInterval(tick, 30000);
+}
+
+
+// ══════════════════════════════════════════
+// FEED
+// ══════════════════════════════════════════
+window.setPostType = (type) => {
+  _postType = type;
+  ['thought','passage','question'].forEach(t => {
+    document.getElementById('type-' + t).classList.toggle('active', t === type);
+  });
+  const ref = document.getElementById('passage-ref');
+  ref.style.display = type === 'passage' ? 'block' : 'none';
+  const hint = document.getElementById('compose-hint');
+  const hintMap = { thought: '+2 pts for posting', passage: '+5 pts for sharing a passage', question: '+2 pts for posting' };
+  hint.textContent = hintMap[type];
+  const ta = document.getElementById('compose-text');
+  const phMap = { thought: 'Share a thought about this month\'s book…', passage: 'Share a passage that stood out…', question: 'Ask the group a question…' };
+  ta.placeholder = phMap[type];
+};
+
+window.submitPost = async () => {
+  const body    = document.getElementById('compose-text').value.trim();
+  const pageRef = document.getElementById('passage-ref').value.trim();
+  if (!body) return;
+  const pts = POINTS[_postType] || 2;
+  await addDoc(collection(db, 'bookclub_feed'), {
+    uid: currentUser.uid, authorName: currentUser.name,
+    photoURL: currentUser.photoURL || null,
+    type: _postType, body, pageRef: pageRef || null,
+    ts: serverTimestamp(), likes: 0, likedBy: {},
+    bookId: currentBookId || null, replies: []
+  });
+  await awardPoints(pts);
+  await updateDoc(doc(db, 'bookclub_members', currentUser.uid), { postCount: increment(1) });
+  currentUser.postCount++;
+  checkBadges();
+  document.getElementById('compose-text').value = '';
+  document.getElementById('passage-ref').value  = '';
+  toast(`Posted! +${pts} pts`, 'success');
+};
+
+function loadFeed() {
+  if (_feedUnsub) { _feedUnsub(); _feedUnsub = null; }
+  const q = query(collection(db, 'bookclub_feed'), orderBy('ts', 'desc'), limit(80));
+  _feedUnsub = onSnapshot(q, (snap) => {
+    _feedPosts = snap.docs;
+    renderFeed();
+  }, () => {});
+}
+
+function renderFeed() {
+  const el = document.getElementById('feed-list');
+  if (!el) return;
+  let posts = _feedPosts.filter(d => d.data().type !== 'private');
+  if (_feedFilter === 'passages') {
+    posts = posts.filter(d => d.data().type === 'passage')
+                 .sort((a, b) => (b.data().likes || 0) - (a.data().likes || 0));
+  } else if (_feedFilter === 'questions') {
+    posts = posts.filter(d => d.data().type === 'question');
+  }
+  if (!posts.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-title">No posts yet</div><div class="empty-desc">Be the first to share a thought.</div></div>`;
+    return;
+  }
+  el.innerHTML = posts.map(d => renderPost(d.id, d.data())).join('');
+}
+
+window.setFeedFilter = (filter) => {
+  _feedFilter = filter;
+  ['all','passages','questions'].forEach(f => {
+    document.getElementById('filter-' + f)?.classList.toggle('active', f === filter);
+  });
+  renderFeed();
+};
+
+function renderPost(id, p) {
+  const isOwn   = p.uid === currentUser.uid;
+  const isAdmin = currentUser.isAdmin;
+  const liked   = !!p.likedBy?.[currentUser.uid];
+  const likes   = p.likes || 0;
+  const av = p.photoURL
+    ? `<img src="${esc(p.photoURL)}" alt="" onerror="this.style.display='none'">`
+    : initials(p.authorName || '?');
+  const typeIcon  = { thought: '💭', passage: '📖', question: '❓', recap: '📝' };
+  const typeClass = { thought: 'badge-thought', passage: 'badge-passage', question: 'badge-question' };
+  const bodyHtml  = p.type === 'passage'
+    ? `<div class="passage-quote">${esc(p.body)}</div>${p.pageRef ? `<div class="passage-page">${esc(p.pageRef)}</div>` : ''}`
+    : `<div class="post-body">${esc(p.body)}</div>`;
+  const ptsPill = p.type === 'passage' ? `<span class="points-pill">+5 pts earned</span>` : '';
+
+  const replies = p.replies || [];
+  const repliesHtml = `
+    <div class="replies-wrap">
+      ${replies.map(r => {
+        const rav = r.photoURL
+          ? `<img src="${esc(r.photoURL)}" alt="" onerror="this.style.display='none'">`
+          : initials(r.authorName || '?');
+        return `<div class="reply-card">
+          <div class="reply-avatar">${rav}</div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:baseline;gap:8px;">
+              <div class="reply-author">${esc(r.authorName)}</div>
+              <div class="reply-time">${timeAgo({ toDate: () => new Date(r.ts) })}</div>
+              ${(r.uid === currentUser.uid || isAdmin) ? `<button style="margin-left:auto;background:none;border:none;cursor:pointer;color:var(--muted);font-family:var(--font-mono);font-size:9px;" onclick="deleteReply('${id}','${r.id}')">Delete</button>` : ''}
+            </div>
+            <div class="reply-body">${esc(r.body)}</div>
+          </div>
+        </div>`;
+      }).join('')}
+      <div class="reply-compose">
+        <input class="reply-input" id="reply-input-${id}" type="text" placeholder="Reply…" onkeydown="if(event.key==='Enter')submitReply('${id}')" />
+        <button class="btn-reply" onclick="submitReply('${id}')">Reply</button>
+      </div>
+    </div>`;
+
+  return `<div class="post-card ${p.type}" id="post-${id}">
+    <div class="post-header">
+      <div class="post-avatar">${av}</div>
+      <div style="flex:1;">
+        <div class="post-author">${esc(p.authorName || 'Member')}</div>
+        <div class="post-meta">
+          <span class="post-type-badge ${typeClass[p.type] || 'badge-thought'}">${typeIcon[p.type] || '💭'} ${p.type}</span>
+          <span>${timeAgo(p.ts)}</span>
+        </div>
+      </div>
+      ${ptsPill}
+    </div>
+    <div id="post-body-wrap-${id}">${bodyHtml}</div>
+    <div class="post-actions">
+      <button class="action-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${id}',${liked},'${p.type}','${p.uid}')">♥ ${likes}</button>
+      <button class="action-btn" onclick="document.getElementById('reply-input-${id}').focus()">↩ Reply</button>
+      ${isOwn ? `<button class="action-btn" onclick="openEdit('${id}',${JSON.stringify(p.body).replace(/"/g,'&quot;')})">Edit</button>` : ''}
+      ${(isOwn || isAdmin) ? `<button class="action-btn danger" onclick="deletePost('${id}')">Delete</button>` : ''}
+    </div>
+    ${repliesHtml}
+  </div>`;
+}
+
+window.toggleLike = async (postId, alreadyLiked, postType, postAuthorUid) => {
+  const r = doc(db, 'bookclub_feed', postId);
+  if (alreadyLiked) {
+    await updateDoc(r, { likes: increment(-1), [`likedBy.${currentUser.uid}`]: false });
+    if (postType === 'passage' && postAuthorUid !== currentUser.uid)
+      await updateDoc(doc(db, 'bookclub_members', postAuthorUid), { points: increment(-1) });
+  } else {
+    await updateDoc(r, { likes: increment(1), [`likedBy.${currentUser.uid}`]: true });
+    if (postType === 'passage' && postAuthorUid !== currentUser.uid)
+      await updateDoc(doc(db, 'bookclub_members', postAuthorUid), { points: increment(1) });
+  }
+};
+
+window.submitReply = async (postId) => {
+  const input = document.getElementById('reply-input-' + postId);
+  const body  = input?.value.trim();
+  if (!body) return;
+  const postRef = doc(db, 'bookclub_feed', postId);
+  const snap    = await getDoc(postRef);
+  const replies = snap.data().replies || [];
+  replies.push({ id: 'r_' + Date.now(), uid: currentUser.uid, authorName: currentUser.name, photoURL: currentUser.photoURL || null, body, ts: Date.now() });
+  await updateDoc(postRef, { replies });
+  input.value = '';
+};
+
+window.deleteReply = async (postId, replyId) => {
+  if (!confirm('Delete this reply?')) return;
+  const postRef = doc(db, 'bookclub_feed', postId);
+  const snap    = await getDoc(postRef);
+  await updateDoc(postRef, { replies: (snap.data().replies || []).filter(r => r.id !== replyId) });
+};
+
+window.deletePost = async (postId) => {
+  if (!confirm('Delete this post?')) return;
+  await deleteDoc(doc(db, 'bookclub_feed', postId));
+  toast('Deleted.', 'success');
+};
+
+window.openEdit = (postId, body) => {
+  document.getElementById('post-body-wrap-' + postId).innerHTML = `
+    <textarea class="edit-textarea" id="edit-ta-${postId}">${esc(body)}</textarea>
+    <div class="edit-actions">
+      <button class="btn-save" onclick="saveEdit('${postId}')">Save</button>
+      <button class="btn-cancel" onclick="cancelEdit('${postId}','${esc(body)}')">Cancel</button>
+    </div>`;
+};
+window.saveEdit = async (postId) => {
+  const body = document.getElementById('edit-ta-' + postId)?.value.trim();
+  if (!body) return;
+  await updateDoc(doc(db, 'bookclub_feed', postId), { body, editedAt: serverTimestamp() });
+  toast('Updated.', 'success');
+};
+window.cancelEdit = (postId, body) => {
+  const wrap = document.getElementById('post-body-wrap-' + postId);
+  wrap.innerHTML = `<div class="post-body">${esc(body)}</div>`;
+};
+
+
+// ══════════════════════════════════════════
+// VOTE — BOOK
+// ══════════════════════════════════════════
+async function loadBookVote() {
+  const el = document.getElementById('book-vote-content');
+  try {
+    const snap = await getDoc(doc(db, 'bookclub_vote', 'current'));
+    if (!snap.exists() || !snap.data().candidates?.length) {
+      el.innerHTML = `<div class="empty-state" style="padding:24px 0;"><div class="empty-icon">🗳️</div><div class="empty-title">Voting opens soon</div><div class="empty-desc">Nate will post candidates for next month's book.</div></div>`;
+      return;
+    }
+    const data       = snap.data();
+    const candidates = data.candidates || [];
+    const userVote   = (data.votes || {})[currentUser.uid];
+    const hasVoted   = !!userVote;
+    const totalVotes = Object.values(data.votes || {}).length;
+
+    el.innerHTML = `
+      <div class="vote-grid">
+        ${candidates.map(c => {
+          const vCount = Object.values(data.votes || {}).filter(v => v === c.id).length;
+          const pct    = totalVotes > 0 ? Math.round((vCount / totalVotes) * 100) : 0;
+          const coverHtml = c.coverUrl
+            ? `<img src="${esc(c.coverUrl)}" alt="" onerror="this.parentElement.innerHTML='<span>${esc(c.title)}</span>'">`
+            : `<span>${esc(c.title || '')}</span>`;
+          return `<div class="vote-card ${hasVoted ? 'voted' : ''} ${userVote === c.id ? 'selected' : ''}" id="bvc-${c.id}" onclick="${hasVoted ? '' : `selectBookVote('${c.id}')`}">
+            <div class="vote-check">✓</div>
+            <div class="vote-cover">${coverHtml}</div>
+            <div class="vote-title">${esc(c.title)}</div>
+            <div class="vote-author">${esc(c.author || '')}</div>
+            <div class="vote-bar-wrap">
+              <div class="vote-bar-track"><div class="vote-bar-fill" style="width:${pct}%"></div></div>
+              <div class="vote-bar-label"><span>${vCount} vote${vCount !== 1 ? 's' : ''}</span><span>${pct}%</span></div>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="vote-action-row" style="margin-top:16px;">
+        <button class="btn-vote" id="book-vote-btn" onclick="submitBookVote()" ${hasVoted ? 'disabled' : ''}>
+          ${hasVoted ? 'Vote Cast ✓' : 'Submit Vote'}
+        </button>
+        <span class="vote-note">${hasVoted ? `${totalVotes} vote${totalVotes !== 1 ? 's' : ''} total` : 'Select a book to vote'}</span>
+      </div>`;
+  } catch(e) {
+    el.innerHTML = '';
+  }
+}
+
+let _selectedBookVote = null;
+window.selectBookVote = (id) => {
+  _selectedBookVote = id;
+  document.querySelectorAll('.vote-card').forEach(c => c.classList.toggle('selected', c.id === 'bvc-' + id));
+};
+window.submitBookVote = async () => {
+  if (!_selectedBookVote) { toast('Select a book first.', 'error'); return; }
+  await updateDoc(doc(db, 'bookclub_vote', 'current'), { [`votes.${currentUser.uid}`]: _selectedBookVote });
+  toast('Vote cast!', 'success');
+  loadBookVote();
+};
+
+// ══════════════════════════════════════════
+// VOTE — MEETING DATE
+// ══════════════════════════════════════════
+async function loadDateVote() {
+  const el = document.getElementById('date-vote-content');
+  try {
+    const snap = await getDoc(doc(db, 'bookclub_meeting_vote', 'current'));
+    if (!snap.exists() || !snap.data().options?.length) {
+      el.innerHTML = `<div class="empty-state" style="padding:20px 0;"><div class="empty-icon">📅</div><div class="empty-title">Date options coming soon</div></div>`;
+      return;
+    }
+    const data     = snap.data();
+    const options  = data.options || [];
+    const userVote = (data.votes || {})[currentUser.uid];
+    const hasVoted = !!userVote;
+    const totalV   = Object.values(data.votes || {}).length;
+
+    el.innerHTML = `
+      <div class="date-chips">
+        ${options.map((o, i) => {
+          const vCount = Object.values(data.votes || {}).filter(v => v === i).length;
+          const pct    = totalV > 0 ? Math.round((vCount / totalV) * 100) : 0;
+          const d      = o.toDate ? o.toDate() : new Date(o);
+          return `<div class="date-chip ${hasVoted ? 'voted' : ''} ${userVote === i ? 'selected' : ''}" id="dvc-${i}" onclick="${hasVoted ? '' : `selectDateVote(${i})`}">
+            <div>${formatDate(o)}</div>
+            ${hasVoted ? `<div style="font-family:var(--font-mono);font-size:9px;color:var(--muted);margin-top:4px;">${vCount} vote${vCount !== 1 ? 's' : ''} · ${pct}%</div>` : ''}
+          </div>`;
+        }).join('')}
+      </div>
+      <div class="vote-action-row">
+        <button class="btn-vote" id="date-vote-btn" onclick="submitDateVote()" ${hasVoted ? 'disabled' : ''}>
+          ${hasVoted ? 'Preference Saved ✓' : 'Submit Preference'}
+        </button>
+        <span class="vote-note">${hasVoted ? `${totalV} response${totalV !== 1 ? 's' : ''}` : 'Pick your preferred date'}</span>
+      </div>`;
+  } catch {}
+}
+
+let _selectedDateVote = null;
+window.selectDateVote = (i) => {
+  _selectedDateVote = i;
+  document.querySelectorAll('.date-chip').forEach((c, idx) => c.classList.toggle('selected', idx === i));
+};
+window.submitDateVote = async () => {
+  if (_selectedDateVote === null) { toast('Select a date first.', 'error'); return; }
+  await updateDoc(doc(db, 'bookclub_meeting_vote', 'current'), { [`votes.${currentUser.uid}`]: _selectedDateVote });
+  toast('Preference saved!', 'success');
+  loadDateVote();
+};
+
+// ══════════════════════════════════════════
+// MEMBERS DIRECTORY
+// ══════════════════════════════════════════
+async function loadMembers() {
+  const el = document.getElementById('members-grid');
+  try {
+    const snap = await getDocs(query(collection(db, 'bookclub_members'), orderBy('points', 'desc')));
+    _allMembers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    renderMembers();
+  } catch {
+    el.innerHTML = '';
+  }
+}
+
+function renderMembers() {
+  const el     = document.getElementById('members-grid');
+  const search = document.getElementById('member-search').value.toLowerCase();
+  let list = _allMembers.filter(m => !search || m.name?.toLowerCase().includes(search));
+  if (_sortMode === 'alpha') list = [...list].sort((a,b) => (a.name||'').localeCompare(b.name||''));
+
+  if (!list.length) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">👥</div><div class="empty-title">No members found</div></div>`;
+    return;
+  }
+  el.innerHTML = list.map((m, rank) => {
+    const av = m.photoURL
+      ? `<img src="${esc(m.photoURL)}" alt="" onerror="this.parentElement.textContent='${initials(m.name || '?')}'">` 
+      : initials(m.name || '?');
+    const badges = (m.badges || []).map(b => BADGES[b] ? `<span class="badge" title="${BADGES[b].label}">${BADGES[b].emoji}</span>` : '').join('');
+    const joined = m.joinedAt ? formatDateShort(m.joinedAt) : '';
+    return `<div class="member-card">
+      <div class="member-avatar">${av}</div>
+      <div class="member-name">${esc(m.name || 'Member')}</div>
+      <div class="member-joined">Joined ${joined}</div>
+      ${badges ? `<div class="badge-row">${badges}</div>` : ''}
+      <div class="member-points">${m.points || 0}</div>
+      <div class="member-points-lbl">points</div>
+    </div>`;
+  }).join('');
+}
+
+window.sortMembers = (mode) => {
+  _sortMode = mode;
+  document.getElementById('sort-points').classList.toggle('active', mode === 'points');
+  document.getElementById('sort-alpha').classList.toggle('active',  mode === 'alpha');
+  renderMembers();
+};
+window.filterMembers = () => renderMembers();
+
+// ══════════════════════════════════════════
+// PREMIUM TAB
+// ══════════════════════════════════════════
+function renderPremiumTab() {
+  const el = document.getElementById('premium-content');
+  if (!el) return;
+  if (currentUser.tier !== 'premium' && !currentUser.isAdmin) {
+    el.innerHTML = `
+      <div class="premium-gate">
+        <div style="font-size:32px;margin-bottom:8px;">✦</div>
+        <div class="premium-gate-title">Unlock Premium Access</div>
+        <div class="premium-gate-desc">Get Nate's annotated notes on every book, access a private discussion thread, and browse a curated resource library — all for $19/month or $149/year.</div>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
+          <button class="btn-upgrade" onclick="window.open('${STRIPE_PREMIUM_MONTHLY}','_blank')">$19 / Month</button>
+          <button class="btn-upgrade" onclick="window.open('${STRIPE_PREMIUM_YEARLY}','_blank')" style="background:var(--gold-dim);">$149 / Year</button>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:8px;text-align:left;max-width:280px;margin:0 auto;">
+          <div style="font-size:13px;font-weight:300;color:var(--text2);">✍️ Nate's annotated notes per book</div>
+          <div style="font-size:13px;font-weight:300;color:var(--text2);">💬 Private premium discussion thread</div>
+          <div style="font-size:13px;font-weight:300;color:var(--text2);">📚 Curated resource library</div>
+        </div>
+      </div>`;
+    return;
+  }
+  el.innerHTML = `
+    <div class="premium-subnav">
+      <button class="premium-tab active" id="ptab-notes" onclick="switchPremiumTab('notes')">Nate's Notes</button>
+      <button class="premium-tab" id="ptab-thread" onclick="switchPremiumTab('thread')">Private Thread</button>
+      <button class="premium-tab" id="ptab-resources" onclick="switchPremiumTab('resources')">Resources</button>
+    </div>
+    <div class="premium-panel active" id="ppanel-notes"><div class="loading-inline"><div class="spinner"></div></div></div>
+    <div class="premium-panel" id="ppanel-thread"></div>
+    <div class="premium-panel" id="ppanel-resources"><div class="loading-inline"><div class="spinner"></div></div></div>`;
+  loadNotes();
+  loadResources();
+  loadPrivateThread();
+}
+
+window.switchPremiumTab = (tab) => {
+  ['notes','thread','resources'].forEach(t => {
+    document.getElementById('ptab-' + t)?.classList.toggle('active', t === tab);
+    document.getElementById('ppanel-' + t)?.classList.toggle('active', t === tab);
+  });
+};
+
+async function loadNotes() {
+  const el = document.getElementById('ppanel-notes');
+  if (!el) return;
+  try {
+    const snap = await getDoc(doc(db, 'bookclub_notes', 'current'));
+    if (!snap.exists() || !snap.data().body) {
+      el.innerHTML = `<div class="empty-state"><div class="empty-icon">✍️</div><div class="empty-title">Notes coming soon</div><div class="empty-desc">Nate's annotations for this month's book will appear here.</div></div>`;
+      return;
+    }
+    const n = snap.data();
+    el.innerHTML = `
+      <div class="notes-card">
+        <div class="notes-eyebrow">Nate's Annotated Notes</div>
+        <div class="notes-book-title">${esc(n.bookTitle || currentBook?.title || 'Current Book')}</div>
+        <div class="notes-body">${esc(n.body)}</div>
+        ${n.pdfUrl ? `<a href="${esc(n.pdfUrl)}" target="_blank" class="btn-dl">⬇ Download PDF Notes</a>` : ''}
+        <div style="font-family:var(--font-mono);font-size:10px;color:var(--muted);margin-top:12px;">${timeAgo(n.updatedAt)}</div>
+      </div>`;
+  } catch { el.innerHTML = ''; }
+}
+
+async function loadResources() {
+  const el = document.getElementById('ppanel-resources');
+  if (!el) return;
+  try {
+    const snap = await getDocs(query(collection(db, 'bookclub_resources'), orderBy('addedAt', 'desc')));
+    if (snap.empty) {
+      el.innerHTML = `<div class="empty-state"><div class="empty-icon">📚</div><div class="empty-title">Library building…</div><div class="empty-desc">Nate will add videos, articles, and tools here.</div></div>`;
+      return;
+    }
+    const icons = { video: '📹', article: '📄', tool: '🛠️', book: '📚', podcast: '🎙️' };
+    el.innerHTML = snap.docs.map(d => {
+      const r = d.data();
+      return `<a href="${esc(r.url)}" target="_blank" rel="noopener" class="resource-card">
+        <div class="resource-icon">${icons[r.type] || '🔗'}</div>
+        <div style="flex:1;">
+          <div class="resource-title">${esc(r.title)}</div>
+          <div class="resource-desc">${esc(r.description || '')}</div>
+          <div class="resource-tag">${esc(r.type || 'link')}</div>
+        </div>
+      </a>`;
+    }).join('');
+  } catch { el.innerHTML = ''; }
+}
+
+let _privateUnsub = null;
+function loadPrivateThread() {
+  const el = document.getElementById('ppanel-thread');
+  if (!el) return;
+  el.innerHTML = `
+    <div class="compose-box">
+      <textarea class="compose-textarea" id="private-compose" placeholder="Share something with premium members…" rows="2"></textarea>
+      <div class="compose-footer">
+        <span class="compose-hint">Premium members only · visible to all premium members</span>
+        <button class="btn-post" onclick="submitPrivatePost()">Post</button>
+      </div>
+    </div>
+    <div id="private-feed"><div class="loading-inline"><div class="spinner"></div></div></div>`;
+  const q = query(collection(db, 'bookclub_feed'), where('type','==','private'), orderBy('ts','desc'), limit(40));
+  if (_privateUnsub) _privateUnsub();
+  _privateUnsub = onSnapshot(q, (snap) => {
+    const feedEl = document.getElementById('private-feed');
+    if (!feedEl) return;
+    if (snap.empty) {
+      feedEl.innerHTML = `<div class="empty-state"><div class="empty-icon">🔒</div><div class="empty-title">Private thread</div><div class="empty-desc">Be the first to post here.</div></div>`;
+      return;
+    }
+    feedEl.innerHTML = snap.docs.map(d => renderPost(d.id, d.data())).join('');
+  }, () => {});
+}
+
+window.submitPrivatePost = async () => {
+  const body = document.getElementById('private-compose')?.value.trim();
+  if (!body) return;
+  await addDoc(collection(db, 'bookclub_feed'), {
+    uid: currentUser.uid, authorName: currentUser.name,
+    photoURL: currentUser.photoURL || null,
+    type: 'private', body, ts: serverTimestamp(),
+    likes: 0, likedBy: {}, replies: []
+  });
+  document.getElementById('private-compose').value = '';
+  toast('Posted to premium thread.', 'success');
+};
+
+
+// ══════════════════════════════════════════
+// PROFILE
+// ══════════════════════════════════════════
+function renderProfile() {
+  document.getElementById('profile-initials').textContent = initials(currentUser.name);
+  document.getElementById('profile-name').textContent     = currentUser.name;
+  document.getElementById('profile-email').textContent    = currentUser.email;
+  document.getElementById('profile-points').textContent   = currentUser.points;
+  document.getElementById('settings-name').value          = currentUser.name;
+
+  const wrap = document.getElementById('profile-avatar-wrap');
+  if (currentUser.photoURL) {
+    wrap.innerHTML = `<img src="${esc(currentUser.photoURL)}" alt=""><div class="avatar-edit-overlay">✎</div>`;
+  }
+
+  const badgesEl = document.getElementById('profile-badges');
+  badgesEl.innerHTML = currentUser.badges.length
+    ? currentUser.badges.map(b => {
+        const bd = BADGES[b];
+        return bd ? `<div class="profile-badge">${bd.emoji} ${bd.label}</div>` : '';
+      }).join('')
+    : `<span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">No badges yet</span>`;
+}
+
+window.saveDisplayName = async () => {
+  const name = document.getElementById('settings-name').value.trim();
+  if (!name) return;
+  await updateDoc(doc(db, 'bookclub_members', currentUser.uid), { name });
+  await updateProfile(auth.currentUser, { displayName: name });
+  currentUser.name = name;
+  renderTopNav(); renderProfile(); renderHome();
+  toast('Name updated.', 'success');
+};
+
+window.triggerAvatarUpload = () => document.getElementById('avatar-input').click();
+window.handleAvatarUpload  = async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+  if (file.size > 2 * 1024 * 1024) { toast('Image must be under 2MB.', 'error'); return; }
+  try {
+    const r   = ref(storage, `bc_profile_photos/${currentUser.uid}.jpg`);
+    await uploadBytes(r, file);
+    const url = await getDownloadURL(r);
+    await updateDoc(doc(db, 'bookclub_members', currentUser.uid), { photoURL: url });
+    await updateProfile(auth.currentUser, { photoURL: url });
+    currentUser.photoURL = url;
+    renderTopNav(); renderProfile();
+    toast('Photo updated.', 'success');
+  } catch { toast('Upload failed. Check Storage rules.', 'error'); }
+};
+
+window.handleSignOut = async () => {
+  if (_feedUnsub) { _feedUnsub(); _feedUnsub = null; }
+  await signOut(auth);
+};
+
+// ══════════════════════════════════════════
+// POINTS + BADGES
+// ══════════════════════════════════════════
+async function awardPoints(pts) {
+  await updateDoc(doc(db, 'bookclub_members', currentUser.uid), { points: increment(pts) });
+  currentUser.points += pts;
+  renderTopNav();
+  document.getElementById('my-points').textContent    = currentUser.points;
+  document.getElementById('profile-points').textContent = currentUser.points;
+}
+
+async function checkBadges() {
+  const newBadges = [...currentUser.badges];
+  if (!newBadges.includes('firstPost') && currentUser.postCount >= 1) newBadges.push('firstPost');
+  const passageCount = (await getDocs(query(collection(db, 'bookclub_feed'), where('uid','==',currentUser.uid), where('type','==','passage')))).size;
+  if (!newBadges.includes('annotator') && passageCount >= 5) newBadges.push('annotator');
+  if (JSON.stringify(newBadges) !== JSON.stringify(currentUser.badges)) {
+    currentUser.badges = newBadges;
+    await updateDoc(doc(db, 'bookclub_members', currentUser.uid), { badges: newBadges });
+    renderProfile(); renderHomeBadges();
+  }
+}
+
+// ══════════════════════════════════════════
+// ADMIN
+// ══════════════════════════════════════════
+window.adminSetBook = async () => {
+  const title       = document.getElementById('a-book-title').value.trim();
+  const author      = document.getElementById('a-book-author').value.trim();
+  const synopsis    = document.getElementById('a-book-synopsis').value.trim();
+  const coverUrl    = document.getElementById('a-book-cover').value.trim();
+  const totalPages  = parseInt(document.getElementById('a-book-pages').value) || 0;
+  const meetRaw     = document.getElementById('a-meeting-date').value;
+  const zoomLink    = document.getElementById('a-zoom-link').value.trim();
+  const recordingUrl = document.getElementById('a-recording-url').value.trim();
+  const discussionQuestions = document.getElementById('a-discussion-questions').value.trim();
+  if (!title) { toast('Title required.', 'error'); return; }
+  const existing = await getDocs(query(collection(db, 'bookclub_books'), where('status','==','current'), limit(1)));
+  for (const d of existing.docs) {
+    await updateDoc(doc(db, 'bookclub_books', d.id), { status: 'archived', archivedAt: serverTimestamp() });
+  }
+  await addDoc(collection(db, 'bookclub_books'), {
+    title, author, synopsis, coverUrl, zoomLink, recordingUrl, totalPages,
+    discussionQuestions, status: 'current',
+    rsvpCount: 0, rsvps: {}, progress: {},
+    meetingDate: meetRaw ? new Date(meetRaw) : null,
+    createdAt: serverTimestamp()
+  });
+  toast('Book updated!', 'success');
+  loadCurrentBook();
+};
+
+window.adminGenerateInvite = async () => {
+  const token = 'inv_' + Math.random().toString(36).slice(2, 14);
+  await setDoc(doc(db, 'bookclub_invites', token), { used: false, createdAt: serverTimestamp(), createdBy: currentUser.uid });
+  const link = `${window.location.origin}${window.location.pathname}?invite=${token}`;
+  const box  = document.getElementById('invite-link-box');
+  box.textContent = link;
+  box.style.display = 'block';
+  navigator.clipboard.writeText(link).then(() => toast('Invite link copied!', 'success'));
+};
+
+_adminCands = [];
+window.adminAddCandidate = () => {
+  const title    = document.getElementById('a-cand-title').value.trim();
+  const author   = document.getElementById('a-cand-author').value.trim();
+  const coverUrl = document.getElementById('a-cand-cover').value.trim();
+  if (!title) { toast('Title required.', 'error'); return; }
+  _adminCands.push({ id: 'c_' + Date.now(), title, author, coverUrl });
+  document.getElementById('a-cand-title').value  = '';
+  document.getElementById('a-cand-author').value = '';
+  document.getElementById('a-cand-cover').value  = '';
+  const preview = document.getElementById('a-candidates-preview');
+  preview.innerHTML = _adminCands.map((c,i) =>
+    `<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 10px;background:#161616;border-radius:6px;margin-bottom:4px;">
+      <span style="font-family:var(--font-mono);font-size:10px;color:#c8c4be;">${esc(c.title)}</span>
+      <button onclick="_adminCands.splice(${i},1);adminAddCandidate.call({skip:true})" style="background:none;border:none;color:#6a6560;cursor:pointer;font-size:12px;">✕</button>
+    </div>`
+  ).join('');
+};
+window.adminSaveCandidates = async () => {
+  if (!_adminCands.length) { toast('Add at least one candidate.', 'error'); return; }
+  await setDoc(doc(db, 'bookclub_vote', 'current'), { candidates: _adminCands, votes: {}, createdAt: serverTimestamp() });
+  toast('Vote candidates saved!', 'success');
+  loadBookVote();
+};
+window.adminResetVotes = async () => {
+  if (!confirm('Reset all book votes?')) return;
+  await updateDoc(doc(db, 'bookclub_vote', 'current'), { votes: {} });
+  toast('Votes reset.', 'success'); loadBookVote();
+};
+window.adminSaveDateOptions = async () => {
+  const opts = ['a-date-opt-1','a-date-opt-2','a-date-opt-3']
+    .map(id => document.getElementById(id).value)
+    .filter(Boolean)
+    .map(v => new Date(v));
+  if (!opts.length) { toast('Add at least one date.', 'error'); return; }
+  await setDoc(doc(db, 'bookclub_meeting_vote', 'current'), { options: opts, votes: {}, createdAt: serverTimestamp() });
+  toast('Date options saved!', 'success'); loadDateVote();
+};
+window.adminResetDateVotes = async () => {
+  if (!confirm('Reset all date votes?')) return;
+  await updateDoc(doc(db, 'bookclub_meeting_vote', 'current'), { votes: {} });
+  toast('Date votes reset.', 'success'); loadDateVote();
+};
+
+window.adminPostRecap = async () => {
+  const title = document.getElementById('a-recap-title').value.trim();
+  const body  = document.getElementById('a-recap-body').value.trim();
+  if (!title || !body) { toast('Title and body required.', 'error'); return; }
+  await addDoc(collection(db, 'bookclub_feed'), {
+    uid: currentUser.uid, authorName: currentUser.name,
+    type: 'recap', title, body, ts: serverTimestamp(),
+    likes: 0, likedBy: {}, replies: []
+  });
+  document.getElementById('a-recap-title').value = '';
+  document.getElementById('a-recap-body').value  = '';
+  toast('Recap posted!', 'success');
+  loadLatestRecap();
+};
+
+window.adminMarkAttended = async (uid) => {
+  await updateDoc(doc(db, 'bookclub_members', uid), { points: increment(10) });
+  toast('+10 pts awarded.', 'success');
+};
+
+async function loadAdminMemberList() {
+  try {
+    const snap = await getDocs(query(collection(db, 'bookclub_members'), orderBy('name')));
+    const el   = document.getElementById('admin-member-list');
+    if (!el) return;
+    el.innerHTML = snap.docs.map(d => {
+      const m = d.data();
+      if (m.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase()) return '';
+      return `<div style="display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid #1e1e1e;">
+        <span style="font-family:var(--font-mono);font-size:10px;color:#c8c4be;">${esc(m.name || '—')}</span>
+        <button class="btn-admin" onclick="adminMarkAttended('${d.id}')" style="padding:4px 10px;font-size:8px;">+10 pts</button>
+      </div>`;
+    }).join('');
+  } catch {}
+}
+
+window.adminSaveNotes = async () => {
+  const body   = document.getElementById('a-notes-body').value.trim();
+  const pdfUrl = document.getElementById('a-notes-pdf').value.trim();
+  if (!body) { toast('Notes body required.', 'error'); return; }
+  await setDoc(doc(db, 'bookclub_notes', 'current'), {
+    body, pdfUrl: pdfUrl || null,
+    bookTitle: currentBook?.title || '',
+    updatedAt: serverTimestamp()
+  });
+  toast('Notes saved!', 'success');
+  loadNotes();
+};
+
+window.adminAddResource = async () => {
+  const title = document.getElementById('a-res-title').value.trim();
+  const url   = document.getElementById('a-res-url').value.trim();
+  const desc  = document.getElementById('a-res-desc').value.trim();
+  const type  = document.getElementById('a-res-type').value;
+  if (!title || !url) { toast('Title and URL required.', 'error'); return; }
+  await addDoc(collection(db, 'bookclub_resources'), { title, url, description: desc, type, addedAt: serverTimestamp() });
+  document.getElementById('a-res-title').value = '';
+  document.getElementById('a-res-url').value   = '';
+  document.getElementById('a-res-desc').value  = '';
+  toast('Resource added!', 'success');
+  loadResources();
+};
+
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+window.toast = (msg, type = '') => {
+  const el = document.createElement('div');
+  el.className = 'toast' + (type ? ' ' + type : '');
+  el.textContent = msg;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+};
+
+function initials(name) {
+  if (!name) return '?';
+  return name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+}
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function timeAgo(ts) {
+  if (!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(typeof ts === 'number' ? ts : ts);
+  const s = Math.floor((Date.now() - d) / 1000);
+  if (s < 60) return 'just now';
+  if (s < 3600) return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  return Math.floor(s/86400) + 'd ago';
+}
+function formatDate(ts) {
+  try {
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return d.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit' });
+  } catch { return ''; }
+}
+function formatDateShort(ts) {
+  try {
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return d.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+  } catch { return ''; }
+}
+function friendlyError(code) {
+  const map = {
+    'auth/user-not-found': 'No account found with that email.',
+    'auth/wrong-password': 'Incorrect password.',
+    'auth/email-already-in-use': 'An account with this email already exists.',
+    'auth/weak-password': 'Password must be at least 8 characters.',
+    'auth/invalid-email': 'Please enter a valid email address.',
+    'auth/too-many-requests': 'Too many attempts. Please try again later.',
+    'auth/invalid-credential': 'Incorrect email or password.',
+  };
+  return map[code] || 'Something went wrong. Please try again.';
+}
+
+// ── PLACEHOLDER BOOK PREFILL (admin only — remove after first book is set) ──
+function prefillPlaceholderBook() {
+  const fields = {
+    'a-book-title':    'Building a StoryBrand',
+    'a-book-author':   'Donald Miller',
+    'a-book-synopsis': 'Most companies waste enormous amounts of money on marketing because they never stop to clarify their message. Donald Miller's seven-part StoryBrand framework cuts through the noise — positioning your customer as the hero and your brand as the guide that helps them win. A practical, repeatable system for writing copy, building websites, and growing a business by saying less, more clearly.',
+    'a-book-cover':    'https://books.google.com/books/content?id=2h7FDQAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api',
+    'a-book-pages':    '240',
+  };
+  for (const [id, val] of Object.entries(fields)) {
+    const el = document.getElementById(id);
+    if (el && !el.value) el.value = val;
+  }
+}
+
+
+document.getElementById('gate-password').addEventListener('keydown', e => { if (e.key === 'Enter') handleGateLogin(); });
+document.getElementById('gate-signup-password').addEventListener('keydown', e => { if (e.key === 'Enter') handleGateSignup(); });
+</script>
+</body>
+</html>
