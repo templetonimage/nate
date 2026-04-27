@@ -135,8 +135,10 @@
     }
     .topnav-logo {
       font-family: var(--font-display); font-weight: 300; font-size: 20px;
-      letter-spacing: 0.02em; color: #F0EDE8;
+      letter-spacing: 0.02em; color: #F0EDE8; cursor: pointer;
+      text-decoration: none; transition: opacity 0.2s;
     }
+    .topnav-logo:hover { opacity: 0.75; }
     .topnav-logo .gold { color: var(--gold); }
     .topnav-right { display: flex; align-items: center; gap: 10px; }
     .topnav-avatar {
@@ -728,7 +730,7 @@
 <!-- APP -->
 <div id="app">
   <nav class="topnav">
-    <div class="topnav-logo">Templeton <span class="gold">Book Club</span></div>
+    <a class="topnav-logo" href="index.html" onclick="sessionStorage.setItem(&apos;skipPlatformRedirect&apos;,&apos;true&apos;)">Templeton <span class="gold">Book Club</span></a>
     <div class="topnav-right">
       <span class="topnav-points" id="topnav-points"></span>
       <div class="topnav-avatar" id="topnav-avatar" onclick="navTo('profile')">—</div>
