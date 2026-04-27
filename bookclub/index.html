@@ -968,6 +968,7 @@ let currentUser   = null;
 let currentBookId = null;
 let voteData      = null;
 let _discUnsub    = null;
+let _bookUnsub    = null;
 let _adminCandidates = [];
 let _meetingDate  = null;
 
@@ -1100,24 +1101,33 @@ boot();
 // ══════════════════════════════════════════
 // CURRENT BOOK
 // ══════════════════════════════════════════
-async function loadCurrentBook() {
+function loadCurrentBook() {
   const el = document.getElementById('current-book-content');
+  // Tear down any existing listener before creating a new one
+  if (_bookUnsub) { _bookUnsub(); _bookUnsub = null; }
   try {
-    const snap = await getDocs(query(collection(db, 'bookclub_books'), where('status', '==', 'current'), limit(1)));
-    if (snap.empty) {
-      renderNoCurrentBook();
-      return;
-    }
-    const bookDoc = snap.docs[0];
-    currentBookId = bookDoc.id;
-    const b = bookDoc.data();
-    renderCurrentBook(b);
-    renderHeroBook(b);
-    if (b.meetingDate) {
-      _meetingDate = b.meetingDate.toDate ? b.meetingDate.toDate() : new Date(b.meetingDate);
-      startCountdown(_meetingDate);
-    }
-    loadDiscussion(currentBookId);
+    _bookUnsub = onSnapshot(
+      query(collection(db, 'bookclub_books'), where('status', '==', 'current'), limit(1)),
+      (snap) => {
+        if (snap.empty) {
+          renderNoCurrentBook();
+          return;
+        }
+        const bookDoc = snap.docs[0];
+        currentBookId = bookDoc.id;
+        const b = bookDoc.data();
+        renderCurrentBook(b);
+        renderHeroBook(b);
+        if (b.meetingDate) {
+          _meetingDate = b.meetingDate.toDate ? b.meetingDate.toDate() : new Date(b.meetingDate);
+          startCountdown(_meetingDate);
+        }
+        loadDiscussion(currentBookId);
+      },
+      (e) => {
+        el.innerHTML = `<div class="empty-state"><div class="empty-icon">📚</div><div class="empty-title">Coming Soon</div><div class="empty-desc">The first book will be announced shortly.</div></div>`;
+      }
+    );
   } catch(e) {
     el.innerHTML = `<div class="empty-state"><div class="empty-icon">📚</div><div class="empty-title">Coming Soon</div><div class="empty-desc">The first book will be announced shortly.</div></div>`;
   }
