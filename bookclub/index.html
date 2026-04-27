@@ -1093,6 +1093,7 @@ onAuthStateChanged(auth, async (user) => {
 // BOOT
 // ══════════════════════════════════════════
 async function boot() {
+  loadCurrentBook();
   loadHistory();
   loadStats();
 }
@@ -1103,16 +1104,12 @@ boot();
 // ══════════════════════════════════════════
 function loadCurrentBook() {
   const el = document.getElementById('current-book-content');
-  // Tear down any existing listener before creating a new one
   if (_bookUnsub) { _bookUnsub(); _bookUnsub = null; }
   try {
     _bookUnsub = onSnapshot(
       query(collection(db, 'bookclub_books'), where('status', '==', 'current'), limit(1)),
       (snap) => {
-        if (snap.empty) {
-          renderNoCurrentBook();
-          return;
-        }
+        if (snap.empty) { renderNoCurrentBook(); return; }
         const bookDoc = snap.docs[0];
         currentBookId = bookDoc.id;
         const b = bookDoc.data();
@@ -1124,7 +1121,7 @@ function loadCurrentBook() {
         }
         loadDiscussion(currentBookId);
       },
-      (e) => {
+      () => {
         el.innerHTML = `<div class="empty-state"><div class="empty-icon">📚</div><div class="empty-title">Coming Soon</div><div class="empty-desc">The first book will be announced shortly.</div></div>`;
       }
     );
