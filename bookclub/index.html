@@ -12,6 +12,83 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
   <style>
+    /* ── INVITE MODAL ── */
+    @keyframes inviteFadeUp {
+      from { opacity: 0; transform: translateY(14px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0)    scale(1);    }
+    }
+    #invite-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.80);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      z-index: 500; align-items: center; justify-content: center; padding: 24px;
+    }
+    #invite-overlay.open { display: flex; }
+    .invite-card {
+      background: var(--surface); border-radius: var(--radius-lg);
+      border: 1px solid var(--border); padding: 48px 44px;
+      width: 100%; max-width: 480px; box-shadow: var(--shadow-lg);
+      position: relative; overflow: hidden;
+      animation: inviteFadeUp 0.28s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .invite-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    }
+    .invite-close {
+      position: absolute; top: 16px; right: 16px; background: transparent;
+      border: 1px solid var(--border); border-radius: 50%; width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; color: var(--muted); transition: all .15s; line-height: 1;
+    }
+    .invite-close:hover { border-color: var(--border2); color: var(--text); }
+    .invite-eyebrow {
+      font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+      letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold);
+      margin-bottom: 10px; display: flex; align-items: center; gap: 10px;
+    }
+    .invite-eyebrow::before { content: ''; width: 20px; height: 1px; background: var(--gold); flex-shrink: 0; }
+    .invite-title {
+      font-family: var(--font-display); font-size: 38px; font-weight: 300;
+      line-height: 1.05; margin-bottom: 8px; letter-spacing: -0.01em;
+    }
+    .invite-title em { font-style: italic; color: var(--gold); }
+    .invite-subtitle { font-size: 14px; font-weight: 300; color: var(--text2); line-height: 1.6; margin-bottom: 32px; }
+    .invite-label {
+      display: block; font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+      letter-spacing: 0.18em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px;
+    }
+    .invite-input, .invite-textarea {
+      width: 100%; padding: 12px 14px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); font-family: var(--font-ui); font-size: 15px;
+      font-weight: 300; background: var(--bg); color: var(--text);
+      outline: none; transition: border-color .2s; margin-bottom: 16px;
+    }
+    .invite-input:focus, .invite-textarea:focus { border-color: var(--gold-dim); }
+    .invite-textarea { resize: vertical; min-height: 96px; line-height: 1.6; }
+    .btn-invite-submit {
+      width: 100%; margin-top: 8px; padding: 14px;
+      background: var(--gold); color: #fff; border: none;
+      border-radius: var(--radius-sm); font-family: var(--font-mono);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+      transition: background .15s;
+    }
+    .btn-invite-submit:hover:not(:disabled) { background: var(--gold-dim); }
+    .btn-invite-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+    .invite-error {
+      display: none; font-family: var(--font-mono); font-size: 11px;
+      color: var(--red); margin-top: 10px; text-align: center;
+    }
+    .invite-error.visible { display: block; }
+    .invite-success { display: none; text-align: center; padding: 16px 0 8px; }
+    .invite-success.visible { display: block; }
+    .invite-success-icon { font-size: 36px; margin-bottom: 16px; }
+    .invite-success-title {
+      font-family: var(--font-display); font-size: 32px; font-weight: 300; margin-bottom: 10px;
+    }
+    .invite-success-title em { font-style: italic; color: var(--gold); }
+    .invite-success-body { font-size: 14px; font-weight: 300; color: var(--text2); line-height: 1.65; }
+
     /* ── TOKENS ── */
     :root {
       --bg:         #FAFAF8;
@@ -617,7 +694,7 @@
     <h1 class="hero-title fade-up-1">Read <em>more.</em><br>Think deeper.</h1>
     <p class="hero-body fade-up-2">A monthly book club for photographers, videographers, and creative solopreneurs who believe great reading makes you sharper at everything — including your business. One book. Monthly discussion guides. A live Zoom. Every month.</p>
     <div class="hero-actions fade-up-3">
-      <button class="btn-primary" id="hero-join-btn" onclick="openInviteRequest()">Request an Invite</button>
+      <button class="btn-primary" id="hero-join-btn" onclick="openInviteModal()">Request an Invite</button>
       <a href="#current" class="btn-secondary">This Month's Book</a>
     </div>
     <div class="hero-stats fade-up-4">
@@ -763,16 +840,41 @@
   <div class="section-eyebrow" style="justify-content:center;">Membership</div>
   <h2 class="section-title" style="margin-bottom:12px;">Invite <em>Only</em></h2>
   <p style="font-size:16px;font-weight:300;color:var(--text2);line-height:1.7;margin-bottom:36px;">The Templeton Book Club is a small, intentional community. Membership is by invitation. If you'd like to join, leave your email and Nate will reach out.</p>
-  <div id="invite-form" style="max-width:400px;margin:0 auto;">
-    <input class="field-input" type="text" id="req-name" placeholder="Your name" style="margin-bottom:12px;" />
-    <input class="field-input" type="email" id="req-email" placeholder="Your email" style="margin-bottom:16px;" />
-    <button class="btn-primary" style="width:100%;padding:14px;" onclick="submitInviteRequest()">Request an Invite</button>
-  </div>
-  <div id="invite-success" style="display:none;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);margin-top:16px;">
-    <div style="font-family:var(--font-display);font-size:24px;font-weight:300;margin-bottom:8px;">Request received.</div>
-    <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Nate will be in touch. Keep reading.</div>
-  </div>
+  <button class="btn-primary" style="padding:14px 32px;" onclick="openInviteModal()">Request an Invite</button>
 </section>
+
+<!-- INVITE MODAL -->
+<div id="invite-overlay" role="dialog" aria-modal="true" aria-labelledby="invite-modal-title" onclick="handleInviteOverlayClick(event)">
+  <div class="invite-card" id="invite-card">
+    <button class="invite-close" onclick="closeInviteModal()" aria-label="Close">&times;</button>
+
+    <!-- Form view -->
+    <div id="invite-modal-form">
+      <div class="invite-eyebrow">Membership</div>
+      <h2 class="invite-title" id="invite-modal-title">Request an <em>Invite</em></h2>
+      <p class="invite-subtitle">Introduce yourself and we'll be in touch if there's a good fit.</p>
+
+      <label class="invite-label" for="invite-name">Name</label>
+      <input class="invite-input" type="text" id="invite-name" name="name" placeholder="Your full name" autocomplete="name" required />
+
+      <label class="invite-label" for="invite-email">Email</label>
+      <input class="invite-input" type="email" id="invite-email" name="email" placeholder="you@example.com" autocomplete="email" required />
+
+      <label class="invite-label" for="invite-message">Message</label>
+      <textarea class="invite-textarea" id="invite-message" name="message" placeholder="Tell us a bit about yourself and your work…"></textarea>
+
+      <button class="btn-invite-submit" id="invite-submit-btn" onclick="handleInviteSubmit()">Send Request</button>
+      <div class="invite-error" id="invite-error"></div>
+    </div>
+
+    <!-- Success view -->
+    <div class="invite-success" id="invite-modal-success">
+      <div class="invite-success-icon">✦</div>
+      <h3 class="invite-success-title">You're on the <em>list</em></h3>
+      <p class="invite-success-body">Thank you for reaching out. We'll review your request and be in touch soon.</p>
+    </div>
+  </div>
+</div>
 
 <!-- ADMIN PANEL -->
 <div id="admin-panel" style="display:none;">
@@ -1432,30 +1534,70 @@ function timeAgo(ts) {
 // Enter key on auth
 document.getElementById('login-password').addEventListener('keydown', e => { if(e.key==='Enter') handleLogin(); });
 
-window.openInviteRequest = () => {
-  document.getElementById('join').scrollIntoView({ behavior: 'smooth' });
+// ── INVITE MODAL ──────────────────────────────────────────────────────────────
+window.openInviteModal = () => {
+  const overlay = document.getElementById('invite-overlay');
+  const card    = document.getElementById('invite-card');
+  // Reset state
+  document.getElementById('invite-modal-form').style.display    = '';
+  document.getElementById('invite-modal-success').classList.remove('visible');
+  document.getElementById('invite-error').classList.remove('visible');
+  document.getElementById('invite-name').value    = '';
+  document.getElementById('invite-email').value   = '';
+  document.getElementById('invite-message').value = '';
+  document.getElementById('invite-submit-btn').disabled    = false;
+  document.getElementById('invite-submit-btn').textContent = 'Send Request';
+  // Re-trigger animation
+  card.style.animation = 'none';
+  card.offsetHeight;
+  card.style.animation = '';
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
 };
 
-window.submitInviteRequest = async () => {
-  const name  = document.getElementById('req-name').value.trim();
-  const email = document.getElementById('req-email').value.trim();
-  if (!name || !email) { toast('Please enter your name and email.', 'error'); return; }
+window.closeInviteModal = () => {
+  document.getElementById('invite-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+};
+
+window.handleInviteOverlayClick = (e) => {
+  if (e.target === document.getElementById('invite-overlay')) closeInviteModal();
+};
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeInviteModal();
+});
+
+window.handleInviteSubmit = async () => {
+  const name    = document.getElementById('invite-name').value.trim();
+  const email   = document.getElementById('invite-email').value.trim();
+  const message = document.getElementById('invite-message').value.trim();
+  const errEl   = document.getElementById('invite-error');
+  const btn     = document.getElementById('invite-submit-btn');
+
+  if (!name || !email) {
+    errEl.textContent = 'Please enter your name and email.';
+    errEl.classList.add('visible');
+    return;
+  }
+  errEl.classList.remove('visible');
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
   try {
-    await addDoc(collection(db, 'bookclub_invite_requests'), {
-      name, email, requestedAt: serverTimestamp(), status: 'pending'
+    const res = await fetch('https://formspree.io/f/xlgakqyk', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ name, email, message })
     });
-    await addDoc(collection(db, 'bookclub_mail'), {
-      to: 'nate@templetonimage.com',
-      message: {
-        subject: 'New Book Club Invite Request',
-        text: `${name} (${email}) has requested an invite to the Templeton Book Club.`,
-        html: `<p><strong>${name}</strong> (<a href="mailto:${email}">${email}</a>) has requested an invite to the Templeton Book Club.</p>`
-      }
-    });
-    document.getElementById('invite-form').style.display    = 'none';
-    document.getElementById('invite-success').style.display = 'block';
-  } catch(e) {
-    toast('Something went wrong. Try again.', 'error');
+    if (!res.ok) throw new Error();
+    document.getElementById('invite-modal-form').style.display = 'none';
+    document.getElementById('invite-modal-success').classList.add('visible');
+  } catch {
+    btn.disabled = false;
+    btn.textContent = 'Send Request';
+    errEl.textContent = 'Something went wrong. Please try again.';
+    errEl.classList.add('visible');
   }
 };
 
