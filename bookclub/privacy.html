@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Privacy Policy — Templeton Book Club</title>
+  <meta name="description" content="Privacy Policy for the Templeton Book Club, operated by Templeton Image LLC." />
+  <meta name="theme-color" content="#FAFAF8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:         #FAFAF8;
+      --bg2:        #F4F2EE;
+      --surface:    #FFFFFF;
+      --border:     #E8E4DC;
+      --border2:    #D4CFC6;
+      --text:       #1A1A18;
+      --text2:      #4A4840;
+      --text3:      #7A7670;
+      --muted:      #9A9690;
+      --gold:       #C9A84C;
+      --gold-dim:   #A07C28;
+      --gold-light: #E2C878;
+      --gold-bg:    rgba(201,168,76,0.09);
+      --red:        #C0392B;
+      --radius:     12px;
+      --radius-sm:  8px;
+      --shadow-sm:  0 1px 4px rgba(0,0,0,0.06);
+      --shadow:     0 2px 16px rgba(0,0,0,0.08);
+      --shadow-lg:  0 8px 40px rgba(0,0,0,0.12);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-ui:      'Outfit', system-ui, sans-serif;
+      --font-mono:    'DM Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-ui); font-weight: 300; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+    h1,h2,h3 { font-family: var(--font-display); }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: var(--font-ui); cursor: pointer; }
+    main { flex: 1; }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      position: sticky; top: 0; z-index: 100;
+      background: #121212;
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 64px;
+    }
+    .topnav-logo { font-family: var(--font-display); font-weight: 300; font-size: 22px; letter-spacing: 0.02em; color: #F0EDE8; }
+    .topnav-logo strong { font-weight: 700; }
+    .topnav-logo .club { color: var(--gold); }
+    .topnav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-link { font-family: var(--font-mono); font-size: 10px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); transition: color .15s; padding: 4px 0; }
+    .nav-link:hover { color: rgba(255,255,255,0.9); }
+    .btn-nav { padding: 8px 18px; border-radius: 20px; background: #F0EDE8; color: #1A1A18; font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; border: none; transition: background .15s; }
+    .btn-nav:hover { background: #FFFFFF; }
+    .topnav-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--gold-bg); border: 1.5px solid var(--gold-dim); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 11px; color: var(--gold); cursor: pointer; }
+    .user-menu-wrap { position: relative; }
+    .user-dropdown { display: none; position: absolute; top: calc(100% + 10px); right: 0; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: var(--radius); padding: 8px; min-width: 200px; box-shadow: var(--shadow-lg); z-index: 200; }
+    .user-dropdown.open { display: block; }
+    .user-dropdown-name { font-weight: 500; font-size: 13px; padding: 8px 12px 2px; color: #F0EDE8; }
+    .user-dropdown-email { font-family: var(--font-mono); font-size: 10px; color: #6a6560; padding: 0 12px 8px; border-bottom: 1px solid #2a2a2a; margin-bottom: 6px; }
+    .dropdown-item { display: block; width: 100%; padding: 8px 12px; border: none; background: transparent; text-align: left; font-family: var(--font-ui); font-size: 13px; color: #c8c4be; border-radius: var(--radius-sm); cursor: pointer; transition: background .1s; }
+    .dropdown-item:hover { background: #2a2a2a; }
+    .dropdown-item.danger { color: #e74c3c; }
+    /* ── FOOTER ── */
+    footer { background: #0a0a0a; border-top: 1px solid #1e1e1e; padding: 36px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { font-family: var(--font-display); font-weight: 300; font-size: 20px; color: #F0EDE8; }
+    .footer-logo .gold { color: var(--gold); }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-link { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #908b86; transition: color .15s; }
+    .footer-link:hover { color: var(--gold); }
+    .footer-copy { font-family: var(--font-mono); font-size: 10px; color: #5a5550; letter-spacing: 0.08em; }
+
+    /* ── PAGE LAYOUT ── */
+    .page-wrap { max-width: 740px; margin: 0 auto; padding: 72px 32px 96px; }
+
+    /* ── HEADER ── */
+    .policy-eyebrow { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold-dim); display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .policy-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--gold-dim); }
+    .policy-title { font-family: var(--font-display); font-size: clamp(38px, 5vw, 52px); font-weight: 300; line-height: 1.05; margin-bottom: 16px; }
+    .policy-title em { font-style: italic; color: var(--gold); }
+    .policy-meta { font-family: var(--font-mono); font-size: 10px; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 48px; padding-bottom: 32px; border-bottom: 1px solid var(--border); }
+
+    /* ── PROSE ── */
+    .policy-section { margin-bottom: 40px; }
+    .policy-section h2 { font-family: var(--font-display); font-size: 26px; font-weight: 600; margin-bottom: 14px; line-height: 1.2; }
+    .policy-section p { font-size: 15px; font-weight: 300; color: var(--text2); line-height: 1.8; margin-bottom: 14px; }
+    .policy-section p:last-child { margin-bottom: 0; }
+    .policy-section ul { list-style: none; margin: 12px 0 14px; }
+    .policy-section ul li { font-size: 15px; font-weight: 300; color: var(--text2); line-height: 1.7; padding: 6px 0 6px 20px; position: relative; }
+    .policy-section ul li::before { content: '—'; position: absolute; left: 0; color: var(--gold-dim); font-size: 13px; }
+    .policy-section a { color: var(--gold-dim); border-bottom: 1px solid rgba(160,124,40,0.3); transition: color .15s, border-color .15s; }
+    .policy-section a:hover { color: var(--gold); border-color: var(--gold); }
+    .divider { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+    /* ── CONTACT CALLOUT ── */
+    .policy-contact { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 28px 32px; margin-top: 48px; display: flex; align-items: flex-start; gap: 20px; }
+    .policy-contact-icon { font-size: 24px; flex-shrink: 0; }
+    .policy-contact-title { font-family: var(--font-display); font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+    .policy-contact-body { font-size: 14px; font-weight: 300; color: var(--text2); line-height: 1.7; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .topnav { padding: 0 20px; }
+      .topnav-right .nav-link { display: none; }
+      footer { padding: 28px 20px; flex-direction: column; align-items: flex-start; }
+      .page-wrap { padding: 48px 20px 72px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <a href="index.html" class="topnav-logo">
+    <strong>Templeton</strong>
+    <span class="club"> Book Club</span>
+  </a>
+  <div class="topnav-right">
+    <a href="index.html#points" class="nav-link">Earn Points</a>
+    <a href="index.html#history" class="nav-link">Previously Read</a>
+    <a href="index.html#join" class="nav-link">Join</a>
+    <a href="bookclub-app.html" class="nav-link" id="nav-members-link" style="display:none;">My Club →</a>
+    <div id="auth-btn-wrap">
+      <button class="btn-nav" onclick="window.location.href='index.html'">Member Login</button>
+    </div>
+    <div id="user-nav" style="display:none;">
+      <div class="user-menu-wrap">
+        <div class="topnav-avatar" id="topnav-avatar" onclick="toggleUserMenu()">—</div>
+        <div class="user-dropdown" id="user-dropdown">
+          <div class="user-dropdown-name" id="dropdown-name">—</div>
+          <div class="user-dropdown-email" id="dropdown-email">—</div>
+          <a href="bookclub-app.html" class="dropdown-item" style="display:block;">Enter the Club →</a>
+          <button class="dropdown-item danger" onclick="handleSignOut()">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="page-wrap">
+
+    <div class="policy-eyebrow">Legal</div>
+    <h1 class="policy-title">Privacy <em>Policy</em></h1>
+    <div class="policy-meta">Effective date: April 26, 2026 &nbsp;·&nbsp; Templeton Image LLC &nbsp;·&nbsp; Maryland, USA</div>
+
+    <div class="policy-section">
+      <h2>Who We Are</h2>
+      <p>The Templeton Book Club is operated by Templeton Image LLC, a registered Maryland LLC. When this policy says "we," "us," or "our," it refers to Templeton Image LLC and the Templeton Book Club platform accessible at this domain.</p>
+      <p>Questions about this policy can be directed to <a href="mailto:info@natetempleton.com">info@natetempleton.com</a>.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="policy-section">
+      <h2>What Information We Collect</h2>
+      <p>We collect information you provide directly when you use the platform:</p>
+      <ul>
+        <li>Name and email address when you create an account or request an invite</li>
+        <li>Profile photo, if you choose to upload one</li>
+        <li>Posts, replies, and reactions you make in the community feed</li>
+        <li>Reading progress you log for the current book</li>
+        <li>RSVP and attendance records for monthly meetings</li>
+        <li>Book and meeting date votes you cast</li>
+        <li>Messages submitted through the contact form</li>
+      </ul>
+      <p>We also collect limited technical data automatically through Firebase, our backend service provider, including authentication tokens and basic usage logs. We do not use advertising tracking or sell data to third parties.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="policy-section">
+      <h2>How We Use Your Information</h2>
+      <p>We use the information we collect to:</p>
+      <ul>
+        <li>Operate and maintain the member platform</li>
+        <li>Display your name, photo, and contributions to other members in the community feed</li>
+        <li>Calculate and display your points and badges</li>
+        <li>Send you the Zoom link after you RSVP to a meeting</li>
+        <li>Respond to messages you send through the contact form</li>
+        <li>Process invite requests and grant platform access</li>
+        <li>Improve the platform based on how members use it</li>
+      </ul>
+      <p>We do not use your information for advertising, and we do not sell or share your personal data with third parties for their own marketing purposes.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="policy-section">
+      <h2>Third-Party Services</h2>
+      <p>The platform is built on and uses the following third-party services, each with their own privacy policies:</p>
+      <ul>
+        <li><strong>Firebase (Google)</strong> — authentication, database, and file storage. <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Firebase Privacy Policy</a></li>
+        <li><strong>Google Fonts</strong> — typefaces loaded from Google's CDN. <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a></li>
+        <li><strong>Zoom</strong> — monthly video meetings. The Zoom link is only shared with members who RSVP. <a href="https://zoom.us/privacy" target="_blank" rel="noopener">Zoom Privacy Policy</a></li>
+      </ul>
+      <p>We do not use Google Analytics, Facebook Pixel, or any advertising trackers on this platform.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="policy-section">
+      <h2>Data Retention</h2>
+      <p>We retain your account information and community contributions for as long as your account is active. If you request account deletion, we will remove your personal information from our database within 30 days. Community posts and contributions may be removed at your request.</p>
+      <p>Contact form submissions are retained in our database for up to 12 months and then deleted.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="policy-section">
+      <h2>Your Information Is Visible to Other Members</h2>
+      <p>By joining the Templeton Book Club, you understand that your name, profile photo (if set), posts, passage shares, questions, and point totals are visible to other verified members inside the platform. This is a community feature and part of how the club works.</p>
+      <p>Your email address is not visible to other members. Only Nate (the club operator) can see member email addresses.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="policy-section">
+      <h2>Children's Privacy</h2>
+      <p>The Templeton Book Club is intended for adults (18+). We do not knowingly collect personal information from anyone under the age of 18. If we become aware that a minor has provided us with personal information, we will delete it promptly.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="policy-section">
+      <h2>Security</h2>
+      <p>We use Firebase Authentication to manage accounts securely. Passwords are never stored in plain text. We implement reasonable technical measures to protect your information, though no system is completely immune to security risks.</p>
+      <p>If you believe your account has been compromised, contact us immediately at <a href="mailto:info@natetempleton.com">info@natetempleton.com</a>.</p>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="policy-section">
+      <h2>Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time. When we do, we will update the effective date at the top of this page and may notify active members through the community platform. Continued use of the platform after any changes constitutes your acceptance of the updated policy.</p>
+    </div>
+
+    <!-- Contact callout -->
+    <div class="policy-contact">
+      <div class="policy-contact-icon">✉️</div>
+      <div>
+        <div class="policy-contact-title">Questions about your data?</div>
+        <div class="policy-contact-body">Reach out directly at <a href="mailto:info@natetempleton.com" style="color:var(--gold-dim);border-bottom:1px solid rgba(160,124,40,0.3);">info@natetempleton.com</a> or use the <a href="contact.html" style="color:var(--gold-dim);border-bottom:1px solid rgba(160,124,40,0.3);">contact form</a>. Nate reads and replies to every message personally.</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-logo">Templeton <span class="gold">Book Club</span></div>
+  <div class="footer-links">
+    <a href="https://natetempleton.com" class="footer-link" target="_blank">Nate Templeton</a>
+    <a href="privacy.html" class="footer-link">Privacy Policy</a>
+    <a href="contact.html" class="footer-link">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 Templeton Image LLC</div>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCRU_qm3EdRNynCzHc4kdByU9Pp6A6ehMk",
+    authDomain: "templeton-bookclub.firebaseapp.com",
+    projectId: "templeton-bookclub",
+    storageBucket: "templeton-bookclub.firebasestorage.app",
+    messagingSenderId: "487783989047",
+    appId: "1:487783989047:web:164bb0305081feda0f24b2",
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    document.getElementById('auth-btn-wrap').style.display = 'none';
+    document.getElementById('user-nav').style.display = 'block';
+    document.getElementById('nav-members-link').style.display = 'inline';
+    const initials = (user.displayName || user.email || '?').split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+    document.getElementById('topnav-avatar').textContent = initials;
+    document.getElementById('dropdown-name').textContent  = user.displayName || 'Member';
+    document.getElementById('dropdown-email').textContent = user.email;
+  }
+});
+
+window.toggleUserMenu = () => {
+  document.getElementById('user-dropdown').classList.toggle('open');
+};
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.user-menu-wrap')) {
+    document.getElementById('user-dropdown')?.classList.remove('open');
+  }
+});
+window.handleSignOut = async () => {
+  await signOut(auth);
+  window.location.href = 'index.html';
+};
+</script>
+</body>
+</html>
