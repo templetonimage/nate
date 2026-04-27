@@ -919,6 +919,24 @@
               </div>
 
               <div class="admin-section">
+                <div class="admin-col-title">Edit Member Profile</div>
+                <select class="admin-input" id="a-edit-member-select" onchange="adminLoadMemberForEdit()">
+                  <option value="">— Select a member —</option>
+                </select>
+                <div id="a-edit-member-fields" style="display:none;">
+                  <label class="admin-label">Name</label>
+                  <input class="admin-input" id="a-edit-member-name" placeholder="Display name" />
+                  <label class="admin-label">Points</label>
+                  <input class="admin-input" type="number" id="a-edit-member-points" placeholder="0" />
+                  <label class="admin-label">Tier (free / premium)</label>
+                  <input class="admin-input" id="a-edit-member-tier" placeholder="free" />
+                  <label class="admin-label">Badges (comma-separated)</label>
+                  <input class="admin-input" id="a-edit-member-badges" placeholder="founding,firstPost" />
+                  <button class="btn-admin-gold" onclick="adminSaveMember()" style="width:100%;margin-top:4px;">Save Member</button>
+                </div>
+              </div>
+
+              <div class="admin-section">
                 <div class="admin-col-title">Nate's Notes (Premium)</div>
                 <textarea class="admin-textarea" id="a-notes-body" style="min-height:100px;" placeholder="Your annotated thoughts on this month's book…"></textarea>
                 <label class="admin-label">PDF Download URL (optional)</label>
@@ -1296,6 +1314,23 @@ async function loadCurrentBook() {
     currentBookId = bookDoc.id;
     const b = bookDoc.data();
     currentBook = b;
+    // Prefill admin fields with current book data
+    if (currentUser?.isAdmin) {
+      const tf = (id, val) => { const el = document.getElementById(id); if (el) el.value = val || ''; };
+      tf('a-book-title', b.title);
+      tf('a-book-author', b.author);
+      tf('a-book-synopsis', b.synopsis);
+      tf('a-book-cover', b.coverUrl);
+      tf('a-book-pages', b.totalPages);
+      tf('a-zoom-link', b.zoomLink);
+      tf('a-recording-url', b.recordingUrl);
+      tf('a-discussion-questions', b.discussionQuestions);
+      if (b.meetingDate) {
+        const d = b.meetingDate.toDate ? b.meetingDate.toDate() : new Date(b.meetingDate);
+        const local = new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0,16);
+        const el = document.getElementById('a-meeting-date'); if (el) el.value = local;
+      }
+    }
     const hasRsvpd  = b.rsvps?.[currentUser.uid];
     const rsvpCount = b.rsvpCount || 0;
     const totalPages = parseInt(b.totalPages) || 0;
@@ -1558,7 +1593,7 @@ function renderPost(id, p) {
     <div class="post-actions">
       <button class="action-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${id}',${liked},'${p.type}','${p.uid}')">♥ ${likes}</button>
       <button class="action-btn" onclick="document.getElementById('reply-input-${id}').focus()">↩ Reply</button>
-      ${isOwn ? `<button class="action-btn" onclick="openEdit('${id}',${JSON.stringify(p.body).replace(/"/g,'&quot;')})">Edit</button>` : ''}
+      ${(isOwn || isAdmin) ? `<button class="action-btn" onclick="openEdit('${id}',${JSON.stringify(p.body).replace(/"/g,'&quot;')})">Edit</button>` : ''}
       ${(isOwn || isAdmin) ? `<button class="action-btn danger" onclick="deletePost('${id}')">Delete</button>` : ''}
     </div>
     ${repliesHtml}
@@ -1742,6 +1777,7 @@ async function loadMembers() {
     const snap = await getDocs(query(collection(db, 'bookclub_members'), orderBy('points', 'desc')));
     _allMembers = snap.docs.map(d => ({ id: d.id, ...d.data() }));
     renderMembers();
+    adminPopulateMemberSelect();
   } catch {
     el.innerHTML = '';
   }
@@ -1939,11 +1975,16 @@ function renderProfile() {
 window.saveDisplayName = async () => {
   const name = document.getElementById('settings-name').value.trim();
   if (!name) return;
-  await updateDoc(doc(db, 'bookclub_members', currentUser.uid), { name });
-  await updateProfile(auth.currentUser, { displayName: name });
-  currentUser.name = name;
-  renderTopNav(); renderProfile(); renderHome();
-  toast('Name updated.', 'success');
+  try {
+    // Use setDoc with merge:true so it works even if the member doc doesn't exist yet
+    await setDoc(doc(db, 'bookclub_members', currentUser.uid), { name }, { merge: true });
+    await updateProfile(auth.currentUser, { displayName: name });
+    currentUser.name = name;
+    renderTopNav(); renderProfile(); renderHome();
+    toast('Name updated.', 'success');
+  } catch(e) {
+    toast('Save failed: ' + (e.message || e.code), 'error');
+  }
 };
 
 window.triggerAvatarUpload = () => document.getElementById('avatar-input').click();
@@ -2005,17 +2046,18 @@ window.adminSetBook = async () => {
   const recordingUrl = document.getElementById('a-recording-url').value.trim();
   const discussionQuestions = document.getElementById('a-discussion-questions').value.trim();
   if (!title) { toast('Title required.', 'error'); return; }
-  const existing = await getDocs(query(collection(db, 'bookclub_books'), where('status','==','current'), limit(1)));
-  for (const d of existing.docs) {
-    await updateDoc(doc(db, 'bookclub_books', d.id), { status: 'archived', archivedAt: serverTimestamp() });
-  }
-  await addDoc(collection(db, 'bookclub_books'), {
+  const payload = {
     title, author, synopsis, coverUrl, zoomLink, recordingUrl, totalPages,
-    discussionQuestions, status: 'current',
-    rsvpCount: 0, rsvps: {}, progress: {},
-    meetingDate: meetRaw ? new Date(meetRaw) : null,
-    createdAt: serverTimestamp()
-  });
+    discussionQuestions, meetingDate: meetRaw ? new Date(meetRaw) : null,
+    updatedAt: serverTimestamp()
+  };
+  if (currentBookId) {
+    await updateDoc(doc(db, 'bookclub_books', currentBookId), payload);
+  } else {
+    await addDoc(collection(db, 'bookclub_books'), {
+      ...payload, status: 'current', rsvpCount: 0, rsvps: {}, progress: {}, createdAt: serverTimestamp()
+    });
+  }
   toast('Book updated!', 'success');
   loadCurrentBook();
 };
@@ -2196,7 +2238,7 @@ function prefillPlaceholderBook() {
     'a-book-title':    'Building a StoryBrand',
     'a-book-author':   'Donald Miller',
     'a-book-synopsis': 'Most companies waste enormous amounts of money on marketing because they never stop to clarify their message. Donald Miller\'s seven-part StoryBrand framework cuts through the noise — positioning your customer as the hero and your brand as the guide that helps them win. A practical, repeatable system for writing copy, building websites, and growing a business by saying less, more clearly.',
-    'a-book-cover':    'https://books.google.com/books/content?id=2h7FDQAAQBAJ&printsec=frontcover&img=1&zoom=2&edge=curl&source=gbs_api',
+    'a-book-cover':    'https://covers.openlibrary.org/b/isbn/9780718033323-L.jpg',
     'a-book-pages':    '240',
   };
   for (const [id, val] of Object.entries(fields)) {
@@ -2205,6 +2247,47 @@ function prefillPlaceholderBook() {
   }
 }
 
+
+
+// ══════════════════════════════════════════
+// ADMIN — MEMBER EDIT
+// ══════════════════════════════════════════
+function adminPopulateMemberSelect() {
+  const sel = document.getElementById('a-edit-member-select');
+  if (!sel || !currentUser.isAdmin) return;
+  sel.innerHTML = '<option value="">— Select a member —</option>' +
+    _allMembers.map(m => `<option value="${esc(m.id)}">${esc(m.name || m.email || m.id)}</option>`).join('');
+}
+
+window.adminLoadMemberForEdit = () => {
+  const uid = document.getElementById('a-edit-member-select').value;
+  const fields = document.getElementById('a-edit-member-fields');
+  if (!uid) { fields.style.display = 'none'; return; }
+  const m = _allMembers.find(x => x.id === uid);
+  if (!m) return;
+  document.getElementById('a-edit-member-name').value   = m.name || '';
+  document.getElementById('a-edit-member-points').value = m.points || 0;
+  document.getElementById('a-edit-member-tier').value   = m.tier || 'free';
+  document.getElementById('a-edit-member-badges').value = (m.badges || []).join(',');
+  fields.style.display = 'block';
+};
+
+window.adminSaveMember = async () => {
+  const uid    = document.getElementById('a-edit-member-select').value;
+  if (!uid) { toast('Select a member first.', 'error'); return; }
+  const name   = document.getElementById('a-edit-member-name').value.trim();
+  const points = parseInt(document.getElementById('a-edit-member-points').value) || 0;
+  const tier   = document.getElementById('a-edit-member-tier').value.trim() || 'free';
+  const badges = document.getElementById('a-edit-member-badges').value.split(',').map(s => s.trim()).filter(Boolean);
+  try {
+    await setDoc(doc(db, 'bookclub_members', uid), { name, points, tier, badges }, { merge: true });
+    // Refresh local list
+    const idx = _allMembers.findIndex(m => m.id === uid);
+    if (idx !== -1) Object.assign(_allMembers[idx], { name, points, tier, badges });
+    renderMembers();
+    toast('Member saved.', 'success');
+  } catch(e) { toast('Save failed: ' + (e.message || e.code), 'error'); }
+};
 
 document.getElementById('gate-password').addEventListener('keydown', e => { if (e.key === 'Enter') handleGateLogin(); });
 document.getElementById('gate-signup-password').addEventListener('keydown', e => { if (e.key === 'Enter') handleGateSignup(); });
