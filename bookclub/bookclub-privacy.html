@@ -117,17 +117,17 @@
 
 <!-- TOP NAV -->
 <nav class="topnav">
-  <a href="bookclub.html" class="topnav-logo">
+  <a href="index.html" class="topnav-logo">
     <strong>Templeton</strong>
     <span class="club"> Book Club</span>
   </a>
   <div class="topnav-right">
-    <a href="bookclub.html#points" class="nav-link">Earn Points</a>
-    <a href="bookclub.html#history" class="nav-link">Previously Read</a>
-    <a href="bookclub.html#join" class="nav-link">Join</a>
+    <a href="index.html#points" class="nav-link">Earn Points</a>
+    <a href="index.html#history" class="nav-link">Previously Read</a>
+    <a href="index.html#join" class="nav-link">Join</a>
     <a href="bookclub-app.html" class="nav-link" id="nav-members-link" style="display:none;">My Club →</a>
     <div id="auth-btn-wrap">
-      <button class="btn-nav" onclick="window.location.href='bookclub.html'">Member Login</button>
+      <button class="btn-nav" onclick="window.location.href='index.html'">Member Login</button>
     </div>
     <div id="user-nav" style="display:none;">
       <div class="user-menu-wrap">
@@ -302,7 +302,7 @@ document.addEventListener('click', (e) => {
 });
 window.handleSignOut = async () => {
   await signOut(auth);
-  window.location.href = 'bookclub.html';
+  window.location.href = 'index.html';
 };
 </script>
 </body>
