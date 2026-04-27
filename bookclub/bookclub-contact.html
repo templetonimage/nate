@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Templeton Book Club</title>
+  <meta name="description" content="Get in touch with the Templeton Book Club." />
+  <meta name="theme-color" content="#FAFAF8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── SHARED TOKENS (mirror bookclub.html) ── */
+    :root {
+      --bg:         #FAFAF8;
+      --bg2:        #F4F2EE;
+      --surface:    #FFFFFF;
+      --border:     #E8E4DC;
+      --border2:    #D4CFC6;
+      --text:       #1A1A18;
+      --text2:      #4A4840;
+      --text3:      #7A7670;
+      --muted:      #9A9690;
+      --gold:       #C9A84C;
+      --gold-dim:   #A07C28;
+      --gold-light: #E2C878;
+      --gold-bg:    rgba(201,168,76,0.09);
+      --gold-bg2:   rgba(201,168,76,0.05);
+      --red:        #C0392B;
+      --green:      #27AE60;
+      --radius:     12px;
+      --radius-sm:  8px;
+      --shadow-sm:  0 1px 4px rgba(0,0,0,0.06);
+      --shadow:     0 2px 16px rgba(0,0,0,0.08);
+      --shadow-lg:  0 8px 40px rgba(0,0,0,0.12);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-ui:      'Outfit', system-ui, sans-serif;
+      --font-mono:    'DM Mono', monospace;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-ui); font-weight: 300; background: var(--bg); color: var(--text); -webkit-font-smoothing: antialiased; min-height: 100vh; display: flex; flex-direction: column; }
+    h1,h2,h3,h4 { font-family: var(--font-display); }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: var(--font-ui); cursor: pointer; }
+    main { flex: 1; }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      position: sticky; top: 0; z-index: 100;
+      background: #121212;
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 48px; height: 64px;
+    }
+    .topnav-logo { font-family: var(--font-display); font-weight: 300; font-size: 22px; letter-spacing: 0.02em; color: #F0EDE8; }
+    .topnav-logo strong { font-weight: 700; }
+    .topnav-logo .club { color: var(--gold); }
+    .topnav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-link { font-family: var(--font-mono); font-size: 10px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45); transition: color .15s; padding: 4px 0; }
+    .nav-link:hover { color: rgba(255,255,255,0.9); }
+    .btn-nav { padding: 8px 18px; border-radius: 20px; background: #F0EDE8; color: #1A1A18; font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; border: none; transition: background .15s; }
+    .btn-nav:hover { background: #FFFFFF; }
+    .topnav-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--gold-bg); border: 1.5px solid var(--gold-dim); display: flex; align-items: center; justify-content: center; font-family: var(--font-mono); font-size: 11px; color: var(--gold); cursor: pointer; }
+    .user-menu-wrap { position: relative; }
+    .user-dropdown { display: none; position: absolute; top: calc(100% + 10px); right: 0; background: #1e1e1e; border: 1px solid #2a2a2a; border-radius: var(--radius); padding: 8px; min-width: 200px; box-shadow: var(--shadow-lg); z-index: 200; }
+    .user-dropdown.open { display: block; }
+    .user-dropdown-name { font-weight: 500; font-size: 13px; padding: 8px 12px 2px; color: #F0EDE8; }
+    .user-dropdown-email { font-family: var(--font-mono); font-size: 10px; color: #6a6560; padding: 0 12px 8px; border-bottom: 1px solid #2a2a2a; margin-bottom: 6px; }
+    .dropdown-item { display: block; width: 100%; padding: 8px 12px; border: none; background: transparent; text-align: left; font-family: var(--font-ui); font-size: 13px; color: #c8c4be; border-radius: var(--radius-sm); cursor: pointer; transition: background .1s; }
+    .dropdown-item:hover { background: #2a2a2a; }
+    .dropdown-item.danger { color: #e74c3c; }
+
+    /* ── FOOTER ── */
+    footer { background: #0a0a0a; border-top: 1px solid #1e1e1e; padding: 36px 48px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-logo { font-family: var(--font-display); font-weight: 300; font-size: 20px; color: #F0EDE8; }
+    .footer-logo .gold { color: var(--gold); }
+    .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+    .footer-link { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.1em; text-transform: uppercase; color: #908b86; transition: color .15s; }
+    .footer-link:hover { color: var(--gold); }
+    .footer-copy { font-family: var(--font-mono); font-size: 10px; color: #5a5550; letter-spacing: 0.08em; }
+
+    /* ── PAGE LAYOUT ── */
+    .page-wrap { max-width: 1100px; margin: 0 auto; padding: 80px 32px; display: grid; grid-template-columns: 1fr 1.4fr; gap: 80px; align-items: start; }
+
+    /* ── LEFT COLUMN ── */
+    .page-eyebrow { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold-dim); display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+    .page-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--gold-dim); }
+    .page-title { font-family: var(--font-display); font-size: clamp(40px, 5vw, 56px); font-weight: 300; line-height: 1.05; margin-bottom: 18px; }
+    .page-title em { font-style: italic; color: var(--gold); }
+    .page-desc { font-size: 15px; font-weight: 300; color: var(--text2); line-height: 1.75; margin-bottom: 36px; }
+    .contact-detail { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-top: 1px solid var(--border); }
+    .contact-detail:last-child { border-bottom: 1px solid var(--border); }
+    .contact-detail-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+    .contact-detail-label { font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 4px; }
+    .contact-detail-val { font-size: 14px; font-weight: 300; color: var(--text); }
+    .contact-detail-val a { color: var(--gold-dim); transition: color .15s; }
+    .contact-detail-val a:hover { color: var(--gold); }
+
+    /* ── FORM CARD ── */
+    .form-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 40px; box-shadow: var(--shadow); position: relative; overflow: hidden; }
+    .form-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
+    .form-title { font-family: var(--font-display); font-size: 28px; font-weight: 600; margin-bottom: 6px; }
+    .form-subtitle { font-size: 13px; font-weight: 300; color: var(--text3); margin-bottom: 28px; }
+    .field-group { margin-bottom: 18px; }
+    .field-label { display: block; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 7px; }
+    .field-input { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font-ui); font-size: 14px; font-weight: 300; background: var(--bg); color: var(--text); outline: none; transition: border-color .2s, box-shadow .2s; }
+    .field-input:focus { border-color: var(--gold-dim); box-shadow: 0 0 0 3px rgba(201,168,76,0.08); }
+    .field-textarea { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font-ui); font-size: 14px; font-weight: 300; background: var(--bg); color: var(--text); outline: none; resize: vertical; min-height: 130px; line-height: 1.6; transition: border-color .2s, box-shadow .2s; }
+    .field-textarea:focus { border-color: var(--gold-dim); box-shadow: 0 0 0 3px rgba(201,168,76,0.08); }
+    .field-select { width: 100%; padding: 12px 14px; border: 1px solid var(--border); border-radius: var(--radius-sm); font-family: var(--font-ui); font-size: 14px; font-weight: 300; background: var(--bg); color: var(--text); outline: none; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239A9690' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; transition: border-color .2s; cursor: pointer; }
+    .field-select:focus { border-color: var(--gold-dim); }
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .btn-submit { width: 100%; padding: 14px; background: var(--gold); color: #0a0a0a; border: none; border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; transition: background .2s, transform .1s; margin-top: 6px; }
+    .btn-submit:hover { background: var(--gold-light); }
+    .btn-submit:active { transform: scale(0.99); }
+    .btn-submit:disabled { opacity: .5; cursor: not-allowed; }
+    .form-note { font-family: var(--font-mono); font-size: 10px; color: var(--muted); text-align: center; margin-top: 12px; line-height: 1.6; }
+
+    /* Success state */
+    .form-success { display: none; text-align: center; padding: 48px 24px; }
+    .form-success.show { display: block; }
+    .success-icon { font-size: 40px; margin-bottom: 16px; }
+    .success-title { font-family: var(--font-display); font-size: 30px; font-weight: 300; margin-bottom: 10px; }
+    .success-body { font-size: 14px; font-weight: 300; color: var(--text2); line-height: 1.7; }
+
+    /* Error */
+    .form-error { color: var(--red); font-family: var(--font-mono); font-size: 11px; margin-top: 10px; display: none; }
+
+    /* ── TOAST ── */
+    #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+    .toast { background: var(--text); color: var(--bg); border-radius: var(--radius-sm); padding: 11px 16px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.04em; box-shadow: var(--shadow-lg); animation: toastIn .25s ease; max-width: 280px; }
+    .toast.success { background: var(--green); }
+    .toast.error { background: var(--red); }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .topnav { padding: 0 20px; }
+      .topnav-right .nav-link { display: none; }
+      footer { padding: 28px 20px; flex-direction: column; align-items: flex-start; }
+      .page-wrap { grid-template-columns: 1fr; gap: 40px; padding: 48px 20px; }
+      .field-row { grid-template-columns: 1fr; }
+      .form-card { padding: 28px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="toast-container"></div>
+
+<!-- TOP NAV -->
+<nav class="topnav">
+  <a href="bookclub.html" class="topnav-logo">
+    <strong>Templeton</strong>
+    <span class="club"> Book Club</span>
+  </a>
+  <div class="topnav-right">
+    <a href="bookclub.html#points" class="nav-link">Earn Points</a>
+    <a href="bookclub.html#history" class="nav-link">Previously Read</a>
+    <a href="bookclub.html#join" class="nav-link">Join</a>
+    <a href="bookclub-app.html" class="nav-link" id="nav-members-link" style="display:none;">My Club →</a>
+    <div id="auth-btn-wrap">
+      <button class="btn-nav" onclick="window.location.href='bookclub.html'">Member Login</button>
+    </div>
+    <div id="user-nav" style="display:none;">
+      <div class="user-menu-wrap">
+        <div class="topnav-avatar" id="topnav-avatar" onclick="toggleUserMenu()">—</div>
+        <div class="user-dropdown" id="user-dropdown">
+          <div class="user-dropdown-name" id="dropdown-name">—</div>
+          <div class="user-dropdown-email" id="dropdown-email">—</div>
+          <a href="bookclub-app.html" class="dropdown-item" style="display:block;">Enter the Club →</a>
+          <button class="dropdown-item danger" onclick="handleSignOut()">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main>
+  <div class="page-wrap">
+
+    <!-- LEFT: copy + contact details -->
+    <div>
+      <div class="page-eyebrow">Get in Touch</div>
+      <h1 class="page-title">We'd love to<br>hear from <em>you.</em></h1>
+      <p class="page-desc">Questions about membership, the current book, or how the club works — send a message and Nate will get back to you directly.</p>
+
+      <div class="contact-detail">
+        <div class="contact-detail-icon">✉️</div>
+        <div>
+          <div class="contact-detail-label">Email</div>
+          <div class="contact-detail-val"><a href="mailto:info@natetempleton.com">info@natetempleton.com</a></div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">📸</div>
+        <div>
+          <div class="contact-detail-label">Instagram</div>
+          <div class="contact-detail-val"><a href="https://instagram.com/thegreatstateofnate" target="_blank" rel="noopener">@thegreatstateofnate</a></div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">🔗</div>
+        <div>
+          <div class="contact-detail-label">Parent Brand</div>
+          <div class="contact-detail-val"><a href="https://natetempleton.com" target="_blank" rel="noopener">natetempleton.com</a></div>
+        </div>
+      </div>
+      <div class="contact-detail">
+        <div class="contact-detail-icon">📍</div>
+        <div>
+          <div class="contact-detail-label">Based in</div>
+          <div class="contact-detail-val">Maryland, USA</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: contact form -->
+    <div class="form-card">
+      <div id="form-wrap">
+        <div class="form-title">Send a Message</div>
+        <div class="form-subtitle">Nate reads every message and replies personally.</div>
+
+        <div class="field-row">
+          <div class="field-group">
+            <label class="field-label" for="contact-name">Your Name</label>
+            <input class="field-input" type="text" id="contact-name" placeholder="First and last name" autocomplete="name" required />
+          </div>
+          <div class="field-group">
+            <label class="field-label" for="contact-email">Email Address</label>
+            <input class="field-input" type="email" id="contact-email" placeholder="you@email.com" autocomplete="email" required />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="contact-subject">Subject</label>
+          <select class="field-select" id="contact-subject">
+            <option value="">Select a topic…</option>
+            <option value="Membership Question">Membership Question</option>
+            <option value="Current Book">Current Book</option>
+            <option value="Technical Issue">Technical Issue</option>
+            <option value="Invite Request">Invite Request</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="contact-message">Message</label>
+          <textarea class="field-textarea" id="contact-message" placeholder="What's on your mind?" required></textarea>
+        </div>
+
+        <button class="btn-submit" id="submit-btn" onclick="submitContactForm()">Send Message</button>
+        <div class="form-error" id="form-error"></div>
+        <p class="form-note">Your message goes directly to info@natetempleton.com. Expect a reply within 1–2 business days.</p>
+      </div>
+
+      <!-- Success state -->
+      <div class="form-success" id="form-success">
+        <div class="success-icon">✉️</div>
+        <div class="success-title">Message sent.</div>
+        <div class="success-body">Thanks for reaching out. Nate will get back to you at the email you provided — usually within a day or two.</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>
+  <div class="footer-logo">Templeton <span class="gold">Book Club</span></div>
+  <div class="footer-links">
+    <a href="https://natetempleton.com" class="footer-link" target="_blank">Nate Templeton</a>
+    <a href="bookclub-privacy.html" class="footer-link">Privacy Policy</a>
+    <a href="bookclub-contact.html" class="footer-link">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 Templeton Image LLC</div>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, addDoc, collection, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyCRU_qm3EdRNynCzHc4kdByU9Pp6A6ehMk",
+    authDomain: "templeton-bookclub.firebaseapp.com",
+    projectId: "templeton-bookclub",
+    storageBucket: "templeton-bookclub.firebasestorage.app",
+    messagingSenderId: "487783989047",
+    appId: "1:487783989047:web:164bb0305081feda0f24b2",
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+// ── AUTH NAV ──
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    document.getElementById('auth-btn-wrap').style.display = 'none';
+    document.getElementById('user-nav').style.display = 'block';
+    document.getElementById('nav-members-link').style.display = 'inline';
+    const initials = (user.displayName || user.email || '?').split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+    document.getElementById('topnav-avatar').textContent = initials;
+    document.getElementById('dropdown-name').textContent  = user.displayName || 'Member';
+    document.getElementById('dropdown-email').textContent = user.email;
+  }
+});
+
+window.toggleUserMenu = () => {
+  document.getElementById('user-dropdown').classList.toggle('open');
+};
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.user-menu-wrap')) {
+    document.getElementById('user-dropdown')?.classList.remove('open');
+  }
+});
+window.handleSignOut = async () => {
+  await signOut(auth);
+  window.location.href = 'bookclub.html';
+};
+
+// ── CONTACT FORM ──
+window.submitContactForm = async () => {
+  const name    = document.getElementById('contact-name').value.trim();
+  const email   = document.getElementById('contact-email').value.trim();
+  const subject = document.getElementById('contact-subject').value;
+  const message = document.getElementById('contact-message').value.trim();
+  const errEl   = document.getElementById('form-error');
+  const btn     = document.getElementById('submit-btn');
+
+  errEl.style.display = 'none';
+
+  if (!name)    { showError('Please enter your name.'); return; }
+  if (!email || !email.includes('@')) { showError('Please enter a valid email address.'); return; }
+  if (!message) { showError('Please write a message before sending.'); return; }
+
+  btn.disabled = true;
+  btn.textContent = 'Sending…';
+
+  try {
+    // Save to Firestore — triggers email notification via Firebase Extension
+    await addDoc(collection(db, 'bookclub_contact'), {
+      name, email,
+      subject: subject || 'General',
+      message,
+      sentAt: serverTimestamp(),
+      read: false
+    });
+
+    // Show success
+    document.getElementById('form-wrap').style.display = 'none';
+    document.getElementById('form-success').classList.add('show');
+
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = 'Send Message';
+    showError('Something went wrong. Try emailing info@natetempleton.com directly.');
+  }
+};
+
+function showError(msg) {
+  const el = document.getElementById('form-error');
+  el.textContent = msg;
+  el.style.display = 'block';
+}
+
+// ── KEYBOARD SHORTCUT ──
+document.getElementById('contact-message').addEventListener('keydown', (e) => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'Enter') submitContactForm();
+});
+</script>
+</body>
+</html>
