@@ -1060,7 +1060,9 @@ function friendlyError(code) {
 }
 
 onAuthStateChanged(auth, async (user) => {
-  if (user) {
+  const skipRedirect = sessionStorage.getItem('skipPlatformRedirect') === 'true';
+  sessionStorage.removeItem('skipPlatformRedirect');
+  if (user && !skipRedirect) {
     window.location.href = 'platform.html';
     return;
     currentUser = { uid: user.uid, name: user.displayName || 'Member', email: user.email };
