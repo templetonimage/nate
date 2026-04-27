@@ -592,7 +592,7 @@
   <div class="topnav-right">
     <a href="#points" class="nav-link">Earn Points</a>
     <a href="#history" class="nav-link">Previously Read</a>
-    <a href="bookclub-app.html" class="nav-link" id="nav-members-link" style="display:none;">My Club →</a>
+    <a href="platform.html" class="nav-link" id="nav-members-link" style="display:none;">My Club →</a>
     <div id="auth-btn-wrap">
       <button class="btn-nav" onclick="openAuth('login')">Member Login</button>
     </div>
@@ -602,7 +602,7 @@
         <div class="user-dropdown" id="user-dropdown">
           <div class="user-dropdown-name" id="dropdown-name">—</div>
           <div class="user-dropdown-email" id="dropdown-email">—</div>
-          <a href="bookclub-app.html" class="dropdown-item" style="display:block;">Enter the Club →</a>
+          <a href="platform.html" class="dropdown-item" style="display:block;">Enter the Club →</a>
           <button class="dropdown-item danger" onclick="handleSignOut()">Sign Out</button>
         </div>
       </div>
@@ -970,7 +970,7 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById('dropdown-email').textContent = currentUser.email;
     // Hero btn → enter the club
     document.getElementById('hero-join-btn').textContent = 'Enter the Club →';
-    document.getElementById('hero-join-btn').onclick = () => window.location.href = 'bookclub-app.html';
+    document.getElementById('hero-join-btn').onclick = () => window.location.href = 'platform.html';
     // Admin
     if (isAdmin) document.getElementById('admin-panel').style.display = 'block';
   } else {
