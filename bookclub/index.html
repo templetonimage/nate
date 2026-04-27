@@ -959,8 +959,12 @@ function friendlyError(code) {
 
 onAuthStateChanged(auth, async (user) => {
   if (user) {
-    window.location.href = 'platform.html';
-    return;
+    // Only auto-redirect if the user didn't explicitly navigate back here
+    if (!sessionStorage.getItem('skipPlatformRedirect')) {
+      window.location.href = 'platform.html';
+      return;
+    }
+    sessionStorage.removeItem('skipPlatformRedirect');
     currentUser = { uid: user.uid, name: user.displayName || 'Member', email: user.email };
     const isAdmin = user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
     // Update nav
@@ -1340,19 +1344,18 @@ window.adminSetCurrentBook = async () => {
   const zoomLink = document.getElementById('admin-zoom-link').value.trim();
   if (!title) { toast('Title is required.', 'error'); return; }
 
-  const payload = {
-    title, author, synopsis, coverUrl, zoomLink,
-    meetingDate: meetRaw ? new Date(meetRaw) : null,
-    updatedAt: serverTimestamp()
-  };
-  if (currentBookId) {
-    // Update existing doc in place — preserves RSVPs, progress, votes
-    await updateDoc(doc(db, 'bookclub_books', currentBookId), payload);
-  } else {
-    await addDoc(collection(db, 'bookclub_books'), {
-      ...payload, status: 'current', rsvpCount: 0, rsvps: {}, createdAt: serverTimestamp()
-    });
+  // Archive existing current book
+  const existing = await getDocs(query(collection(db, 'bookclub_books'), where('status', '==', 'current'), limit(1)));
+  for (const d of existing.docs) {
+    await updateDoc(doc(db, 'bookclub_books', d.id), { status: 'archived', archivedAt: serverTimestamp() });
   }
+  // Set new current book
+  await addDoc(collection(db, 'bookclub_books'), {
+    title, author, synopsis, coverUrl, zoomLink,
+    status: 'current', rsvpCount: 0, rsvps: {},
+    meetingDate: meetRaw ? new Date(meetRaw) : null,
+    createdAt: serverTimestamp()
+  });
   toast('Current book updated!', 'success');
   loadCurrentBook();
   loadHistory();
