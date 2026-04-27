@@ -1,0 +1,1452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>Templeton Book Club</title>
+  <meta name="description" content="Templeton Book Club — A monthly reading community for creative professionals and curious minds." />
+  <meta name="theme-color" content="#FAFAF8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&family=Outfit:wght@300;400;500;600&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── TOKENS ── */
+    :root {
+      --bg:         #FAFAF8;
+      --bg2:        #F4F2EE;
+      --surface:    #FFFFFF;
+      --surface2:   #F7F5F1;
+      --border:     #E8E4DC;
+      --border2:    #D4CFC6;
+      --text:       #1A1A18;
+      --text2:      #4A4840;
+      --text3:      #7A7670;
+      --muted:      #9A9690;
+      --gold:       #C9A84C;
+      --gold-dim:   #A07C28;
+      --gold-light: #E2C878;
+      --gold-bg:    rgba(201,168,76,0.08);
+      --gold-bg2:   rgba(201,168,76,0.05);
+      --red:        #C0392B;
+      --green:      #27AE60;
+      --radius:     12px;
+      --radius-sm:  8px;
+      --radius-lg:  20px;
+      --shadow-sm:  0 1px 4px rgba(0,0,0,0.06);
+      --shadow:     0 2px 16px rgba(0,0,0,0.08);
+      --shadow-lg:  0 8px 40px rgba(0,0,0,0.12);
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-ui:      'Outfit', system-ui, sans-serif;
+      --font-mono:    'DM Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: var(--font-ui);
+      font-weight: 300;
+      background: var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+    h1, h2, h3, h4 { font-family: var(--font-display); }
+    a { color: inherit; text-decoration: none; }
+    button { font-family: var(--font-ui); cursor: pointer; }
+    img { display: block; }
+
+    /* ── TOPNAV ── */
+    .topnav {
+      position: sticky; top: 0; z-index: 100;
+      background: #121212;
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 32px; height: 60px;
+    }
+    .topnav-logo {
+      font-family: var(--font-display); font-weight: 300; font-size: 20px;
+      letter-spacing: 0.02em; color: #F0EDE8;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .topnav-logo strong { font-weight: 700; }
+    .topnav-logo .club { color: var(--gold); }
+    .topnav-right { display: flex; align-items: center; gap: 12px; }
+    .nav-link {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 400;
+      letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.45);
+      transition: color .15s; padding: 4px 0;
+    }
+    .nav-link:hover { color: rgba(255,255,255,0.9); }
+    .btn-nav {
+      padding: 8px 18px; border-radius: 20px; background: #F0EDE8;
+      color: #1A1A18; font-family: var(--font-mono); font-size: 10px;
+      font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      border: none; transition: background .15s;
+    }
+    .btn-nav:hover { background: #FFFFFF; }
+    .topnav-avatar {
+      width: 32px; height: 32px; border-radius: 50%; background: var(--gold-bg);
+      border: 1.5px solid var(--gold-dim); display: flex; align-items: center;
+      justify-content: center; font-family: var(--font-mono); font-size: 11px;
+      color: var(--gold); cursor: pointer; transition: border-color .15s;
+      overflow: hidden;
+    }
+    .topnav-avatar:hover { border-color: var(--gold); }
+    .topnav-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+
+    /* ── AUTH OVERLAY ── */
+    #auth-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(250,250,248,0.96); z-index: 500;
+      align-items: center; justify-content: center; padding: 24px;
+      backdrop-filter: blur(8px);
+    }
+    #auth-overlay.open { display: flex; }
+    .auth-card {
+      background: var(--surface); border-radius: var(--radius-lg);
+      border: 1px solid var(--border); padding: 48px 40px;
+      width: 100%; max-width: 400px; box-shadow: var(--shadow-lg);
+      position: relative;
+    }
+    .auth-card-logo {
+      font-family: var(--font-display); font-size: 32px; font-weight: 300;
+      text-align: center; margin-bottom: 4px;
+    }
+    .auth-card-logo strong { font-weight: 700; }
+    .auth-card-logo .gold { color: var(--gold); }
+    .auth-sub {
+      font-family: var(--font-mono); font-size: 9px; color: var(--muted);
+      letter-spacing: 0.2em; text-transform: uppercase; text-align: center; margin-bottom: 32px;
+    }
+    .auth-tabs { display: flex; border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 24px; }
+    .auth-tab {
+      flex: 1; padding: 9px; background: transparent; border: none;
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); transition: all .15s;
+    }
+    .auth-tab.active { background: var(--bg2); color: var(--text); }
+    .auth-label {
+      display: block; font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+    }
+    .auth-input {
+      width: 100%; padding: 12px 14px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); font-family: var(--font-ui); font-size: 15px;
+      background: var(--bg); color: var(--text); outline: none;
+      transition: border-color .2s; margin-bottom: 14px;
+    }
+    .auth-input:focus { border-color: var(--gold-dim); }
+    .btn-auth {
+      width: 100%; padding: 13px; background: var(--text); color: var(--bg);
+      border: none; border-radius: var(--radius-sm); font-family: var(--font-mono);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      transition: background .15s;
+    }
+    .btn-auth:hover { background: var(--text2); }
+    .auth-error { color: var(--red); font-family: var(--font-mono); font-size: 11px; margin-top: 8px; display: none; }
+    .auth-close {
+      position: absolute; top: 16px; right: 16px; background: transparent;
+      border: 1px solid var(--border); border-radius: 50%; width: 30px; height: 30px;
+      display: flex; align-items: center; justify-content: center; font-size: 14px;
+      color: var(--muted); transition: all .15s;
+    }
+    .auth-close:hover { border-color: var(--border2); color: var(--text); }
+
+    /* ── HERO ── */
+    .hero {
+      max-width: 1100px; margin: 0 auto; padding: 80px 32px 64px;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    .hero-eyebrow {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold);
+      margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+    }
+    .hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
+    .hero-title {
+      font-family: var(--font-display); font-size: 72px; font-weight: 300;
+      line-height: 1.0; color: var(--text); margin-bottom: 20px; letter-spacing: -0.01em;
+    }
+    .hero-title em { font-style: italic; color: var(--gold); }
+    .hero-body {
+      font-size: 17px; font-weight: 300; color: var(--text2); line-height: 1.7;
+      margin-bottom: 32px; max-width: 440px;
+    }
+    .hero-actions { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .btn-primary {
+      padding: 14px 28px; background: var(--text); color: var(--bg);
+      border: none; border-radius: var(--radius-sm); font-family: var(--font-mono);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      transition: background .15s;
+    }
+    .btn-primary:hover { background: var(--text2); }
+    .btn-secondary {
+      padding: 14px 28px; background: transparent; color: var(--text2);
+      border: 1px solid var(--border2); border-radius: var(--radius-sm); font-family: var(--font-mono);
+      font-size: 11px; font-weight: 400; letter-spacing: 0.12em; text-transform: uppercase;
+      transition: all .15s;
+    }
+    .btn-secondary:hover { border-color: var(--text); color: var(--text); }
+    .hero-stats { display: flex; gap: 32px; margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
+    .hero-stat-val { font-family: var(--font-display); font-size: 40px; font-weight: 600; color: var(--text); line-height: 1; }
+    .hero-stat-lbl { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--muted); margin-top: 4px; }
+
+    /* Hero book display */
+    .hero-book-wrap { position: relative; }
+    .hero-book-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 32px; box-shadow: var(--shadow-lg); position: relative; overflow: hidden;
+    }
+    .hero-book-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--gold), var(--gold-light));
+    }
+    .hero-book-label {
+      font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px;
+    }
+    .hero-book-cover {
+      width: 100%; aspect-ratio: 2/3; max-width: 160px; margin: 0 auto 20px;
+      background: var(--bg2); border-radius: 6px; overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.14);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 14px; color: var(--muted);
+      text-align: center; padding: 16px;
+    }
+    .hero-book-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .hero-book-title {
+      font-family: var(--font-display); font-size: 26px; font-weight: 600;
+      text-align: center; margin-bottom: 4px; line-height: 1.2;
+    }
+    .hero-book-author {
+      font-family: var(--font-mono); font-size: 10px; color: var(--muted);
+      text-align: center; letter-spacing: 0.08em; margin-bottom: 20px;
+    }
+    .meeting-countdown {
+      background: var(--bg2); border-radius: var(--radius-sm); padding: 16px;
+      text-align: center;
+    }
+    .countdown-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+    .countdown-timer { display: flex; justify-content: center; gap: 12px; }
+    .countdown-unit { text-align: center; }
+    .countdown-num { font-family: var(--font-display); font-size: 32px; font-weight: 600; color: var(--text); line-height: 1; }
+    .countdown-unit-lbl { font-family: var(--font-mono); font-size: 8px; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-top: 2px; }
+    .countdown-sep { font-family: var(--font-display); font-size: 28px; color: var(--border2); align-self: flex-start; padding-top: 4px; }
+
+    /* ── SECTION WRAPPER ── */
+    .section { max-width: 1100px; margin: 0 auto; padding: 64px 32px; }
+    .section-divider { border: none; border-top: 1px solid var(--border); max-width: 1100px; margin: 0 auto; }
+    .section-eyebrow {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+      letter-spacing: 0.24em; text-transform: uppercase; color: var(--gold);
+      margin-bottom: 12px; display: flex; align-items: center; gap: 10px;
+    }
+    .section-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
+    .section-title { font-family: var(--font-display); font-size: 48px; font-weight: 300; line-height: 1.1; margin-bottom: 8px; }
+    .section-title em { font-style: italic; color: var(--gold); }
+    .section-desc { font-size: 15px; font-weight: 300; color: var(--text2); line-height: 1.65; margin-bottom: 40px; max-width: 500px; }
+
+    /* ── CURRENT BOOK ── */
+    .current-book-grid {
+      display: grid; grid-template-columns: auto 1fr; gap: 48px; align-items: start;
+    }
+    .current-book-cover {
+      width: 200px; aspect-ratio: 2/3; background: var(--bg2); border-radius: 8px;
+      overflow: hidden; box-shadow: var(--shadow-lg);
+      display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-display); font-size: 14px; color: var(--muted); text-align: center; padding: 16px;
+      flex-shrink: 0;
+    }
+    .current-book-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .current-book-title { font-family: var(--font-display); font-size: 44px; font-weight: 400; line-height: 1.1; margin-bottom: 6px; }
+    .current-book-author { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; margin-bottom: 20px; }
+    .current-book-synopsis { font-size: 15px; font-weight: 300; color: var(--text2); line-height: 1.75; margin-bottom: 28px; }
+    .meeting-info {
+      background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px 24px; margin-bottom: 24px;
+      display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+    }
+    .meeting-info-item { display: flex; flex-direction: column; gap: 3px; }
+    .meeting-info-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); }
+    .meeting-info-value { font-size: 14px; font-weight: 500; color: var(--text); }
+    .meeting-info-divider { width: 1px; height: 36px; background: var(--border); }
+    .btn-rsvp {
+      padding: 13px 28px; background: var(--gold); color: var(--surface);
+      border: none; border-radius: var(--radius-sm); font-family: var(--font-mono);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      transition: background .15s;
+    }
+    .btn-rsvp:hover { background: var(--gold-dim); }
+    .btn-rsvp.rsvpd { background: var(--green); }
+    .rsvp-count { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 8px; }
+
+    /* ── VOTE SECTION ── */
+    .vote-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; }
+    .vote-card {
+      background: var(--surface); border: 1.5px solid var(--border); border-radius: var(--radius);
+      padding: 20px; cursor: pointer; transition: all .2s; position: relative; overflow: hidden;
+    }
+    .vote-card:hover { border-color: var(--border2); box-shadow: var(--shadow); }
+    .vote-card.selected { border-color: var(--gold); box-shadow: 0 0 0 3px var(--gold-bg); }
+    .vote-card.voted { cursor: default; }
+    .vote-card-cover {
+      width: 80px; aspect-ratio: 2/3; background: var(--bg2); border-radius: 4px;
+      margin-bottom: 12px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: var(--muted); text-align: center; padding: 8px;
+    }
+    .vote-card-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .vote-card-title { font-family: var(--font-display); font-size: 20px; font-weight: 600; line-height: 1.2; margin-bottom: 4px; }
+    .vote-card-author { font-family: var(--font-mono); font-size: 9px; color: var(--muted); letter-spacing: 0.08em; margin-bottom: 12px; }
+    .vote-bar-wrap { margin-top: 12px; display: none; }
+    .vote-card.voted .vote-bar-wrap { display: block; }
+    .vote-bar-track { height: 4px; background: var(--bg2); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+    .vote-bar-fill { height: 100%; background: var(--gold); border-radius: 2px; transition: width .6s ease; }
+    .vote-bar-label { font-family: var(--font-mono); font-size: 9px; color: var(--muted); display: flex; justify-content: space-between; }
+    .vote-check {
+      position: absolute; top: 12px; right: 12px; width: 22px; height: 22px;
+      border-radius: 50%; background: var(--gold); display: none;
+      align-items: center; justify-content: center; font-size: 11px; color: white;
+    }
+    .vote-card.selected .vote-check { display: flex; }
+    .vote-action-row { margin-top: 24px; display: flex; align-items: center; gap: 16px; }
+    .btn-vote {
+      padding: 12px 28px; background: var(--text); color: var(--bg);
+      border: none; border-radius: var(--radius-sm); font-family: var(--font-mono);
+      font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+      transition: background .15s;
+    }
+    .btn-vote:hover { background: var(--text2); }
+    .btn-vote:disabled { opacity: .4; cursor: not-allowed; }
+    .vote-note { font-family: var(--font-mono); font-size: 10px; color: var(--muted); }
+
+    /* ── DISCUSSION ── */
+    .discussion-compose {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px; margin-bottom: 24px;
+    }
+    .discussion-compose textarea {
+      width: 100%; border: none; outline: none; font-family: var(--font-ui);
+      font-size: 15px; font-weight: 300; color: var(--text); background: transparent;
+      resize: none; min-height: 60px; line-height: 1.6;
+    }
+    .discussion-compose textarea::placeholder { color: var(--muted); }
+    .compose-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 12px; padding-top: 12px; border-top: 1px solid var(--border);
+    }
+    .compose-hint { font-family: var(--font-mono); font-size: 9px; color: var(--muted); letter-spacing: 0.06em; }
+    .btn-post {
+      padding: 8px 20px; background: var(--gold); color: var(--surface); border: none;
+      border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 9px;
+      font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; transition: background .15s;
+    }
+    .btn-post:hover { background: var(--gold-dim); }
+    .comment-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 18px 20px; margin-bottom: 10px;
+    }
+    .comment-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+    .comment-avatar {
+      width: 32px; height: 32px; border-radius: 50%; background: var(--bg2);
+      border: 1px solid var(--border); display: flex; align-items: center;
+      justify-content: center; font-family: var(--font-mono); font-size: 11px;
+      color: var(--text3); flex-shrink: 0; overflow: hidden;
+    }
+    .comment-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
+    .comment-author { font-weight: 500; font-size: 13px; }
+    .comment-time { font-family: var(--font-mono); font-size: 10px; color: var(--muted); margin-top: 1px; }
+    .comment-body { font-size: 14px; font-weight: 300; line-height: 1.65; color: var(--text2); }
+    .comment-actions { display: flex; gap: 8px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+    .like-btn {
+      display: flex; align-items: center; gap: 5px; padding: 4px 10px;
+      border-radius: var(--radius-sm); border: 1px solid var(--border);
+      background: transparent; cursor: pointer; font-family: var(--font-mono);
+      font-size: 10px; color: var(--muted); transition: all .15s;
+    }
+    .like-btn:hover { border-color: var(--border2); color: var(--text2); }
+    .like-btn.liked { border-color: var(--gold-dim); color: var(--gold); background: var(--gold-bg2); }
+    .delete-btn {
+      margin-left: auto; background: none; border: none; cursor: pointer;
+      color: var(--muted); font-size: 12px; padding: 4px 8px; transition: color .15s;
+      font-family: var(--font-mono); font-size: 10px;
+    }
+    .delete-btn:hover { color: var(--red); }
+
+    /* ── READING HISTORY ── */
+    .history-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+    .history-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 20px; transition: box-shadow .2s;
+    }
+    .history-card:hover { box-shadow: var(--shadow); }
+    .history-cover {
+      width: 80px; aspect-ratio: 2/3; background: var(--bg2); border-radius: 4px;
+      margin-bottom: 12px; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; color: var(--muted); text-align: center; padding: 8px;
+    }
+    .history-cover img { width: 100%; height: 100%; object-fit: cover; }
+    .history-title { font-family: var(--font-display); font-size: 17px; font-weight: 600; line-height: 1.2; margin-bottom: 3px; }
+    .history-author { font-family: var(--font-mono); font-size: 9px; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 10px; }
+    .star-row { display: flex; gap: 2px; margin-bottom: 4px; }
+    .star { font-size: 13px; color: var(--border2); }
+    .star.filled { color: var(--gold); }
+    .history-avg { font-family: var(--font-mono); font-size: 9px; color: var(--muted); }
+
+    /* ── ADMIN PANEL ── */
+    #admin-panel {
+      background: var(--bg2); border-top: 2px solid var(--gold);
+      padding: 48px 32px;
+    }
+    .admin-inner { max-width: 1100px; margin: 0 auto; }
+    .admin-title {
+      font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 32px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .admin-title::before { content: '⬡'; }
+    .admin-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .admin-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 24px;
+    }
+    .admin-card-title { font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 16px; }
+    .field-label { display: block; font-family: var(--font-mono); font-size: 9px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+    .field-input, .field-textarea, .field-select {
+      width: 100%; padding: 10px 12px; border: 1px solid var(--border);
+      border-radius: var(--radius-sm); font-family: var(--font-ui); font-size: 14px;
+      font-weight: 300; background: var(--bg); color: var(--text); outline: none;
+      transition: border-color .2s; margin-bottom: 12px;
+    }
+    .field-input:focus, .field-textarea:focus, .field-select:focus { border-color: var(--gold-dim); }
+    .field-textarea { resize: vertical; min-height: 72px; line-height: 1.55; }
+    .field-select option { background: var(--bg2); }
+    .btn-admin {
+      padding: 10px 20px; background: var(--text); color: var(--bg);
+      border: none; border-radius: var(--radius-sm); font-family: var(--font-mono);
+      font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: background .15s;
+    }
+    .btn-admin:hover { background: var(--text2); }
+    .btn-admin-gold {
+      padding: 10px 20px; background: var(--gold); color: white;
+      border: none; border-radius: var(--radius-sm); font-family: var(--font-mono);
+      font-size: 10px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase;
+      transition: background .15s;
+    }
+    .btn-admin-gold:hover { background: var(--gold-dim); }
+    .admin-vote-candidate { display: flex; gap: 8px; margin-bottom: 8px; align-items: flex-start; }
+    .admin-remove-btn {
+      padding: 10px 12px; border: 1px solid var(--border); border-radius: var(--radius-sm);
+      background: transparent; color: var(--muted); font-size: 12px; transition: all .15s;
+      flex-shrink: 0;
+    }
+    .admin-remove-btn:hover { border-color: var(--red); color: var(--red); }
+
+    /* ── FOOTER ── */
+    .footer-outer {
+      background: #0a0a0a;
+      border-top: 1px solid #1e1e1e;
+    }
+    footer {
+      padding: 36px 48px;
+      max-width: 1100px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px;
+    }
+    .footer-logo {
+      font-family: var(--font-display); font-size: 20px; font-weight: 300;
+      color: #F0EDE8; letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .footer-logo .gold { color: #C9A84C; }
+    .footer-links { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; }
+    .footer-link {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 400;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: #908b86; transition: color .15s; white-space: nowrap;
+    }
+    .footer-link:hover { color: #C9A84C; }
+    .footer-copy {
+      font-family: var(--font-mono); font-size: 10px; font-weight: 300;
+      letter-spacing: 0.08em; color: #908b86; white-space: nowrap;
+    }
+    @media (max-width: 768px) {
+      footer {
+        padding: 28px 20px;
+        flex-direction: column; align-items: center; text-align: center; gap: 16px;
+      }
+      .footer-links { justify-content: center; }
+    }
+
+    /* ── TOAST ── */
+    #toast-container { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 8px; }
+    .toast {
+      background: var(--text); color: var(--bg); border-radius: var(--radius-sm);
+      padding: 12px 16px; font-family: var(--font-mono); font-size: 11px;
+      letter-spacing: 0.04em; box-shadow: var(--shadow-lg);
+      animation: toastIn .25s ease; max-width: 280px;
+    }
+    .toast.success { background: var(--green); }
+    .toast.error { background: var(--red); }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center; padding: 48px 24px;
+      border: 1.5px dashed var(--border); border-radius: var(--radius);
+    }
+    .empty-icon { font-size: 32px; margin-bottom: 12px; opacity: 0.5; }
+    .empty-title { font-family: var(--font-display); font-size: 24px; font-weight: 300; color: var(--text2); margin-bottom: 6px; }
+    .empty-desc { font-family: var(--font-mono); font-size: 11px; color: var(--muted); line-height: 1.65; }
+
+    /* ── LOADING ── */
+    .loading-inline { display: flex; align-items: center; gap: 10px; padding: 24px 0; color: var(--muted); font-family: var(--font-mono); font-size: 11px; }
+    .loading-spinner { width: 16px; height: 16px; border: 1.5px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin .7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .topnav { padding: 0 16px; }
+      .topnav-logo { font-size: 17px; }
+      .nav-link { display: none; }
+      .hero { grid-template-columns: 1fr; gap: 40px; padding: 48px 16px 40px; }
+      .hero-title { font-size: 52px; }
+      .hero-book-card { max-width: 360px; margin: 0 auto; }
+      .section { padding: 48px 16px; }
+      .section-title { font-size: 36px; }
+      .current-book-grid { grid-template-columns: 1fr; }
+      .current-book-cover { width: 140px; }
+      .admin-grid { grid-template-columns: 1fr; }
+      .hero-stats { gap: 20px; }
+      #admin-panel { padding: 32px 16px; }
+      footer { flex-direction: column; padding: 24px 16px; }
+    }
+
+    /* ── FADE IN ANIMATION ── */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { animation: fadeUp .5s ease forwards; }
+    .fade-up-1 { animation: fadeUp .5s .1s ease both; }
+    .fade-up-2 { animation: fadeUp .5s .2s ease both; }
+    .fade-up-3 { animation: fadeUp .5s .3s ease both; }
+    .fade-up-4 { animation: fadeUp .5s .4s ease both; }
+
+    /* ── USER MENU ── */
+    .user-menu-wrap { position: relative; }
+    .user-dropdown {
+      display: none; position: absolute; top: calc(100% + 8px); right: 0;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 8px; min-width: 180px;
+      box-shadow: var(--shadow-lg); z-index: 200;
+    }
+    .user-dropdown.open { display: block; }
+    .user-dropdown-name { font-size: 13px; font-weight: 500; padding: 8px 12px 4px; }
+    .user-dropdown-email { font-family: var(--font-mono); font-size: 10px; color: var(--muted); padding: 0 12px 10px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+    .dropdown-item {
+      padding: 8px 12px; border-radius: 6px; font-family: var(--font-mono);
+      font-size: 10px; letter-spacing: 0.06em; color: var(--text2); cursor: pointer;
+      transition: background .1s; border: none; background: none; width: 100%; text-align: left;
+    }
+    .dropdown-item:hover { background: var(--bg2); }
+    .dropdown-item.danger { color: var(--red); }
+
+    /* Misc */
+    .tag {
+      display: inline-block; padding: 3px 10px; border-radius: 20px;
+      border: 1px solid var(--gold-dim); color: var(--gold); background: var(--gold-bg2);
+      font-family: var(--font-mono); font-size: 8px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase;
+    }
+  </style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div id="toast-container"></div>
+
+<!-- AUTH OVERLAY -->
+<div id="auth-overlay">
+  <div class="auth-card">
+    <button class="auth-close" onclick="closeAuth()">✕</button>
+    <div class="auth-card-logo"><strong>Templeton</strong> <span class="gold">Book Club</span></div>
+    <div class="auth-sub">Free membership · Read together</div>
+    <!-- Login -->
+    <div id="auth-login">
+      <label class="auth-label">Email</label>
+      <input class="auth-input" type="email" id="login-email" placeholder="you@email.com" autocomplete="email" />
+      <label class="auth-label">Password</label>
+      <input class="auth-input" type="password" id="login-password" placeholder="••••••••" autocomplete="current-password" />
+      <button class="btn-auth" onclick="handleLogin()">Sign In</button>
+      <div class="auth-error" id="login-error"></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOPNAV -->
+<nav class="topnav">
+  <div class="topnav-logo">
+    <strong>Templeton</strong>
+    <span class="club">Book Club</span>
+  </div>
+  <div class="topnav-right">
+    <a href="#points" class="nav-link">Earn Points</a>
+    <a href="#history" class="nav-link">Previously Read</a>
+    <a href="bookclub-app.html" class="nav-link" id="nav-members-link" style="display:none;">My Club →</a>
+    <div id="auth-btn-wrap">
+      <button class="btn-nav" onclick="openAuth('login')">Member Login</button>
+    </div>
+    <div id="user-nav" style="display:none;">
+      <div class="user-menu-wrap">
+        <div class="topnav-avatar" id="topnav-avatar" onclick="toggleUserMenu()">—</div>
+        <div class="user-dropdown" id="user-dropdown">
+          <div class="user-dropdown-name" id="dropdown-name">—</div>
+          <div class="user-dropdown-email" id="dropdown-email">—</div>
+          <a href="bookclub-app.html" class="dropdown-item" style="display:block;">Enter the Club →</a>
+          <button class="dropdown-item danger" onclick="handleSignOut()">Sign Out</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-eyebrow fade-up">Templeton Book Club</div>
+    <h1 class="hero-title fade-up-1">Read <em>more.</em><br>Think deeper.</h1>
+    <p class="hero-body fade-up-2">A monthly book club for photographers, videographers, and creative solopreneurs who believe great reading makes you sharper at everything — including your business. One book. Monthly discussion guides. A live Zoom. Every month.</p>
+    <div class="hero-actions fade-up-3">
+      <button class="btn-primary" id="hero-join-btn" onclick="openInviteRequest()">Request an Invite</button>
+      <a href="#current" class="btn-secondary">This Month's Book</a>
+    </div>
+    <div class="hero-stats fade-up-4">
+      <div>
+        <div class="hero-stat-val" id="stat-members">—</div>
+        <div class="hero-stat-lbl">Members</div>
+      </div>
+      <div>
+        <div class="hero-stat-val" id="stat-books">—</div>
+        <div class="hero-stat-lbl">Books Read</div>
+      </div>
+      <div>
+        <div class="hero-stat-val" id="stat-comments">—</div>
+        <div class="hero-stat-lbl">Discussions</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-book-wrap fade-up-2">
+    <div class="hero-book-card">
+      <div class="hero-book-label">📖 Now Reading</div>
+      <div class="hero-book-cover" id="hero-cover">
+        <span>No book set yet</span>
+      </div>
+      <div class="hero-book-title" id="hero-title">—</div>
+      <div class="hero-book-author" id="hero-author">—</div>
+      <div class="meeting-countdown" id="hero-countdown">
+        <div class="countdown-label">Next Meeting In</div>
+        <div class="countdown-timer" id="countdown-timer">
+          <div class="countdown-unit"><div class="countdown-num" id="cd-days">—</div><div class="countdown-unit-lbl">Days</div></div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-unit"><div class="countdown-num" id="cd-hours">—</div><div class="countdown-unit-lbl">Hours</div></div>
+          <div class="countdown-sep">:</div>
+          <div class="countdown-unit"><div class="countdown-num" id="cd-mins">—</div><div class="countdown-unit-lbl">Mins</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how">
+  <div class="section-eyebrow">How It Works</div>
+  <h2 class="section-title">One book. One month. One <em>community.</em></h2>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:24px;margin-top:8px;">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;">
+      <div style="font-size:28px;margin-bottom:12px;">📖</div>
+      <div style="font-family:var(--font-display);font-size:22px;font-weight:600;margin-bottom:8px;">Read Together</div>
+      <div style="font-size:14px;font-weight:300;color:var(--text2);line-height:1.65;">One business or creative book per month, curated for photographers, videographers, and solopreneurs.</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;">
+      <div style="font-size:28px;margin-bottom:12px;">🗳️</div>
+      <div style="font-family:var(--font-display);font-size:22px;font-weight:600;margin-bottom:8px;">Members Vote</div>
+      <div style="font-size:14px;font-weight:300;color:var(--text2);line-height:1.65;">Members vote on the next book and meeting date. Your input shapes what we read.</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;">
+      <div style="font-size:28px;margin-bottom:12px;">💬</div>
+      <div style="font-family:var(--font-display);font-size:22px;font-weight:600;margin-bottom:8px;">Discuss & Share</div>
+      <div style="font-size:14px;font-weight:300;color:var(--text2);line-height:1.65;">Post thoughts, share passages with page references, ask the group a question. Filter the feed by Top Passages or open questions anytime.</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;">
+      <div style="font-size:28px;margin-bottom:12px;">📊</div>
+      <div style="font-family:var(--font-display);font-size:22px;font-weight:600;margin-bottom:8px;">Track Your Progress</div>
+      <div style="font-size:14px;font-weight:300;color:var(--text2);line-height:1.65;">Log your current page inside the member platform. See your progress bar update in real time as you read through the month.</div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:28px 24px;">
+      <div style="font-size:28px;margin-bottom:12px;">🎥</div>
+      <div style="font-family:var(--font-display);font-size:22px;font-weight:600;margin-bottom:8px;">Monthly Zoom</div>
+      <div style="font-size:14px;font-weight:300;color:var(--text2);line-height:1.65;">Live discussion with Nate and the group. One hour, once a month. Real conversation, no fluff. Recordings available after each session.</div>
+    </div>
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- POINTS & LEADERBOARD -->
+<section class="section" id="points">
+  <div class="section-eyebrow">Membership Perks</div>
+  <h2 class="section-title">Read. Share. <em>Climb.</em></h2>
+  <p style="font-size:15px;font-weight:300;color:var(--text2);line-height:1.7;margin-bottom:40px;max-width:520px;">Every time you engage in the member platform, you earn points. Share a passage that moved you, ask a question, RSVP to a meeting, show up on Zoom — it all adds up. The more you give to the community, the higher you climb.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:40px;">
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;display:flex;align-items:flex-start;gap:16px;">
+      <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--gold);line-height:1;flex-shrink:0;">+5</div>
+      <div>
+        <div style="font-weight:500;font-size:14px;margin-bottom:3px;">Share a Passage</div>
+        <div style="font-size:13px;font-weight:300;color:var(--text3);line-height:1.55;">Quote something from the book that stood out. Earn an extra point every time someone likes it.</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;display:flex;align-items:flex-start;gap:16px;">
+      <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--gold);line-height:1;flex-shrink:0;">+2</div>
+      <div>
+        <div style="font-weight:500;font-size:14px;margin-bottom:3px;">Post a Thought or Question</div>
+        <div style="font-size:13px;font-weight:300;color:var(--text3);line-height:1.55;">Share a reaction, reflection, or open a question to the group. Every post counts.</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;display:flex;align-items:flex-start;gap:16px;">
+      <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--gold);line-height:1;flex-shrink:0;">+3</div>
+      <div>
+        <div style="font-weight:500;font-size:14px;margin-bottom:3px;">RSVP to the Meeting</div>
+        <div style="font-size:13px;font-weight:300;color:var(--text3);line-height:1.55;">Commit to showing up. Points awarded when you RSVP inside the member platform.</div>
+      </div>
+    </div>
+    <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;display:flex;align-items:flex-start;gap:16px;">
+      <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--gold);line-height:1;flex-shrink:0;">+10</div>
+      <div>
+        <div style="font-weight:500;font-size:14px;margin-bottom:3px;">Attend the Zoom</div>
+        <div style="font-size:13px;font-weight:300;color:var(--text3);line-height:1.55;">Show up live. The biggest single points award goes to members who actually attend.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Badge preview -->
+  <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:28px 32px;">
+    <div style="font-family:var(--font-display);font-size:22px;font-weight:700;color:var(--text);margin-bottom:20px;">Badges You Can Earn</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);border-radius:20px;font-size:13px;font-weight:300;">⭐ Founding Member</div>
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);border-radius:20px;font-size:13px;font-weight:300;">📖 First Chapter</div>
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);border-radius:20px;font-size:13px;font-weight:300;">✍️ Annotator</div>
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);border-radius:20px;font-size:13px;font-weight:300;">🔥 On a Roll</div>
+      <div style="display:flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);border-radius:20px;font-size:13px;font-weight:300;">🏆 Top Reader</div>
+    </div>
+  </div>
+
+</section>
+
+<hr class="section-divider" />
+
+<!-- PREVIOUSLY READ -->
+<section class="section" id="history">
+  <div class="section-eyebrow">Previously Read</div>
+  <h2 class="section-title">Books We've <em>Read</em></h2>
+  <div id="history-content">
+    <div class="loading-inline"><div class="loading-spinner"></div> Loading…</div>
+  </div>
+</section>
+
+<hr class="section-divider" />
+
+<!-- INVITE REQUEST -->
+<section class="section" id="join" style="text-align:center;max-width:600px;margin:0 auto;padding:80px 32px;">
+  <div class="section-eyebrow" style="justify-content:center;">Membership</div>
+  <h2 class="section-title" style="margin-bottom:12px;">Invite <em>Only</em></h2>
+  <p style="font-size:16px;font-weight:300;color:var(--text2);line-height:1.7;margin-bottom:36px;">The Templeton Book Club is a small, intentional community. Membership is by invitation. If you'd like to join, leave your email and Nate will reach out.</p>
+  <div id="invite-form" style="max-width:400px;margin:0 auto;">
+    <input class="field-input" type="text" id="req-name" placeholder="Your name" style="margin-bottom:12px;" />
+    <input class="field-input" type="email" id="req-email" placeholder="Your email" style="margin-bottom:16px;" />
+    <button class="btn-primary" style="width:100%;padding:14px;" onclick="submitInviteRequest()">Request an Invite</button>
+  </div>
+  <div id="invite-success" style="display:none;padding:24px;background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);margin-top:16px;">
+    <div style="font-family:var(--font-display);font-size:24px;font-weight:300;margin-bottom:8px;">Request received.</div>
+    <div style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">Nate will be in touch. Keep reading.</div>
+  </div>
+</section>
+
+<!-- ADMIN PANEL -->
+<div id="admin-panel" style="display:none;">
+  <div class="admin-inner">
+    <div class="admin-title">Admin — Nate's Controls</div>
+    <div class="admin-grid">
+
+      <!-- Set Current Book -->
+      <div class="admin-card">
+        <div class="admin-card-title">Set Current Book</div>
+        <label class="field-label">Title</label>
+        <input class="field-input" id="admin-book-title" placeholder="Book title" />
+        <label class="field-label">Author</label>
+        <input class="field-input" id="admin-book-author" placeholder="Author name" />
+        <label class="field-label">Synopsis</label>
+        <textarea class="field-textarea" id="admin-book-synopsis" placeholder="Brief synopsis…"></textarea>
+        <label class="field-label">Cover Image URL (optional)</label>
+        <input class="field-input" id="admin-book-cover" placeholder="https://…" />
+        <label class="field-label">Meeting Date & Time</label>
+        <input class="field-input" type="datetime-local" id="admin-meeting-date" />
+        <label class="field-label">Zoom Link</label>
+        <input class="field-input" id="admin-zoom-link" placeholder="https://zoom.us/j/…" />
+        <button class="btn-admin-gold" onclick="adminSetCurrentBook()">Set as Current Book</button>
+      </div>
+
+      <!-- Vote Candidates -->
+      <div class="admin-card">
+        <div class="admin-card-title">Set Vote Candidates</div>
+        <div id="admin-candidates-list"></div>
+        <div class="admin-vote-candidate" id="admin-cand-new">
+          <div style="flex:1;">
+            <label class="field-label">Title</label>
+            <input class="field-input" id="admin-cand-title" placeholder="Book title" />
+            <label class="field-label">Author</label>
+            <input class="field-input" id="admin-cand-author" placeholder="Author" />
+            <label class="field-label">Cover URL (optional)</label>
+            <input class="field-input" id="admin-cand-cover" placeholder="https://…" />
+          </div>
+        </div>
+        <div style="display:flex; gap:8px; margin-bottom:16px;">
+          <button class="btn-admin" onclick="adminAddCandidate()">+ Add Book</button>
+        </div>
+        <button class="btn-admin-gold" onclick="adminSaveCandidates()">Save Vote Candidates</button>
+        <div style="margin-top:12px;">
+          <button class="btn-admin" onclick="adminResetVotes()" style="background:var(--bg2);color:var(--text2);border:1px solid var(--border);">Reset All Votes</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer-outer">
+<footer>
+  <div class="footer-logo">Templeton <span class="gold">Book Club</span></div>
+  <div class="footer-links">
+    <a href="https://natetempleton.com" class="footer-link" target="_blank">Nate Templeton</a>
+    <a href="https://theaccountabilityco.com/" class="footer-link" target="_blank">The Accountability Challenge Co.</a>
+    <a href="bookclub-privacy.html" class="footer-link">Privacy Policy</a>
+    <a href="bookclub-contact.html" class="footer-link">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 Templeton Image LLC</div>
+</footer>
+</div>
+
+<!-- FIREBASE + LOGIC -->
+<script type="module">
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+         onAuthStateChanged, signOut, updateProfile }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, deleteDoc,
+         collection, query, orderBy, getDocs, onSnapshot, serverTimestamp,
+         increment, limit, where, getCountFromServer }
+  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ── CONFIG — Replace with your new Firebase project config ──
+const firebaseConfig = {
+    apiKey: "AIzaSyCRU_qm3EdRNynCzHc4kdByU9Pp6A6ehMk",
+    authDomain: "templeton-bookclub.firebaseapp.com",
+    projectId: "templeton-bookclub",
+    storageBucket: "templeton-bookclub.firebasestorage.app",
+    messagingSenderId: "487783989047",
+    appId: "1:487783989047:web:164bb0305081feda0f24b2",
+};
+
+const ADMIN_EMAIL = "nate@templetonimage.com";
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+// ── STATE ──
+let currentUser   = null;
+let currentBookId = null;
+let voteData      = null;
+let _discUnsub    = null;
+let _adminCandidates = [];
+let _meetingDate  = null;
+
+// ══════════════════════════════════════════
+// AUTH
+// ══════════════════════════════════════════
+window.openAuth = (tab = 'login') => {
+  document.getElementById('auth-overlay').classList.add('open');
+  switchAuthTab(tab);
+};
+window.closeAuth = () => document.getElementById('auth-overlay').classList.remove('open');
+
+window.switchAuthTab = (tab) => {
+  document.getElementById('auth-login').style.display  = tab === 'login'  ? 'block' : 'none';
+  document.getElementById('auth-signup').style.display = tab === 'signup' ? 'block' : 'none';
+  document.getElementById('atab-login').classList.toggle('active',  tab === 'login');
+  document.getElementById('atab-signup').classList.toggle('active', tab === 'signup');
+};
+
+window.handleLogin = async () => {
+  const email = document.getElementById('login-email').value.trim();
+  const pass  = document.getElementById('login-password').value;
+  const errEl = document.getElementById('login-error');
+  errEl.style.display = 'none';
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+    closeAuth();
+  } catch(e) {
+    errEl.textContent = friendlyError(e.code);
+    errEl.style.display = 'block';
+  }
+};
+
+window.handleSignup = async () => {
+  const name  = document.getElementById('signup-name').value.trim();
+  const email = document.getElementById('signup-email').value.trim();
+  const pass  = document.getElementById('signup-password').value;
+  const errEl = document.getElementById('signup-error');
+  errEl.style.display = 'none';
+  if (!name) { errEl.textContent = 'Please enter your name.'; errEl.style.display = 'block'; return; }
+  if (pass.length < 8) { errEl.textContent = 'Password must be at least 8 characters.'; errEl.style.display = 'block'; return; }
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pass);
+    await updateProfile(cred.user, { displayName: name });
+    await setDoc(doc(db, 'members', cred.user.uid), {
+      name, email, joinedAt: serverTimestamp()
+    });
+    closeAuth();
+    toast('Welcome to Templeton Book Club!', 'success');
+  } catch(e) {
+    errEl.textContent = friendlyError(e.code);
+    errEl.style.display = 'block';
+  }
+};
+
+window.handleSignOut = async () => {
+  if (_discUnsub) { _discUnsub(); _discUnsub = null; }
+  await signOut(auth);
+  toggleUserMenu(true);
+};
+
+window.toggleUserMenu = (forceClose) => {
+  const dd = document.getElementById('user-dropdown');
+  if (forceClose) { dd.classList.remove('open'); return; }
+  dd.classList.toggle('open');
+};
+
+document.addEventListener('click', (e) => {
+  if (!e.target.closest('.user-menu-wrap')) {
+    document.getElementById('user-dropdown')?.classList.remove('open');
+  }
+});
+
+function friendlyError(code) {
+  const map = {
+    'auth/user-not-found': 'No account found with that email.',
+    'auth/wrong-password': 'Incorrect password.',
+    'auth/email-already-in-use': 'An account with this email already exists.',
+    'auth/weak-password': 'Password must be at least 8 characters.',
+    'auth/invalid-email': 'Please enter a valid email address.',
+    'auth/too-many-requests': 'Too many attempts. Please try again later.',
+    'auth/invalid-credential': 'Incorrect email or password.',
+  };
+  return map[code] || 'Something went wrong. Please try again.';
+}
+
+onAuthStateChanged(auth, async (user) => {
+  if (user) {
+    currentUser = { uid: user.uid, name: user.displayName || 'Member', email: user.email };
+    const isAdmin = user.email.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+    // Update nav
+    document.getElementById('auth-btn-wrap').style.display = 'none';
+    document.getElementById('user-nav').style.display = 'block';
+    document.getElementById('nav-members-link').style.display = 'inline';
+    document.getElementById('topnav-avatar').textContent = initials(currentUser.name);
+    document.getElementById('dropdown-name').textContent  = currentUser.name;
+    document.getElementById('dropdown-email').textContent = currentUser.email;
+    // Hero btn → enter the club
+    document.getElementById('hero-join-btn').textContent = 'Enter the Club →';
+    document.getElementById('hero-join-btn').onclick = () => window.location.href = 'bookclub-app.html';
+    // Admin
+    if (isAdmin) document.getElementById('admin-panel').style.display = 'block';
+  } else {
+    currentUser = null;
+    document.getElementById('auth-btn-wrap').style.display = 'block';
+    document.getElementById('user-nav').style.display = 'none';
+    document.getElementById('hero-join-btn').textContent = 'Join Free';
+    document.getElementById('hero-join-btn').onclick = () => openAuth('signup');
+    document.getElementById('admin-panel').style.display = 'none';
+    loadVote();
+    if (currentBookId) loadDiscussion(currentBookId);
+  }
+});
+
+// ══════════════════════════════════════════
+// BOOT
+// ══════════════════════════════════════════
+async function boot() {
+  loadHistory();
+  loadStats();
+}
+boot();
+
+// ══════════════════════════════════════════
+// CURRENT BOOK
+// ══════════════════════════════════════════
+async function loadCurrentBook() {
+  const el = document.getElementById('current-book-content');
+  try {
+    const snap = await getDocs(query(collection(db, 'bookclub_books'), where('status', '==', 'current'), limit(1)));
+    if (snap.empty) {
+      renderNoCurrentBook();
+      return;
+    }
+    const bookDoc = snap.docs[0];
+    currentBookId = bookDoc.id;
+    const b = bookDoc.data();
+    renderCurrentBook(b);
+    renderHeroBook(b);
+    if (b.meetingDate) {
+      _meetingDate = b.meetingDate.toDate ? b.meetingDate.toDate() : new Date(b.meetingDate);
+      startCountdown(_meetingDate);
+    }
+    loadDiscussion(currentBookId);
+  } catch(e) {
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📚</div><div class="empty-title">Coming Soon</div><div class="empty-desc">The first book will be announced shortly.</div></div>`;
+  }
+}
+
+function renderNoCurrentBook() {
+  document.getElementById('current-book-content').innerHTML = `
+    <div class="empty-state">
+      <div class="empty-icon">📚</div>
+      <div class="empty-title">No book set yet</div>
+      <div class="empty-desc">Check back soon — Nate will announce the first pick.</div>
+    </div>`;
+  document.getElementById('hero-title').textContent = 'Coming soon';
+  document.getElementById('hero-author').textContent = '';
+}
+
+function renderHeroBook(b) {
+  document.getElementById('hero-title').textContent  = b.title || '—';
+  document.getElementById('hero-author').textContent = b.author ? 'by ' + b.author : '';
+  if (b.coverUrl) {
+    document.getElementById('hero-cover').innerHTML = `<img src="${esc(b.coverUrl)}" alt="${esc(b.title)}" onerror="this.parentElement.innerHTML='<span>${esc(b.title)}</span>'">`;
+  } else {
+    document.getElementById('hero-cover').innerHTML = `<span>${esc(b.title || 'No cover')}</span>`;
+  }
+}
+
+function renderCurrentBook(b) {
+  const rsvpCount = b.rsvpCount || 0;
+  const hasRsvpd  = b.rsvps && currentUser && b.rsvps[currentUser.uid];
+  const meetStr   = b.meetingDate ? formatMeetingDate(b.meetingDate) : 'TBA';
+  const coverHtml = b.coverUrl
+    ? `<img src="${esc(b.coverUrl)}" alt="${esc(b.title)}" onerror="this.parentElement.innerHTML='<span>${esc(b.title)}</span>'">`
+    : `<span>${esc(b.title || '')}</span>`;
+
+  document.getElementById('current-book-content').innerHTML = `
+    <div class="current-book-grid">
+      <div class="current-book-cover">${coverHtml}</div>
+      <div>
+        <div style="margin-bottom:8px;"><span class="tag">Now Reading</span></div>
+        <div class="current-book-title">${esc(b.title || '—')}</div>
+        <div class="current-book-author">by ${esc(b.author || '—')}</div>
+        <p class="current-book-synopsis">${esc(b.synopsis || '')}</p>
+        <div class="meeting-info">
+          <div class="meeting-info-item">
+            <span class="meeting-info-label">Meeting Date</span>
+            <span class="meeting-info-value">${meetStr}</span>
+          </div>
+          ${b.zoomLink ? `
+          <div class="meeting-info-divider"></div>
+          <div class="meeting-info-item">
+            <span class="meeting-info-label">Format</span>
+            <span class="meeting-info-value">Zoom Video Call</span>
+          </div>` : ''}
+        </div>
+        <div style="display:flex; align-items:center; gap:16px; flex-wrap:wrap;">
+          ${b.zoomLink && hasRsvpd
+            ? `<a href="${esc(b.zoomLink)}" target="_blank" rel="noopener" class="btn-rsvp rsvpd">✓ Join Zoom →</a>`
+            : `<button class="btn-rsvp ${hasRsvpd ? 'rsvpd' : ''}" id="rsvp-btn" onclick="handleRsvp('${currentBookId}')">${hasRsvpd ? "✓ You're In" : "RSVP to Meeting"}</button>`}
+        </div>
+        <div class="rsvp-count" id="rsvp-count">${rsvpCount} reader${rsvpCount !== 1 ? 's' : ''} attending</div>
+      </div>
+    </div>`;
+}
+
+function formatMeetingDate(ts) {
+  try {
+    const d = ts.toDate ? ts.toDate() : new Date(ts);
+    return d.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: '2-digit', timeZoneName: 'short' });
+  } catch { return 'TBA'; }
+}
+
+window.handleRsvp = async (bookId) => {
+  if (!currentUser) { openAuth('signup'); return; }
+  const bookRef = doc(db, 'bookclub_books', bookId);
+  const snap = await getDoc(bookRef);
+  const rsvps = snap.data().rsvps || {};
+  if (rsvps[currentUser.uid]) {
+    toast("You're already RSVP'd!", 'success');
+    return;
+  }
+  await updateDoc(bookRef, {
+    [`rsvps.${currentUser.uid}`]: true,
+    rsvpCount: increment(1)
+  });
+  toast("You're in! See you on Zoom.", 'success');
+  loadCurrentBook();
+};
+
+// ══════════════════════════════════════════
+// COUNTDOWN
+// ══════════════════════════════════════════
+function startCountdown(targetDate) {
+  function tick() {
+    const now  = Date.now();
+    const diff = targetDate - now;
+    if (diff <= 0) {
+      document.getElementById('cd-days').textContent  = '0';
+      document.getElementById('cd-hours').textContent = '0';
+      document.getElementById('cd-mins').textContent  = '0';
+      return;
+    }
+    const days  = Math.floor(diff / 86400000);
+    const hours = Math.floor((diff % 86400000) / 3600000);
+    const mins  = Math.floor((diff % 3600000)  / 60000);
+    document.getElementById('cd-days').textContent  = days;
+    document.getElementById('cd-hours').textContent = hours;
+    document.getElementById('cd-mins').textContent  = String(mins).padStart(2, '0');
+  }
+  tick();
+  setInterval(tick, 30000);
+}
+
+// ══════════════════════════════════════════
+// VOTE
+// ══════════════════════════════════════════
+async function loadVote() {
+  const el = document.getElementById('vote-content');
+  try {
+    const voteSnap = await getDoc(doc(db, 'bookclub_vote', 'current'));
+    if (!voteSnap.exists() || !voteSnap.data().candidates?.length) {
+      el.innerHTML = `<div class="empty-state"><div class="empty-icon">🗳️</div><div class="empty-title">Voting opens soon</div><div class="empty-desc">Candidates for next month's book will be posted here.</div></div>`;
+      return;
+    }
+    voteData = voteSnap.data();
+    const candidates  = voteData.candidates || [];
+    const userVote    = currentUser ? (voteData.votes || {})[currentUser.uid] : null;
+    const hasVoted    = !!userVote;
+    const totalVotes  = Object.values(voteData.votes || {}).length;
+
+    el.innerHTML = `
+      <div class="vote-grid" id="vote-grid">
+        ${candidates.map((c, i) => {
+          const voteCount = Object.values(voteData.votes || {}).filter(v => v === c.id).length;
+          const pct = totalVotes > 0 ? Math.round((voteCount / totalVotes) * 100) : 0;
+          const coverHtml = c.coverUrl
+            ? `<img src="${esc(c.coverUrl)}" alt="${esc(c.title)}" onerror="this.parentElement.innerHTML='<span>${esc(c.title)}</span>'">`
+            : `<span>${esc(c.title || '')}</span>`;
+          return `
+            <div class="vote-card ${hasVoted ? 'voted' : ''} ${userVote === c.id ? 'selected' : ''}" id="vcard-${c.id}" onclick="${hasVoted ? '' : `selectVote('${c.id}')`}">
+              <div class="vote-check">✓</div>
+              <div class="vote-card-cover">${coverHtml}</div>
+              <div class="vote-card-title">${esc(c.title)}</div>
+              <div class="vote-card-author">${esc(c.author || '')}</div>
+              <div class="vote-bar-wrap">
+                <div class="vote-bar-track"><div class="vote-bar-fill" style="width:${pct}%"></div></div>
+                <div class="vote-bar-label"><span>${voteCount} vote${voteCount !== 1 ? 's' : ''}</span><span>${pct}%</span></div>
+              </div>
+            </div>`;
+        }).join('')}
+      </div>
+      <div class="vote-action-row">
+        <button class="btn-vote" id="vote-submit-btn" onclick="submitVote()" ${hasVoted || !currentUser ? 'disabled' : ''}>
+          ${hasVoted ? 'Vote Cast ✓' : 'Submit Vote'}
+        </button>
+        <span class="vote-note" id="vote-note">
+          ${!currentUser ? '<a href="#" onclick="openAuth(\'signup\'); return false;" style="color:var(--gold);">Join free</a> to vote' : hasVoted ? `You voted · ${totalVotes} total vote${totalVotes !== 1 ? 's' : ''}` : 'Select a book then submit'}
+        </span>
+      </div>`;
+  } catch(e) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">🗳️</div><div class="empty-title">Voting coming soon</div></div>';
+  }
+}
+
+let _selectedVote = null;
+window.selectVote = (candidateId) => {
+  _selectedVote = candidateId;
+  document.querySelectorAll('.vote-card').forEach(c => {
+    c.classList.toggle('selected', c.id === 'vcard-' + candidateId);
+  });
+  document.getElementById('vote-submit-btn').disabled = false;
+};
+
+window.submitVote = async () => {
+  if (!currentUser) { openAuth('signup'); return; }
+  if (!_selectedVote) return;
+  const voteRef = doc(db, 'bookclub_vote', 'current');
+  await updateDoc(voteRef, { [`votes.${currentUser.uid}`]: _selectedVote });
+  toast('Vote cast!', 'success');
+  loadVote();
+};
+
+// ══════════════════════════════════════════
+// DISCUSSION
+// ══════════════════════════════════════════
+function loadDiscussion(bookId) {
+  if (_discUnsub) { _discUnsub(); _discUnsub = null; }
+  const el = document.getElementById('discussion-content');
+
+  const composeHtml = currentUser ? `
+    <div class="discussion-compose">
+      <textarea id="disc-compose-text" placeholder="Share a thought about this month's book…" rows="2"></textarea>
+      <div class="compose-footer">
+        <span class="compose-hint">Visible to all members</span>
+        <button class="btn-post" onclick="postComment('${bookId}')">Post</button>
+      </div>
+    </div>` : `
+    <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;margin-bottom:20px;text-align:center;">
+      <span style="font-family:var(--font-mono);font-size:11px;color:var(--muted);">
+        <a href="#" onclick="openAuth('signup');return false;" style="color:var(--gold);">Join free</a> to join the discussion
+      </span>
+    </div>`;
+
+  const q = query(collection(db, 'bookclub_comments', bookId, 'comments'), orderBy('ts', 'desc'), limit(50));
+  _discUnsub = onSnapshot(q, (snap) => {
+    const commentsHtml = snap.empty
+      ? `<div class="empty-state"><div class="empty-icon">💬</div><div class="empty-title">No comments yet</div><div class="empty-desc">Be the first to share your thoughts on this book.</div></div>`
+      : snap.docs.map(d => renderComment(d.id, d.data(), bookId)).join('');
+    el.innerHTML = composeHtml + commentsHtml;
+  }, () => {
+    el.innerHTML = composeHtml + '<div class="empty-state"><div class="empty-desc">Could not load discussion.</div></div>';
+  });
+}
+
+function renderComment(id, c, bookId) {
+  const isOwn   = currentUser?.uid === c.uid;
+  const isAdmin = currentUser?.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase();
+  const likes   = c.likes || 0;
+  const liked   = !!c.likedBy?.[currentUser?.uid];
+  const av = initials(c.authorName || '?');
+  return `<div class="comment-card" id="cmt-${id}">
+    <div class="comment-header">
+      <div class="comment-avatar">${av}</div>
+      <div>
+        <div class="comment-author">${esc(c.authorName || 'Member')}</div>
+        <div class="comment-time">${timeAgo(c.ts)}</div>
+      </div>
+    </div>
+    <div class="comment-body">${esc(c.body || '')}</div>
+    <div class="comment-actions">
+      <button class="like-btn ${liked ? 'liked' : ''}" onclick="toggleLike('${bookId}','${id}',${liked})">
+        ♥ <span>${likes}</span>
+      </button>
+      ${isOwn || isAdmin ? `<button class="delete-btn" onclick="deleteComment('${bookId}','${id}')">Delete</button>` : ''}
+    </div>
+  </div>`;
+}
+
+window.postComment = async (bookId) => {
+  if (!currentUser) { openAuth('signup'); return; }
+  const ta   = document.getElementById('disc-compose-text');
+  const body = ta.value.trim();
+  if (!body) return;
+  await addDoc(collection(db, 'bookclub_comments', bookId, 'comments'), {
+    uid: currentUser.uid, authorName: currentUser.name,
+    body, ts: serverTimestamp(), likes: 0, likedBy: {}
+  });
+  ta.value = '';
+};
+
+window.toggleLike = async (bookId, commentId, alreadyLiked) => {
+  if (!currentUser) { openAuth('signup'); return; }
+  const ref2 = doc(db, 'bookclub_comments', bookId, 'comments', commentId);
+  if (alreadyLiked) {
+    await updateDoc(ref2, { likes: increment(-1), [`likedBy.${currentUser.uid}`]: false });
+  } else {
+    await updateDoc(ref2, { likes: increment(1),  [`likedBy.${currentUser.uid}`]: true  });
+  }
+};
+
+window.deleteComment = async (bookId, commentId) => {
+  if (!confirm('Delete this comment?')) return;
+  await deleteDoc(doc(db, 'bookclub_comments', bookId, 'comments', commentId));
+};
+
+// ══════════════════════════════════════════
+// HISTORY
+// ══════════════════════════════════════════
+async function loadHistory() {
+  const el = document.getElementById('history-content');
+  try {
+    const snap = await getDocs(query(collection(db, 'bookclub_books'), where('status', '==', 'archived'), orderBy('archivedAt', 'desc')));
+    if (snap.empty) {
+      el.innerHTML = `<div class="empty-state"><div class="empty-icon">📖</div><div class="empty-title">Nothing archived yet</div><div class="empty-desc">Past books will appear here after each month.</div></div>`;
+      return;
+    }
+    el.innerHTML = `<div class="history-grid">${snap.docs.map(d => {
+      const b = d.data();
+      const avgRating = b.avgRating || 0;
+      const coverHtml = b.coverUrl
+        ? `<img src="${esc(b.coverUrl)}" alt="${esc(b.title)}" onerror="this.parentElement.innerHTML='<span>${esc(b.title)}</span>'">`
+        : `<span>${esc(b.title || '')}</span>`;
+      const stars = [1,2,3,4,5].map(n => `<span class="star ${n <= Math.round(avgRating) ? 'filled' : ''}">★</span>`).join('');
+      return `<div class="history-card">
+        <div class="history-cover">${coverHtml}</div>
+        <div class="history-title">${esc(b.title || '—')}</div>
+        <div class="history-author">${esc(b.author || '')}</div>
+        <div class="star-row">${stars}</div>
+        <div class="history-avg">${avgRating ? avgRating.toFixed(1) + ' avg rating' : 'No ratings yet'}</div>
+      </div>`;
+    }).join('')}</div>`;
+  } catch(e) {
+    el.innerHTML = '';
+  }
+}
+
+// ══════════════════════════════════════════
+// STATS
+// ══════════════════════════════════════════
+async function loadStats() {
+  try {
+    const [membersSnap, booksSnap, cmtSnap] = await Promise.allSettled([
+      getCountFromServer(collection(db, 'members')),
+      getDocs(query(collection(db, 'bookclub_books'))),
+      currentBookId ? getCountFromServer(collection(db, 'bookclub_comments', currentBookId, 'comments')) : Promise.resolve(null)
+    ]);
+    if (membersSnap.status === 'fulfilled') document.getElementById('stat-members').textContent = membersSnap.value.data().count;
+    if (booksSnap.status === 'fulfilled')   document.getElementById('stat-books').textContent   = booksSnap.value.size;
+    if (cmtSnap.status === 'fulfilled' && cmtSnap.value) document.getElementById('stat-comments').textContent = cmtSnap.value.data().count;
+  } catch {}
+}
+
+// ══════════════════════════════════════════
+// ADMIN
+// ══════════════════════════════════════════
+window.adminSetCurrentBook = async () => {
+  const title    = document.getElementById('admin-book-title').value.trim();
+  const author   = document.getElementById('admin-book-author').value.trim();
+  const synopsis = document.getElementById('admin-book-synopsis').value.trim();
+  const coverUrl = document.getElementById('admin-book-cover').value.trim();
+  const meetRaw  = document.getElementById('admin-meeting-date').value;
+  const zoomLink = document.getElementById('admin-zoom-link').value.trim();
+  if (!title) { toast('Title is required.', 'error'); return; }
+
+  // Archive existing current book
+  const existing = await getDocs(query(collection(db, 'bookclub_books'), where('status', '==', 'current'), limit(1)));
+  for (const d of existing.docs) {
+    await updateDoc(doc(db, 'bookclub_books', d.id), { status: 'archived', archivedAt: serverTimestamp() });
+  }
+  // Set new current book
+  await addDoc(collection(db, 'bookclub_books'), {
+    title, author, synopsis, coverUrl, zoomLink,
+    status: 'current', rsvpCount: 0, rsvps: {},
+    meetingDate: meetRaw ? new Date(meetRaw) : null,
+    createdAt: serverTimestamp()
+  });
+  toast('Current book updated!', 'success');
+  loadCurrentBook();
+  loadHistory();
+};
+
+_adminCandidates = [];
+window.adminAddCandidate = () => {
+  const title    = document.getElementById('admin-cand-title').value.trim();
+  const author   = document.getElementById('admin-cand-author').value.trim();
+  const coverUrl = document.getElementById('admin-cand-cover').value.trim();
+  if (!title) { toast('Title required.', 'error'); return; }
+  const id = 'c_' + Date.now();
+  _adminCandidates.push({ id, title, author, coverUrl });
+  document.getElementById('admin-cand-title').value  = '';
+  document.getElementById('admin-cand-author').value = '';
+  document.getElementById('admin-cand-cover').value  = '';
+  renderAdminCandidates();
+};
+
+function renderAdminCandidates() {
+  document.getElementById('admin-candidates-list').innerHTML = _adminCandidates.map((c, i) => `
+    <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg2);border-radius:var(--radius-sm);margin-bottom:6px;">
+      <span style="font-size:13px;font-weight:500;flex:1;">${esc(c.title)}</span>
+      <span style="font-family:var(--font-mono);font-size:10px;color:var(--muted);">${esc(c.author)}</span>
+      <button class="admin-remove-btn" onclick="adminRemoveCandidate(${i})">✕</button>
+    </div>`).join('');
+}
+
+window.adminRemoveCandidate = (i) => {
+  _adminCandidates.splice(i, 1);
+  renderAdminCandidates();
+};
+
+window.adminSaveCandidates = async () => {
+  if (!_adminCandidates.length) { toast('Add at least one candidate.', 'error'); return; }
+  await setDoc(doc(db, 'bookclub_vote', 'current'), { candidates: _adminCandidates, votes: {}, createdAt: serverTimestamp() });
+  toast('Vote candidates saved!', 'success');
+  loadVote();
+};
+
+window.adminResetVotes = async () => {
+  if (!confirm('Reset all votes for this round?')) return;
+  await updateDoc(doc(db, 'bookclub_vote', 'current'), { votes: {} });
+  toast('Votes reset.', 'success');
+  loadVote();
+};
+
+// ══════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════
+window.toast = (msg, type = '') => {
+  const el = document.createElement('div');
+  el.className = 'toast' + (type ? ' ' + type : '');
+  el.textContent = msg;
+  document.getElementById('toast-container').appendChild(el);
+  setTimeout(() => el.remove(), 3500);
+};
+
+function initials(name) {
+  if (!name) return '?';
+  return name.split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase();
+}
+
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function timeAgo(ts) {
+  if (!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  const s = Math.floor((Date.now() - d) / 1000);
+  if (s < 60)    return 'just now';
+  if (s < 3600)  return Math.floor(s/60) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  return Math.floor(s/86400) + 'd ago';
+}
+
+// Enter key on auth
+document.getElementById('login-password').addEventListener('keydown', e => { if(e.key==='Enter') handleLogin(); });
+
+window.openInviteRequest = () => {
+  document.getElementById('join').scrollIntoView({ behavior: 'smooth' });
+};
+
+window.submitInviteRequest = async () => {
+  const name  = document.getElementById('req-name').value.trim();
+  const email = document.getElementById('req-email').value.trim();
+  if (!name || !email) { toast('Please enter your name and email.', 'error'); return; }
+  try {
+    await addDoc(collection(db, 'bookclub_invite_requests'), {
+      name, email, requestedAt: serverTimestamp(), status: 'pending'
+    });
+    document.getElementById('invite-form').style.display    = 'none';
+    document.getElementById('invite-success').style.display = 'block';
+  } catch(e) {
+    toast('Something went wrong. Try again.', 'error');
+  }
+};
+
+</script>
+</body>
+</html>
