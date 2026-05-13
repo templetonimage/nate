@@ -783,7 +783,7 @@
       </div>
     </div>
     <div style="background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:22px 24px;display:flex;align-items:flex-start;gap:16px;">
-      <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--gold);line-height:1;flex-shrink:0;">+2</div>
+      <div style="font-family:var(--font-display);font-size:36px;font-weight:700;color:var(--gold);line-height:1;flex-shrink:0;">+1</div>
       <div>
         <div style="font-weight:500;font-size:14px;margin-bottom:3px;">Post a Thought or Question</div>
         <div style="font-size:13px;font-weight:300;color:var(--text3);line-height:1.55;">Share a reaction, reflection, or open a question to the group. Every post counts.</div>
@@ -968,7 +968,6 @@ let currentUser   = null;
 let currentBookId = null;
 let voteData      = null;
 let _discUnsub    = null;
-let _bookUnsub    = null;
 let _adminCandidates = [];
 let _meetingDate  = null;
 
@@ -1093,7 +1092,6 @@ onAuthStateChanged(auth, async (user) => {
 // BOOT
 // ══════════════════════════════════════════
 async function boot() {
-  loadCurrentBook();
   loadHistory();
   loadStats();
 }
@@ -1102,46 +1100,38 @@ boot();
 // ══════════════════════════════════════════
 // CURRENT BOOK
 // ══════════════════════════════════════════
-function loadCurrentBook() {
+async function loadCurrentBook() {
   const el = document.getElementById('current-book-content');
-  if (_bookUnsub) { _bookUnsub(); _bookUnsub = null; }
   try {
-    _bookUnsub = onSnapshot(
-      query(collection(db, 'bookclub_books'), where('status', '==', 'current'), limit(1)),
-      (snap) => {
-        if (snap.empty) { renderNoCurrentBook(); return; }
-        const bookDoc = snap.docs[0];
-        currentBookId = bookDoc.id;
-        const b = bookDoc.data();
-        if (el) renderCurrentBook(b);
-        renderHeroBook(b);
-        if (b.meetingDate) {
-          _meetingDate = b.meetingDate.toDate ? b.meetingDate.toDate() : new Date(b.meetingDate);
-          startCountdown(_meetingDate);
-        }
-        loadDiscussion(currentBookId);
-      },
-      () => {
-        if (el) el.innerHTML = `<div class="empty-state"><div class="empty-icon">📚</div><div class="empty-title">Coming Soon</div><div class="empty-desc">The first book will be announced shortly.</div></div>`;
-      }
-    );
+    const snap = await getDocs(query(collection(db, 'bookclub_books'), where('status', '==', 'current'), limit(1)));
+    if (snap.empty) {
+      renderNoCurrentBook();
+      return;
+    }
+    const bookDoc = snap.docs[0];
+    currentBookId = bookDoc.id;
+    const b = bookDoc.data();
+    renderCurrentBook(b);
+    renderHeroBook(b);
+    if (b.meetingDate) {
+      _meetingDate = b.meetingDate.toDate ? b.meetingDate.toDate() : new Date(b.meetingDate);
+      startCountdown(_meetingDate);
+    }
+    loadDiscussion(currentBookId);
   } catch(e) {
-    if (el) el.innerHTML = `<div class="empty-state"><div class="empty-icon">📚</div><div class="empty-title">Coming Soon</div><div class="empty-desc">The first book will be announced shortly.</div></div>`;
+    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📚</div><div class="empty-title">Coming Soon</div><div class="empty-desc">The first book will be announced shortly.</div></div>`;
   }
 }
 
 function renderNoCurrentBook() {
-  const el = document.getElementById('current-book-content');
-  if (el) el.innerHTML = `
+  document.getElementById('current-book-content').innerHTML = `
     <div class="empty-state">
       <div class="empty-icon">📚</div>
       <div class="empty-title">No book set yet</div>
       <div class="empty-desc">Check back soon — Nate will announce the first pick.</div>
     </div>`;
-  const ht = document.getElementById('hero-title');
-  const ha = document.getElementById('hero-author');
-  if (ht) ht.textContent = 'Coming soon';
-  if (ha) ha.textContent = '';
+  document.getElementById('hero-title').textContent = 'Coming soon';
+  document.getElementById('hero-author').textContent = '';
 }
 
 function renderHeroBook(b) {

@@ -778,7 +778,7 @@
         <textarea class="compose-textarea" id="compose-text" placeholder="Share a thought about this month's book…" rows="2"></textarea>
         <input class="passage-ref-input" id="passage-ref" type="text" placeholder="Page or chapter reference (e.g. p. 47)" style="display:none;" />
         <div class="compose-footer">
-          <span class="compose-hint" id="compose-hint">+2 pts for posting</span>
+          <span class="compose-hint" id="compose-hint">+1 pt for posting</span>
           <button class="btn-post" onclick="submitPost()">Post</button>
         </div>
       </div>
@@ -977,7 +977,7 @@
         <div class="profile-section-title">Points Breakdown</div>
         <div class="card">
           <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);">
-            <span style="color:var(--text2);">Posts & thoughts</span><span style="font-family:var(--font-mono);font-size:11px;">+2 each</span>
+            <span style="color:var(--text2);">Posts & thoughts</span><span style="font-family:var(--font-mono);font-size:11px;">+1 each</span>
           </div>
           <div style="display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid var(--border);">
             <span style="color:var(--text2);">Passage shared</span><span style="font-family:var(--font-mono);font-size:11px;">+5 each</span>
@@ -1064,7 +1064,7 @@ const BADGES = {
   topReader:  { emoji: '🏆', label: 'Top Reader' },
 };
 
-const POINTS = { thought: 2, passage: 5, question: 2, rsvp: 3, attended: 10, passageLike: 1 };
+const POINTS = { thought: 1, passage: 5, question: 1, rsvp: 3, attended: 10, passageLike: 1 };
 
 const app     = initializeApp(firebaseConfig);
 const auth    = getAuth(app);
@@ -1440,7 +1440,7 @@ window.setPostType = (type) => {
   const ref = document.getElementById('passage-ref');
   ref.style.display = type === 'passage' ? 'block' : 'none';
   const hint = document.getElementById('compose-hint');
-  const hintMap = { thought: '+2 pts for posting', passage: '+5 pts for sharing a passage', question: '+2 pts for posting' };
+  const hintMap = { thought: '+1 pt for posting', passage: '+5 pts for sharing a passage', question: '+1 pt for posting' };
   hint.textContent = hintMap[type];
   const ta = document.getElementById('compose-text');
   const phMap = { thought: 'Share a thought about this month\'s book…', passage: 'Share a passage that stood out…', question: 'Ask the group a question…' };
