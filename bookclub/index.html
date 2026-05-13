@@ -1120,12 +1120,14 @@ async function loadCurrentBook() {
     }
     loadDiscussion(currentBookId);
   } catch(e) {
-    el.innerHTML = `<div class="empty-state"><div class="empty-icon">📚</div><div class="empty-title">Coming Soon</div><div class="empty-desc">The first book will be announced shortly.</div></div>`;
+    console.error('[loadCurrentBook] error:', e);
+    if (el) el.innerHTML = `<div class="empty-state"><div class="empty-icon">📚</div><div class="empty-title">Coming Soon</div><div class="empty-desc">The first book will be announced shortly.</div></div>`;
   }
 }
 
 function renderNoCurrentBook() {
-  document.getElementById('current-book-content').innerHTML = `
+  const el = document.getElementById('current-book-content');
+  if (el) el.innerHTML = `
     <div class="empty-state">
       <div class="empty-icon">📚</div>
       <div class="empty-title">No book set yet</div>
@@ -1153,7 +1155,8 @@ function renderCurrentBook(b) {
     ? `<img src="${esc(b.coverUrl)}" alt="${esc(b.title)}" onerror="this.parentElement.innerHTML='<span>${esc(b.title)}</span>'">`
     : `<span>${esc(b.title || '')}</span>`;
 
-  document.getElementById('current-book-content').innerHTML = `
+  const cbEl = document.getElementById('current-book-content');
+  if (cbEl) cbEl.innerHTML = `
     <div class="current-book-grid">
       <div class="current-book-cover">${coverHtml}</div>
       <div>
