@@ -1092,6 +1092,7 @@ onAuthStateChanged(auth, async (user) => {
 // BOOT
 // ══════════════════════════════════════════
 async function boot() {
+  loadCurrentBook();
   loadHistory();
   loadStats();
 }
